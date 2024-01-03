@@ -176,7 +176,7 @@ $(document).ready(function () {
 			margin: 200,
 			range: {
 				'min': 0,
-				'max': 1000
+				'max': 4000
 			},
 			tooltips: true,
 			format: wNumb({
