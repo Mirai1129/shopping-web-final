@@ -82,7 +82,7 @@
                       <a href="wishlist.html"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a>
                     </li>
                     <li>
-                      <a href="about.html">About Us</a>
+                      <a href="{{url_for('about')}}">About Us</a>
                     </li>
                     <li>
                       <a href="contact.html">Contact Us</a>
@@ -109,12 +109,12 @@
                 <i class="icon-bars"></i>
               </button>
 
-              <a href="index.html" class="logo"><img src="../static/images/logo.png" alt="Molla Logo" width="105" height="25" /></a>
+              <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo" width="105" height="25" /></a>
 
               <nav class="main-nav">
                 <ul class="menu sf-arrows">
                   <li class="megamenu-container active">
-                    <a href="index.html" class="sf-with-ul">Home</a>
+                    <a href="{{url_for('index')}}" class="sf-with-ul">Home</a>
 
                     <div class="megamenu demo">
                       <div class="menu-col">
@@ -326,7 +326,7 @@
                     <!-- End .megamenu -->
                   </li>
                   <li>
-                    <a href="shop.html" class="sf-with-ul">Shop</a>
+                    <a href="{{url_for('shop')}}" class="sf-with-ul">Shop</a>
 
                     <div class="megamenu megamenu-md">
                       <div class="row no-gutters">
@@ -344,7 +344,7 @@
                                     <a href="category-2cols.html">Shop Grid 2 Columns</a>
                                   </li>
                                   <li>
-                                    <a href="shop.html">Shop Grid 3 Columns</a>
+                                    <a href="{{url_for('shop')}}">Shop Grid 3 Columns</a>
                                   </li>
                                   <li>
                                     <a href="category-4cols.html">Shop Grid 4 Columns</a>
@@ -382,16 +382,16 @@
                                 <!-- End .menu-title -->
                                 <ul>
                                   <li>
-                                    <a href="cart.html">Cart</a>
+                                    <a href="{{url_for('cart')}}">Cart</a>
                                   </li>
                                   <li>
-                                    <a href="checkout.html">Checkout</a>
+                                    <a href="{{url_for('checkout')}}">Checkout</a>
                                   </li>
                                   <li>
                                     <a href="wishlist.html">Wishlist</a>
                                   </li>
                                   <li>
-                                    <a href="dashboard.html">My Account</a>
+                                    <a href="{{url_for('dashboard')}}">My Account</a>
                                   </li>
                                   <li>
                                     <a href="#">Lookbook</a>
@@ -408,7 +408,7 @@
 
                         <div class="col-md-4">
                           <div class="banner banner-overlay">
-                            <a href="shop.html" class="banner banner-menu">
+                            <a href="{{url_for('shop')}}" class="banner banner-menu">
                               <img src="../static/images/menu/banner-1.jpg" alt="Banner" />
 
                               <div class="banner-content banner-content-top">
@@ -429,7 +429,7 @@
                     <!-- End .megamenu megamenu-md -->
                   </li>
                   <li>
-                    <a href="product.html" class="sf-with-ul">Product</a>
+                    <a href="{{url_for('product')}}" class="sf-with-ul">Product</a>
 
                     <div class="megamenu megamenu-sm">
                       <div class="row no-gutters">
@@ -439,7 +439,7 @@
                             <!-- End .menu-title -->
                             <ul>
                               <li>
-                                <a href="product.html">Default</a>
+                                <a href="{{url_for('product')}}">Default</a>
                               </li>
                               <li>
                                 <a href="product-centered.html">Centered</a>
@@ -470,7 +470,7 @@
 
                         <div class="col-md-6">
                           <div class="banner banner-overlay">
-                            <a href="shop.html">
+                            <a href="{{url_for('shop')}}">
                               <img src="../static/images/menu/banner-2.jpg" alt="Banner" />
 
                               <div class="banner-content banner-content-bottom">
@@ -495,11 +495,11 @@
 
                     <ul>
                       <li>
-                        <a href="about.html" class="sf-with-ul">About</a>
+                        <a href="{{url_for('about')}}" class="sf-with-ul">About</a>
 
                         <ul>
                           <li>
-                            <a href="about.html">About 01</a>
+                            <a href="{{url_for('about')}}">About 01</a>
                           </li>
                           <li>
                             <a href="about-2.html">About 02</a>
@@ -519,10 +519,10 @@
                         </ul>
                       </li>
                       <li>
-                        <a href="login.html">Login</a>
+                        <a href="{{url_for('login')}}">Login</a>
                       </li>
                       <li>
-                        <a href="faq.html">FAQs</a>
+                        <a href="{{url_for('faq')}}">FAQs</a>
                       </li>
                       <li>
                         <a href="404.html">Error 404</a>
@@ -677,11 +677,11 @@
                   <ul class="compare-products">
                     <li class="compare-product">
                       <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                      <h4 class="compare-product-title"><a href="product.html">Blue Night Dress</a></h4>
+                      <h4 class="compare-product-title"><a href="{{url_for('product')}}">Blue Night Dress</a></h4>
                     </li>
                     <li class="compare-product">
                       <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                      <h4 class="compare-product-title"><a href="product.html">White Long Skirt</a></h4>
+                      <h4 class="compare-product-title"><a href="{{url_for('product')}}">White Long Skirt</a></h4>
                     </li>
                   </ul>
 
@@ -704,7 +704,7 @@
                   <div class="dropdown-cart-products">
                     <div class="product">
                       <div class="product-cart-details">
-                        <h4 class="product-title"><a href="product.html">Beige knitted elastic runner shoes</a></h4>
+                        <h4 class="product-title"><a href="{{url_for('product')}}">Beige knitted elastic runner shoes</a></h4>
 
                         <span class="cart-product-info">
                           <span class="cart-product-qty">1</span>
@@ -714,7 +714,7 @@
                       <!-- End .product-cart-details -->
 
                       <figure class="product-image-container">
-                        <a href="product.html" class="product-image"><img src="../static/images/products/cart/product-1.jpg" alt="product" /></a>
+                        <a href="{{url_for('product')}}" class="product-image"><img src="../static/images/products/cart/product-1.jpg" alt="product" /></a>
                       </figure>
                       <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                     </div>
@@ -722,7 +722,7 @@
 
                     <div class="product">
                       <div class="product-cart-details">
-                        <h4 class="product-title"><a href="product.html">Blue utility pinafore denim dress</a></h4>
+                        <h4 class="product-title"><a href="{{url_for('product')}}">Blue utility pinafore denim dress</a></h4>
 
                         <span class="cart-product-info">
                           <span class="cart-product-qty">1</span>
@@ -732,7 +732,7 @@
                       <!-- End .product-cart-details -->
 
                       <figure class="product-image-container">
-                        <a href="product.html" class="product-image"><img src="../static/images/products/cart/product-2.jpg" alt="product" /></a>
+                        <a href="{{url_for('product')}}" class="product-image"><img src="../static/images/products/cart/product-2.jpg" alt="product" /></a>
                       </figure>
                       <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                     </div>
@@ -748,8 +748,8 @@
                   <!-- End .dropdown-cart-total -->
 
                   <div class="dropdown-cart-action">
-                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                    <a href="{{url_for('cart')}}" class="btn btn-primary">View Cart</a>
+                    <a href="{{url_for('checkout')}}" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                   </div>
                   <!-- End .dropdown-cart-total -->
                 </div>
@@ -777,7 +777,7 @@
           <div class="container">
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                <a href="index.html">Home</a>
+                <a href="{{url_for('index')}}">Home</a>
               </li>
               <li class="breadcrumb-item">
                 <a href="#">Shop</a>
@@ -927,7 +927,7 @@
 
                   <ul class="widget-list">
                     <li>
-                      <a href="about.html">About Molla</a>
+                      <a href="{{url_for('about')}}">About Molla</a>
                     </li>
                     <li>
                       <a href="#">How to shop on Molla</a>
@@ -939,7 +939,7 @@
                       <a href="contact.html">Contact us</a>
                     </li>
                     <li>
-                      <a href="login.html">Log in</a>
+                      <a href="{{url_for('login')}}">Log in</a>
                     </li>
                   </ul>
                   <!-- End .widget-list -->
@@ -987,7 +987,7 @@
                       <a href="#">Sign In</a>
                     </li>
                     <li>
-                      <a href="cart.html">View Cart</a>
+                      <a href="{{url_for('cart')}}">View Cart</a>
                     </li>
                     <li>
                       <a href="#">My Wishlist</a>
@@ -1046,7 +1046,7 @@
         <nav class="mobile-nav">
           <ul class="mobile-menu">
             <li class="active">
-              <a href="index.html">Home</a>
+              <a href="{{url_for('index')}}">Home</a>
 
               <ul>
                 <li>
@@ -1082,7 +1082,7 @@
               </ul>
             </li>
             <li>
-              <a href="shop.html">Shop</a>
+              <a href="{{url_for('shop')}}">Shop</a>
               <ul>
                 <li>
                   <a href="category-list.html">Shop List</a>
@@ -1091,7 +1091,7 @@
                   <a href="category-2cols.html">Shop Grid 2 Columns</a>
                 </li>
                 <li>
-                  <a href="shop.html">Shop Grid 3 Columns</a>
+                  <a href="{{url_for('shop')}}">Shop Grid 3 Columns</a>
                 </li>
                 <li>
                   <a href="category-4cols.html">Shop Grid 4 Columns</a>
@@ -1109,10 +1109,10 @@
                   <a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a>
                 </li>
                 <li>
-                  <a href="cart.html">Cart</a>
+                  <a href="{{url_for('cart')}}">Cart</a>
                 </li>
                 <li>
-                  <a href="checkout.html">Checkout</a>
+                  <a href="{{url_for('checkout')}}">Checkout</a>
                 </li>
                 <li>
                   <a href="wishlist.html">Wishlist</a>
@@ -1123,10 +1123,10 @@
               </ul>
             </li>
             <li>
-              <a href="product.html" class="sf-with-ul">Product</a>
+              <a href="{{url_for('product')}}" class="sf-with-ul">Product</a>
               <ul>
                 <li>
-                  <a href="product.html">Default</a>
+                  <a href="{{url_for('product')}}">Default</a>
                 </li>
                 <li>
                   <a href="product-centered.html">Centered</a>
@@ -1155,11 +1155,11 @@
               <a href="#">Pages</a>
               <ul>
                 <li>
-                  <a href="about.html">About</a>
+                  <a href="{{url_for('about')}}">About</a>
 
                   <ul>
                     <li>
-                      <a href="about.html">About 01</a>
+                      <a href="{{url_for('about')}}">About 01</a>
                     </li>
                     <li>
                       <a href="about-2.html">About 02</a>
@@ -1179,10 +1179,10 @@
                   </ul>
                 </li>
                 <li>
-                  <a href="login.html">Login</a>
+                  <a href="{{url_for('login')}}">Login</a>
                 </li>
                 <li>
-                  <a href="faq.html">FAQs</a>
+                  <a href="{{url_for('faq')}}">FAQs</a>
                 </li>
                 <li>
                   <a href="404.html">Error 404</a>
