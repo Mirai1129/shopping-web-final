@@ -1,32 +1,43 @@
 import random
-
+import hashlib
 import pymysql
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Database:
     def connect(self):
         return pymysql.connect(
-            host="localhost",
-            user="Mirai1129",
-            password="iamdowdwind1129",
-            database="shoppingweb",
-            charset='utf8mb4'
+            host=os.getenv("HOST"),
+            user=os.getenv("USER"),
+            password=os.getenv("PASSWORD"),
+            database=os.getenv("DATABASE"),
+            charset=os.getenv("CHARSET")
         )
 
-    def read(self, memberId=0):
+    def login(self, email, password):
         con = self.connect()
         cursor = con.cursor()
-
         try:
-            if memberId == 0:
-                cursor.execute("SELECT quantity FROM shoppingcart")
-            else:
-                cursor.execute("SELECT * FROM phone_book WHERE id = %s ORDER BY name ASC", (memberId,))
+            if not email or not password:
+                return 'Invalid email or password'
 
-            return cursor.fetchone()[0]
+
+            # 使用 Prepared Statement 執行 SQL 查詢，并使用哈希后的密码进行比较
+            cursor.execute("SELECT email, password FROM member WHERE email = %s AND password = %s",
+                           (email, password))
+            result = cursor.fetchone()
+
+            if result:
+                return 'Login successful'
+            else:
+                return 'Invalid email or password'
         except pymysql.Error as e:
             print(f"Database error: {e}")
-            return ()
+            con.rollback()
+            return 'Database error'
         finally:
             cursor.close()
             con.close()
@@ -34,14 +45,19 @@ class Database:
     def register(self, firstName, lastName, displayName, email, password, address, phone):
         con = self.connect()
         cursor = con.cursor()
-        memberId = random.randint(1000000, 9999999)
 
         try:
-            if firstName and lastName and displayName and email and password and address and phone:
+            # Check if the email already exists in the database
+            cursor.execute("SELECT * FROM `member` WHERE `email` = %s", (email,))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                return 'User with this email already exists'
+            elif firstName and lastName and displayName and email and password and address and phone:
                 cursor.execute(
-                    "INSERT INTO `member`(`memberId`, `firstName`, `lastName`, `displayName`, `email`, `password`, `address`, `phone`) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (memberId, firstName, lastName, displayName, email, password, address, phone)
+                    "INSERT INTO `member`(`firstName`, `lastName`, `displayName`, `email`, `password`, `address`, `phone`) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (firstName, lastName, displayName, email, password, address, phone)
                 )
                 con.commit()  # Commit the changes to the database
                 return 'Registration successful'
@@ -54,4 +70,3 @@ class Database:
         finally:
             cursor.close()
             con.close()
-
