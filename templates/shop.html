@@ -49,7 +49,15 @@
                                     <a href="{{ url_for('contact')}}">聯絡我們</a>
                                 </li>
                                 <li>
-                                    <a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>登入</a>
+                                    <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
+                                        <p>
+                                            {% if username != None %}
+                                            {{ username }}
+                                            {% else %}
+                                            登入
+                                            {% endif %}
+                                        </p>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -703,7 +711,7 @@
 
                             <ul class="widget-list">
                                 <li>
-                                    <a href="{{url_for('login')}}">登入</a>
+                                    <a href="{{url_for('login')}}">會員管理</a>
                                 </li>
                                 <li>
                                     <a href="{{url_for('cart')}}">查看購物車</a>
@@ -757,16 +765,16 @@
         <nav class="mobile-nav">
             <ul class="mobile-menu">
                 <li class="active">
-                    <a href="{{url_for('index')}}">主頁</a>
+                    <a href="{{url_for('index')}}">首頁</a>
 
                     <ul>
-                        <li><a href="{{url_for('index')}}">Home page</a></li>
+                        <li><a href="{{url_for('index')}}">回到首頁</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="{{url_for('shop')}}">商店</a>
                     <ul>
-                        <li><a href="{{url_for('shop')}}">Shopping page</a></li>
+                        <li><a href="{{url_for('shop')}}">前往商店</a></li>
                     </ul>
                 </li>
                 <li>
@@ -778,9 +786,21 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{url_for('login')}}">登入</a>
+                    <a href="{{ url_for('login') }}">
+                        {% if username != None %}
+                        {{ username }}
+                        {% else %}
+                        登入
+                        {% endif %}
+                    </a>
                     <ul>
-                        <li><a href="{{url_for('login')}}">Login</a></li>
+                        <li><a href="{{ url_for('login') }}">
+                            {% if username != None %}
+                            會員設定
+                            {% else %}
+                            登入
+                            {% endif %}
+                        </a></li>
                     </ul>
                 </li>
             </ul>

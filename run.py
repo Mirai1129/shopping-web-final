@@ -105,42 +105,74 @@ def dashboard():
 
 @app.route('/product')
 def product():
-    return render_template('product.html')
-
+    if 'username' in session:
+        username = session['username']
+        return render_template('product.html', username=username)
+    else:
+        return render_template('product.html')
 
 @app.route('/shop')
 def shop():
-    return render_template('shop.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('shop.html', username=username)
+    else:
+        return render_template('shop.html')
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('about.html', username=username)
+    else:
+        return render_template('about.html')
 
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('contact.html', username=username)
+    else:
+        return render_template('contact.html')
 
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('faq.html', username=username)
+    else:
+        return render_template('faq.html')
 
 
 @app.route('/checkout')
 def checkout():
-    return render_template('checkout.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('checkout.html', username=username)
+    else:
+        return render_template('checkout.html')
 
 
 @app.route('/cart')
 def cart():
-    return render_template('cart.html')
+    if 'username' in session:
+        username = session['username']
+        return render_template('cart.html', username=username)
+    else:
+        return render_template('cart.html')
 
 
 @app.errorhandler(404)
-def page_not_found():
-    return render_template('404.html')
+def page_not_found(e):
+    if 'username' in session:
+        username = session['username']
+        return render_template('404.html', username=username)
+    else:
+        return render_template('404.html')
+
 
 
 if __name__ == '__main__':
