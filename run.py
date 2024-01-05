@@ -12,14 +12,15 @@ app.secret_key = secrets.token_hex(16)  # 生成一个 16 字节的随机密钥
 @app.route('/')
 def index():
     db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
-        user = session['username']
-        data = db.shoppingCartQuantity(username=user)
-        price = db.shoppingCartPrice(username=user)
-        return render_template('index.html', data=data, user=user, price=price)
+        username = session['username']
+        data = db.shoppingCartQuantity(username=username)
+        price = db.shoppingCartPrice(username=username)
+        return render_template('index.html', data=data, username=username, price=price, products=products)
     else:
-        user = None
-        return render_template('index.html', data='', user=user, price=0)
+        username = None
+        return render_template('index.html', data=0, username=username, price=0, products=products)
 
 
 @app.route('/login')
@@ -38,7 +39,6 @@ def login():
 @app.route('/logout', methods=['POST'])
 def logout():
     # 用户注销，清除会话中的登录信息
-    session.pop('logged_in', None)
     session.pop('username', None)
     return redirect('/login')  # 注销后重定向到登录页面
 
@@ -53,7 +53,6 @@ def checkLogin():
     loginResult = db.login(loginEmail, loginPassword)
     # 在 checkLogin 路由中
     if loginResult == 'Login successful':
-        session['loggedIn'] = True
         session['username'] = username
         session.pop('error', None)
         return redirect('/dashboard')  # 重導向回登入頁面
@@ -85,7 +84,6 @@ def register():
                                      phone=registerPhone)
 
         if registerResult == 'Registration successful':
-            session['loggedIn'] = True
             session['username'] = registerUserName
             return redirect('/dashboard')
         else:
@@ -96,7 +94,7 @@ def register():
 
 @app.route('/dashboard')
 def dashboard():
-    if 'loggedIn' in session:
+    if 'username' in session:
         username = session['username']
         return render_template('dashboard.html', username=username)
     else:
@@ -111,13 +109,16 @@ def product():
     else:
         return render_template('product.html')
 
+
 @app.route('/shop')
 def shop():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('shop.html', username=username)
+        return render_template('shop.html', username=username, products=products)
     else:
-        return render_template('shop.html')
+        return render_template('shop.html', products=products)
 
 
 @app.route('/about')
@@ -171,8 +172,7 @@ def page_not_found(e):
         username = session['username']
         return render_template('404.html', username=username)
     else:
-        return render_template('404.html')
-
+        return render_template('404.html'), 404
 
 
 if __name__ == '__main__':

@@ -71,6 +71,30 @@ class Database:
             cursor.close()
             con.close()
 
+    def getAllProductsInfo(self):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute("SELECT * FROM shoppingweb.product")
+            products_info = cursor.fetchall()  # Fetch all rows from the result set
+            products_dict = {product[0]: {'productName': product[1],
+                                          'quantity': product[2],
+                                          'price': product[3],
+                                          'summary': product[4],
+                                          'category': product[5],
+                                          'information': product[6],
+                                          'introduction': product[7]}
+                             for product in products_info}  # Create a dictionary with productId as key and product details as values
+            return products_dict  # Return dictionary containing productId and its corresponding product details
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return {}  # Return an empty dictionary if there's a database error
+        finally:
+            cursor.close()
+            con.close()
+
+
 
     def login(self, email, password):
         con = self.connect()

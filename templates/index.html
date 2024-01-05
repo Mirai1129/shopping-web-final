@@ -74,15 +74,15 @@
                             </li>
                             <li>
                                 <a href="{{ url_for('login') }}" class="sf-with-ul">
-                                    {% if user != None %}
-                                    {{ user }}
+                                    {% if username != None %}
+                                    {{ username }}
                                     {% else %}
                                     登入
                                     {% endif %}
                                 </a>
                                 <ul>
                                     <li><a href="{{ url_for('login') }}">
-                                        {% if user != None %}
+                                        {% if username != None %}
                                         會員設定
                                         {% else %}
                                         登入
@@ -112,7 +112,13 @@
                                         </h4>
 
                                         <span class="cart-product-info">
-                                                <span class="cart-product-qty">{{ data }}</span>
+                                                <span class="cart-product-qty">
+                                                    {% if username != None %}
+                                                        {{ data }}
+                                                    {% else %}
+                                                        0
+                                                    {% endif %}
+                                                </span>
                                                 x ${{ price }}.00
                                             </span>
                                     </div><!-- End .product-cart-details -->
@@ -249,6 +255,8 @@
                             }
                         }'>
 
+
+                    {% for key, product in products.items() %}
                     <div class="product product-4">
                         <figure class="product-media">
                             <a href="{{ url_for('product') }}">
@@ -271,113 +279,19 @@
 
                         <div class="product-body">
                             <div class="product-cat">
-                                <a href="#">棉被</a>
+                                <a href="#">{{ product.category }}</a>
                             </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="{{url_for('product')}}">四季被</a></h3>
+                            <h3 class="product-title"><a href="{{ url_for('product') }}">{{ product.productName }}</a></h3>
                             <!-- End .product-title -->
 
                             <div class="product-price">
-                                $3,799.00
+                                ${{ product.price }}.00
                             </div><!-- End .product-price -->
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
+                    {% endfor %}
 
-                    <div class="product product-4">
-                        <figure class="product-media">
-                            <a href="{{ url_for('product') }}">
-                                <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-3.jpg') }}"
-                                     alt="Product image"
-                                     class="product-image">
-                                <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-3-2.jpg') }}"
-                                     alt="Product image" class="product-image-hover">
-                            </a>
 
-                            <div class="product-action-vertical">
-                                <a href="#"
-                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-                        </figure><!-- End .product-media -->
-
-                        <div class="product-body">
-                            <div class="product-cat">
-                                <a href="#">棉被</a>
-                            </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="{{url_for('product')}}">暖被</a></h3>
-                            <!-- End .product-title -->
-                            <div class="product-price">
-                                $3,999.00
-                            </div><!-- End .product-price -->
-                        </div><!-- End .product-body -->
-                    </div><!-- End .product -->
-
-                    <div class="product product-4">
-                        <figure class="product-media">
-                            <a href="{{ url_for('product') }}">
-                                <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-4.jpg') }}"
-                                     alt="Product image"
-                                     class="product-image">
-                                <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-4-2.jpg') }}"
-                                     alt="Product image" class="product-image-hover">
-                            </a>
-
-                            <div class="product-action-vertical">
-                                <a href="#"
-                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-                        </figure><!-- End .product-media -->
-
-                        <div class="product-body">
-                            <div class="product-cat">
-                                <a href="#">棉被</a>
-                            </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="{{ url_for('product') }}">涼被</a></h3>
-                            <!-- End .product-title -->
-                            <div class="product-price">
-                                $1,399.00
-                            </div><!-- End .product-price -->
-                        </div><!-- End .product-body -->
-                    </div><!-- End .product -->
-
-                    <div class="product product-4">
-                        <figure class="product-media">
-                            <span class="product-label label-new">New</span>
-                            <a href="{{ url_for('product') }}">
-                                <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-6.jpg') }}"
-                                     alt="Product image"
-                                     class="product-image">
-                                <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-6-2.jpg') }}"
-                                     alt="Product image" class="product-image-hover">
-                            </a>
-
-                            <div class="product-action-vertical">
-                                <a href="#"
-                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-
-                            <div class="product-action">
-                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-                        </figure><!-- End .product-media -->
-
-                        <div class="product-body">
-                            <div class="product-cat">
-                                <a href="#">棉被</a>
-                            </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="{{ url_for('product') }}">羽絨被</a></h3>
-                            <!-- End .product-title -->
-                            <div class="product-price">
-                                $1,999.00
-                            </div><!-- End .product-price -->
-                        </div><!-- End .product-body -->
-                    </div><!-- End .product -->
                 </div><!-- End .owl-carousel -->
             </div><!-- End .container -->
         </div><!-- End .bg-lighter pt-5 pb-5 -->
@@ -451,15 +365,15 @@
                 </li>
                 <li>
                     <a href="{{ url_for('login') }}">
-                        {% if user != None %}
-                        {{ user }}
+                        {% if username != None %}
+                        {{ username }}
                         {% else %}
                         登入
                         {% endif %}
                     </a>
                     <ul>
                         <li><a href="{{ url_for('login') }}">
-                            {% if user != None %}
+                            {% if username != None %}
                             會員設定
                             {% else %}
                             登入

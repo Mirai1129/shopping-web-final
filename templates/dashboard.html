@@ -49,9 +49,9 @@
                                     <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
                                         <p>
                                             {% if username != None %}
-                                            {{ username }}
+                                                {{ username }}
                                             {% else %}
-                                            登入
+                                                登入
                                             {% endif %}
                                         </p>
                                     </a>
@@ -463,17 +463,17 @@
                 <li>
                     <a href="{{ url_for('login') }}">
                         {% if username != None %}
-                        {{ username }}
+                            {{ username }}
                         {% else %}
-                        登入
+                            登入
                         {% endif %}
                     </a>
                     <ul>
                         <li><a href="{{ url_for('login') }}">
                             {% if username != None %}
-                            會員設定
+                                會員設定
                             {% else %}
-                            登入
+                                登入
                             {% endif %}
                         </a></li>
                     </ul>

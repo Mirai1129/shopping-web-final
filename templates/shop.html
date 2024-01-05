@@ -46,15 +46,15 @@
                                     <a href="{{ url_for('about') }}">關於我們</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url_for('contact')}}">聯絡我們</a>
+                                    <a href="{{ url_for('contact') }}">聯絡我們</a>
                                 </li>
                                 <li>
                                     <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
                                         <p>
                                             {% if username != None %}
-                                            {{ username }}
+                                                {{ username }}
                                             {% else %}
-                                            登入
+                                                登入
                                             {% endif %}
                                         </p>
                                     </a>
@@ -248,65 +248,7 @@
 
                         <div class="products mb-3">
                             <div class="row justify-content-center">
-                                <div class="col-6 col-md-4 col-lg-4">
-                                    <div class="product product-7 text-center">
-                                        <figure class="product-media">
-                                            <span class="product-label label-new">New</span>
-                                            <a href="{{url_for('product')}}"><img
-                                                    src="../static/images/products/product-4.jpg"
-                                                    alt="Product image" class="product-image"/></a>
-
-                                            <div class="product-action-vertical">
-                                                <a href="#"
-                                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action-vertical -->
-
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action -->
-                                        </figure>
-                                        <!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">Women</a>
-                                            </div>
-                                            <!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="{{url_for('product')}}">Brown paperbag
-                                                waist pencil
-                                                skirt</a></h3><!-- End .product-title -->
-                                            <div class="product-price">$60.00</div>
-                                            <!-- End .product-price -->
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 20%;"></div>
-                                                    <!-- End .ratings-val -->
-                                                </div>
-                                                <!-- End .ratings -->
-                                                <span class="ratings-text">( 2 Reviews )</span>
-                                            </div>
-                                            <!-- End .rating-container -->
-
-                                            <div class="product-nav product-nav-thumbs">
-                                                <a href="#" class="active"><img
-                                                        src="../static/images/products/product-4-thumb.jpg"
-                                                        alt="product desc"/></a>
-                                                <a href="#"><img src="../static/images/products/product-4-2-thumb.jpg"
-                                                                 alt="product desc"/></a>
-
-                                                <a href="#"><img src="../static/images/products/product-4-3-thumb.jpg"
-                                                                 alt="product desc"/></a>
-                                            </div>
-                                            <!-- End .product-nav -->
-                                        </div>
-                                        <!-- End .product-body -->
-                                    </div>
-                                    <!-- End .product -->
-                                </div>
-                                <!-- End .col-sm-6 col-lg-4 -->
-
+                                {% for key, product in products.items() %}
                                 <div class="col-6 col-md-4 col-lg-4">
                                     <div class="product product-7 text-center">
                                         <figure class="product-media">
@@ -329,24 +271,12 @@
 
                                         <div class="product-body">
                                             <div class="product-cat">
-                                                <a href="#">Dresses</a>
+                                                <a href="#">{{ product.category }}</a>
                                             </div>
                                             <!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="{{url_for('product')}}">Dark yellow lace
-                                                cut out
-                                                swing dress</a></h3><!-- End .product-title -->
-                                            <div class="product-price">$84.00</div>
+                                            <h3 class="product-title"><a href="{{url_for('product')}}">{{ product.productName }}</a></h3><!-- End .product-title -->
+                                            <div class="product-price">${{ product.price }}.00</div>
                                             <!-- End .product-price -->
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 0%;"></div>
-                                                    <!-- End .ratings-val -->
-                                                </div>
-                                                <!-- End .ratings -->
-                                                <span class="ratings-text">( 0 Reviews )</span>
-                                            </div>
-                                            <!-- End .rating-container -->
-
                                             <div class="product-nav product-nav-thumbs">
                                                 <a href="#" class="active"><img
                                                         src="../static/images/products/product-5-thumb.jpg"
@@ -360,100 +290,7 @@
                                     </div>
                                     <!-- End .product -->
                                 </div>
-                                <!-- End .col-sm-6 col-lg-4 -->
-
-                                <div class="col-6 col-md-4 col-lg-4">
-                                    <div class="product product-7 text-center">
-                                        <figure class="product-media">
-                                            <a href="{{url_for('product')}}"><img
-                                                    src="../static/images/products/product-6.jpg"
-                                                    alt="Product image" class="product-image"/></a>
-
-                                            <div class="product-action-vertical">
-                                                <a href="#"
-                                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action-vertical -->
-
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action -->
-                                        </figure>
-                                        <!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">Jackets</a>
-                                            </div>
-                                            <!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="{{url_for('product')}}">Khaki utility
-                                                boiler
-                                                jumpsuit</a></h3><!-- End .product-title -->
-                                            <div class="product-price">
-                                                <span class="out-price">$120.00</span>
-                                            </div>
-                                            <!-- End .product-price -->
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 80%;"></div>
-                                                    <!-- End .ratings-val -->
-                                                </div>
-                                                <!-- End .ratings -->
-                                                <span class="ratings-text">( 6 Reviews )</span>
-                                            </div>
-                                            <!-- End .rating-container -->
-                                        </div>
-                                        <!-- End .product-body -->
-                                    </div>
-                                    <!-- End .product -->
-                                </div>
-                                <!-- End .col-sm-6 col-lg-4 -->
-
-                                <div class="col-6 col-md-4 col-lg-4">
-                                    <div class="product product-7 text-center">
-                                        <figure class="product-media">
-                                            <a href="{{url_for('product')}}"><img
-                                                    src="../static/images/products/product-7.jpg"
-                                                    alt="Product image" class="product-image"/></a>
-
-                                            <div class="product-action-vertical">
-                                                <a href="#"
-                                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action-vertical -->
-
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action -->
-                                        </figure>
-                                        <!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">Jeans</a>
-                                            </div>
-                                            <!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="{{url_for('product')}}">Blue utility
-                                                pinafore denim
-                                                dress</a></h3><!-- End .product-title -->
-                                            <div class="product-price">$76.00</div>
-                                            <!-- End .product-price -->
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 20%;"></div>
-                                                    <!-- End .ratings-val -->
-                                                </div>
-                                                <!-- End .ratings -->
-                                                <span class="ratings-text">( 2 Reviews )</span>
-                                            </div>
-                                            <!-- End .rating-container -->
-                                        </div>
-                                        <!-- End .product-body -->
-                                    </div>
-                                    <!-- End .product -->
-                                </div>
+                                {% endfor %}
                                 <!-- End .col-sm-6 col-lg-4 -->
                             </div>
                             <!-- End .row -->
@@ -788,19 +625,21 @@
                 <li>
                     <a href="{{ url_for('login') }}">
                         {% if username != None %}
-                        {{ username }}
+                            {{ username }}
                         {% else %}
-                        登入
+                            登入
                         {% endif %}
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('login') }}">
-                            {% if username != None %}
-                            會員設定
-                            {% else %}
-                            登入
-                            {% endif %}
-                        </a></li>
+                        <li>
+                            <a href="{{ url_for('login') }}">
+                                {% if username != None %}
+                                    會員設定
+                                {% else %}
+                                    登入
+                                {% endif %}
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
