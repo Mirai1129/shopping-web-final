@@ -17,13 +17,45 @@ class Database:
             charset=os.getenv("CHARSET")
         )
 
+    def getUsername(self, email):
+        connection = self.connect()
+        cursor = connection.cursor()
+        cursor.execute("SELECT displayName FROM shoppingweb.member WHERE email = %s", (email,))
+        result = cursor.fetchone()
+
+        if result:
+            return result[0]
+        else:
+            return None
+
+    def shoppingCart(self, username):
+        con = self.connect()
+        cursor = con.cursor()
+        print(username)
+        try:
+            quantity = cursor.execute(
+                "SELECT sc.quantity "
+                "FROM shoppingweb.member AS m "
+                "JOIN shoppingweb.shoppingcart AS sc ON m.memberId = sc.memberId "
+                "WHERE m.displayName = %s", (username,)
+            )
+
+            # quantity = cursor.fetchone()[0]  # 获取购物车数量
+
+            return quantity  # 如果数量存在则返回数量，否则返回 0
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return 0  # 返回默认值 0 表示未找到数量
+        finally:
+            cursor.close()
+            con.close()
+
     def login(self, email, password):
         con = self.connect()
         cursor = con.cursor()
         try:
             if not email or not password:
                 return 'Invalid email or password'
-
 
             # 使用 Prepared Statement 執行 SQL 查詢，并使用哈希后的密码进行比较
             cursor.execute("SELECT email, password FROM member WHERE email = %s AND password = %s",

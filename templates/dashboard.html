@@ -209,8 +209,11 @@
                                        role="tab" aria-controls="tab-account" aria-selected="false">帳號細節</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">登出</a>
+                                    <form id="logoutForm" action="/logout" method="POST">
+                                        <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">登出</a>
+                                    </form>
                                 </li>
+
                             </ul>
                         </aside><!-- End .col-lg-3 -->
 
@@ -218,6 +221,7 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                      aria-labelledby="tab-dashboard-link">
+                                    {{username}}
                                     <p>您好 <span class="font-weight-normal text-dark">會員</span> (不是 <span
                                             class="font-weight-normal text-dark">會員</span>? <a href="#">登出</a>)
                                         <br>

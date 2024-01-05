@@ -69,9 +69,21 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="{{ url_for('login') }}" class="sf-with-ul">登入</a>
+                                <a href="{{ url_for('login') }}" class="sf-with-ul">
+                                    {% if user != None %}
+                                        {{ user }}
+                                    {% else %}
+                                        登入
+                                    {% endif %}
+                                </a>
                                 <ul>
-                                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                                    <li><a href="{{ url_for('login') }}">
+                                        {% if user != None %}
+                                            會員設定
+                                        {% else %}
+                                            登入
+                                        {% endif %}
+                                    </a></li>
                                 </ul>
                             </li>
                         </ul><!-- End .menu -->

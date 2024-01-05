@@ -12,18 +12,35 @@ app.secret_key = secrets.token_hex(16)  # 生成一个 16 字节的随机密钥
 @app.route('/')
 def index():
     db = Database()
-    data = db.read(0)
-    return render_template('index.html', data=data)
+    if 'username' in session:
+        user = session['username']
+        data = db.shoppingCart(username=user)
+        print(user, data)
+        return render_template('index.html', data=data, user=user)
+    else:
+        user = None
+        return render_template('index.html', data='', user=user)
 
 
 @app.route('/login')
 def login():
-    error = ''
-    if 'error' in session:
-        error = session['error']
-        session.pop('error')  # 从 session 中移除错误消息，避免再次显示
+    if 'username' in session:
+        return redirect('/dashboard')
+    else:
+        error = ''
+        if 'error' in session:
+            error = session['error']
+            session.pop('error')  # 从 session 中移除错误消息，避免再次显示
 
-    return render_template('login.html', error=error)
+        return render_template('login.html', error=error)
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    # 用户注销，清除会话中的登录信息
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    return redirect('/login')  # 注销后重定向到登录页面
 
 
 @app.route('/checkLogin', methods=['POST'])
@@ -31,14 +48,16 @@ def checkLogin():
     db = Database()
     loginEmail = request.form['singin-email']
     loginPassword = request.form['singin-password']
-
+    username = db.getUsername(loginEmail)
     # 調用登入驗證方法
     loginResult = db.login(loginEmail, loginPassword)
-
+    print(username, loginEmail)
     # 在 checkLogin 路由中
     if loginResult == 'Login successful':
+        session['loggedIn'] = True
+        session['username'] = username
         session.pop('error', None)
-        return redirect('/dashboard')   # 重導向回登入頁面
+        return redirect('/dashboard')  # 重導向回登入頁面
     else:
         flash(loginResult, 'error')  # 將錯誤訊息放入 flash 中，並標記為 'error'
         return redirect('/login')
@@ -67,6 +86,8 @@ def register():
                                      phone=registerPhone)
 
         if registerResult == 'Registration successful':
+            session['loggedIn'] = True
+            session['username'] = registerUserName
             return redirect('/dashboard')
         else:
             return render_template('login.html', error=registerResult)
