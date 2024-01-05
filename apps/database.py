@@ -28,10 +28,9 @@ class Database:
         else:
             return None
 
-    def shoppingCart(self, username):
+    def shoppingCartQuantity(self, username):
         con = self.connect()
         cursor = con.cursor()
-        print(username)
         try:
             quantity = cursor.execute(
                 "SELECT sc.quantity "
@@ -49,6 +48,29 @@ class Database:
         finally:
             cursor.close()
             con.close()
+
+    def shoppingCartPrice(self, username):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute(
+                "SELECT sc.price "
+                "FROM shoppingweb.member AS m "
+                "JOIN shoppingweb.shoppingcart AS sc ON m.memberId = sc.memberId "
+                "WHERE m.displayName = %s", (username,)
+            )
+            price = cursor.fetchone()  # Fetch one row from the result set
+            if price:
+                return price[0]  # Return the first column value (price)
+            else:
+                return 0  # Return 0 if no price found for the given username
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return 0  # Return 0 if there's a database error
+        finally:
+            cursor.close()
+            con.close()
+
 
     def login(self, email, password):
         con = self.connect()

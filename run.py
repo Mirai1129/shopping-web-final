@@ -14,12 +14,12 @@ def index():
     db = Database()
     if 'username' in session:
         user = session['username']
-        data = db.shoppingCart(username=user)
-        print(user, data)
-        return render_template('index.html', data=data, user=user)
+        data = db.shoppingCartQuantity(username=user)
+        price = db.shoppingCartPrice(username=user)
+        return render_template('index.html', data=data, user=user, price=price)
     else:
         user = None
-        return render_template('index.html', data='', user=user)
+        return render_template('index.html', data='', user=user, price=0)
 
 
 @app.route('/login')
@@ -51,7 +51,6 @@ def checkLogin():
     username = db.getUsername(loginEmail)
     # 調用登入驗證方法
     loginResult = db.login(loginEmail, loginPassword)
-    print(username, loginEmail)
     # 在 checkLogin 路由中
     if loginResult == 'Login successful':
         session['loggedIn'] = True
@@ -97,7 +96,11 @@ def register():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if 'loggedIn' in session:
+        username = session['username']
+        return render_template('dashboard.html', username=username)
+    else:
+        return redirect('/login')
 
 
 @app.route('/product')
