@@ -1,3 +1,5 @@
+import random
+
 import pymysql
 
 
@@ -28,3 +30,28 @@ class Database:
         finally:
             cursor.close()
             con.close()
+
+    def register(self, firstName, lastName, displayName, email, password, address, phone):
+        con = self.connect()
+        cursor = con.cursor()
+        memberId = random.randint(1000000, 9999999)
+
+        try:
+            if firstName and lastName and displayName and email and password and address and phone:
+                cursor.execute(
+                    "INSERT INTO `member`(`memberId`, `firstName`, `lastName`, `displayName`, `email`, `password`, `address`, `phone`) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (memberId, firstName, lastName, displayName, email, password, address, phone)
+                )
+                con.commit()  # Commit the changes to the database
+                return 'Registration successful'
+            else:
+                return 'Please provide all necessary information for registration'
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            con.rollback()  # Rollback changes in case of error
+            return 'Registration failed'
+        finally:
+            cursor.close()
+            con.close()
+

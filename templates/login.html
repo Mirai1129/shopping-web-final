@@ -231,12 +231,43 @@
                             <!-- .End .tab-pane -->
                             <div class="tab-pane fade show active" id="register-2" role="tabpanel"
                                  aria-labelledby="register-tab-2">
-                                <form action="#">
-                                    <div class="form-group">
-                                        <label for="register-email-2">您的電子郵件 *</label>
-                                        <input type="email" class="form-control" id="register-email-2"
-                                               name="register-email" required/>
+                                <form action="/register" method="POST">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>用戶名稱 *</label>
+                                            <input type="text" name="register-userName" class="form-control" required/>
+                                        </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>姓 *</label>
+                                            <input type="text" name="register-firstName" class="form-control" required/>
+                                        </div>
+                                        <!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>名 *</label>
+                                            <input type="text" name="register-lastName" class="form-control" required/>
+                                        </div>
+                                        <!-- End .col-sm-6 -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>地址 *</label>
+                                            <input type="text" name="register-address" class="form-control" required/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>電話 *</label>
+                                            <input type="text" name="register-phone" class="form-control" required/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                            <label for="register-email-2">您的電子郵件 *</label>
+                                            <input type="email" class="form-control" id="register-email-2"
+                                                   name="register-email" required/>
+                                        </div>
                                     <!-- End .form-group -->
 
                                     <div class="form-group">
@@ -435,7 +466,6 @@
                 </li>
             </ul>
         </nav><!-- End .mobile-nav -->
-
 
         <div class="social-icons">
             <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>

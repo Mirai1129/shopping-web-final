@@ -1,4 +1,7 @@
-from flask import render_template, Flask
+from urllib import request
+from random import randint
+
+from flask import render_template, Flask, request, redirect
 from apps.database import Database
 
 
@@ -12,9 +15,34 @@ def index():
     return render_template('index.html', data=data)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    db = Database()
+    con = db.connect()
+    cursor = con.cursor()
+    if request.method == 'POST':
+        registerUserName = request.form['register-userName']
+        registerPassword = request.form['register-password']
+        registerFirstName = request.form['register-firstName']
+        registerLastName = request.form['register-lastName']
+        registerAddress = request.form['register-address']
+        registerPhone = request.form['register-phone']
+        registerEmail = request.form['register-email']
+        registerPassword = request.form['register-password']
+        db.register(firstName=registerFirstName,
+                    lastName=registerLastName,
+                    displayName=registerUserName,
+                    email=registerEmail,
+                    password=registerPassword,
+                    address=registerAddress,
+                    phone=registerPhone)
+        return "hi"
+
+
 
 
 @app.route('/product')
@@ -63,4 +91,4 @@ def page_not_found():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8787, host='0.0.0.0')
