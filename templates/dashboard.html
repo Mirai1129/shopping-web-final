@@ -86,7 +86,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="#" class="sf-with-ul">一些頁面</a>
+                                <a href="#" class="sf-with-ul">相關資訊</a>
 
                                 <ul>
                                     <li><a href="about.html">關於我們</a></li>
@@ -173,7 +173,7 @@
     <main class="main">
         <div class="page-header text-center" style="background-image: url('../assets/images/page-header-bg.jpg')">
             <div class="container">
-                <h1 class="page-title">會員管理<span>Shop</span></h1>
+                <h1 class="page-title">會員管理<span>Member management</span></h1>
             </div><!-- End .container -->
         </div><!-- End .page-header -->
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
@@ -219,40 +219,40 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                      aria-labelledby="tab-dashboard-link">
-                                    <p>Hello <span class="font-weight-normal text-dark">User</span> (not <span
-                                            class="font-weight-normal text-dark">User</span>? <a href="#">Log out</a>)
+                                    <p>您好 <span class="font-weight-normal text-dark">會員</span> (不是 <span
+                                            class="font-weight-normal text-dark">會員</span>? <a href="#">登出</a>)
                                         <br>
-                                        From your account dashboard you can view your <a href="#tab-orders"
-                                                                                         class="tab-trigger-link link-underline">recent
-                                            orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">shipping
-                                            and billing addresses</a>, and <a href="#tab-account"
-                                                                              class="tab-trigger-link">edit your
-                                            password and account details</a>.</p>
+                                        從您的帳戶儀表板中，您可以查看 <a href="#tab-orders"
+                                                                                         class="tab-trigger-link link-underline">訂單
+                                            </a>，管理您的 <a href="#tab-address" class="tab-trigger-link">運送地址及帳單地址
+                                            </a>， 以及 <a href="#tab-account"
+                                                                              class="tab-trigger-link">更改您的密碼和帳號細節
+                                            </a>.</p>
                                 </div><!-- .End .tab-pane -->
 
                                 <div class="tab-pane fade" id="tab-orders" role="tabpanel"
                                      aria-labelledby="tab-orders-link">
-                                    <p>No order has been made yet.</p>
-                                    <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
+                                    <p>您目前還沒有任何訂單。</p>
+                                    <a href="category.html" class="btn btn-outline-primary-2"><span>前往購物</span><i
                                             class="icon-long-arrow-right"></i></a>
                                 </div><!-- .End .tab-pane -->
 
                                 <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
                                      aria-labelledby="tab-downloads-link">
-                                    <p>No downloads available yet.</p>
-                                    <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
+                                    <p>目前無可用。</p>
+                                    <a href="category.html" class="btn btn-outline-primary-2"><span>前往購物</span><i
                                             class="icon-long-arrow-right"></i></a>
                                 </div><!-- .End .tab-pane -->
 
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                      aria-labelledby="tab-address-link">
-                                    <p>The following addresses will be used on the checkout page by default.</p>
+                                    <p>預設您結帳頁面中的帳單地址及運送地址。</p>
 
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="card card-dashboard">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">Billing Address</h3><!-- End .card-title -->
+                                                    <h3 class="card-title">帳單地址</h3><!-- End .card-title -->
 
                                                     <p>User Name<br>
                                                         User Company<br>
@@ -268,9 +268,9 @@
                                         <div class="col-lg-6">
                                             <div class="card card-dashboard">
                                                 <div class="card-body">
-                                                    <h3 class="card-title">Shipping Address</h3><!-- End .card-title -->
+                                                    <h3 class="card-title">運送地址</h3><!-- End .card-title -->
 
-                                                    <p>You have not set up this type of address yet.<br>
+                                                    <p>您尚未填寫預設的貨運地址。<br>
                                                         <a href="#">Edit <i class="icon-edit"></i></a></p>
                                                 </div><!-- End .card-body -->
                                             </div><!-- End .card-dashboard -->
@@ -283,35 +283,34 @@
                                     <form action="#">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <label>First Name *</label>
+                                                <label>姓 *</label>
                                                 <input type="text" class="form-control" required>
                                             </div><!-- End .col-sm-6 -->
 
                                             <div class="col-sm-6">
-                                                <label>Last Name *</label>
+                                                <label>名 *</label>
                                                 <input type="text" class="form-control" required>
                                             </div><!-- End .col-sm-6 -->
                                         </div><!-- End .row -->
 
-                                        <label>Display Name *</label>
+                                        <label>顯示名稱 *</label>
                                         <input type="text" class="form-control" required>
-                                        <small class="form-text">This will be how your name will be displayed in the
-                                            account section and in reviews</small>
+                                        <small class="form-text">這將是您顯示在帳戶及評論的名稱。</small>
 
-                                        <label>Email address *</label>
+                                        <label>電子信箱 *</label>
                                         <input type="email" class="form-control" required>
 
-                                        <label>Current password (leave blank to leave unchanged)</label>
+                                        <label>目前密碼（留空表示維持不變）</label>
                                         <input type="password" class="form-control">
 
-                                        <label>New password (leave blank to leave unchanged)</label>
+                                        <label>新密碼（留空則維持不變）</label>
                                         <input type="password" class="form-control">
 
-                                        <label>Confirm new password</label>
+                                        <label>確認新密碼</label>
                                         <input type="password" class="form-control mb-2">
 
                                         <button type="submit" class="btn btn-outline-primary-2">
-                                            <span>SAVE CHANGES</span>
+                                            <span>儲存變更</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
                                     </form>
@@ -354,7 +353,7 @@
 
                     <div class="col-sm-6 col-lg-3">
                         <div class="widget">
-                            <h4 class="widget-title">有用的連結</h4><!-- End .widget-title -->
+                            <h4 class="widget-title">相關資訊</h4><!-- End .widget-title -->
 
                             <ul class="widget-list">
                                 <li>
