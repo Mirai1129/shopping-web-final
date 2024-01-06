@@ -130,16 +130,18 @@
                            aria-haspopup="true" aria-expanded="false" data-display="static">
                             <i class="icon-shopping-cart"></i>
                             <span class="cart-count"> {{ total_quantity }}</span>
-                            <span class="cart-txt" style="font-size: smaller;">${{ total_price }}.00</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
-                                {% for item in shopping_cart %}
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length #}
+
+                                {% for i in range(total_quantity) %}
+                                {% set item = shopping_cart[i] %}
                                 <div class="product">
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
-                                            <a href="{{ url_for('product') }}">
+                                            <a href="{{url_for('product')}}">
                                                 {% if item[4] in products %}
                                                 {{ products[item[4]].productName }}
                                                 {% else %}
@@ -147,20 +149,23 @@
                                                 {% endif %}
                                             </a>
                                         </h4>
+
                                         <span class="cart-product-info">
-                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00
+                          <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00<br>
                         </span>
-                                    </div><!-- End .product-cart-details -->
+                                    </div>
+                                    <!-- End .product-cart-details -->
+
                                     <figure class="product-image-container">
-                                        <a href="{{ url_for('product') }}" class="product-image">
-                                            <img src="{{ url_for('static', filename='images/products/cart/product-2.jpg') }}"
-                                                 alt="product">
-                                        </a>
+                                        <a href="{{url_for('product')}}" class="product-image"><img
+                                                src="../static/images/products/cart/product-2.jpg" alt="product"/></a>
                                     </figure>
                                     <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                </div><!-- End .product -->
+                                </div>
                                 {% endfor %}
-                            </div><!-- End .cart-product -->
+                                <!-- End .product -->
+                            </div>
+                            <!-- End .cart-product -->
 
                             <div class="dropdown-cart-total">
                                 <span>Total</span>
