@@ -100,20 +100,42 @@ def register():
 
 @app.route('/dashboard')
 def dashboard():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('dashboard.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('dashboard.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return redirect('/login')
+        username = None
+        return render_template('dashboard.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/product')
 def product():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('product.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('product.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('product.html')
+        username = None
+        return render_template('product.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/shop')
@@ -122,9 +144,18 @@ def shop():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('shop.html', username=username, products=products)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('shop.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('shop.html', products=products)
+        username = None
+        return render_template('shop.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/addToShoppingCart', methods=['GET', 'POST'])
@@ -147,47 +178,102 @@ def addToShoppingCart():
 
 @app.route('/about')
 def about():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('about.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('about.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('about.html')
+        username = None
+        return render_template('about.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/contact')
 def contact():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('contact.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('contact.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('contact.html')
+        username = None
+        return render_template('contact.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/faq')
 def faq():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('faq.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('faq.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('faq.html')
+        username = None
+        return render_template('faq.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/checkout')
 def checkout():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('checkout.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('checkout.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('checkout.html')
+        username = None
+        return render_template('checkout.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/cart')
 def cart():
+    db = Database()
+    products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        return render_template('cart.html', username=username)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('cart.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        return render_template('cart.html')
+        username = None
+        return render_template('cart.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.errorhandler(404)
