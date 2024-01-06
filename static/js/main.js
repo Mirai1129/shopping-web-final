@@ -170,13 +170,13 @@ $(document).ready(function () {
 		if (priceSlider == null) return;
 
 		noUiSlider.create(priceSlider, {
-			start: [ 0, 750 ],
+			start: [ 0, 1000 ],
 			connect: true,
-			step: 50,
+			step: 100,
 			margin: 200,
 			range: {
 				'min': 0,
-				'max': 4000
+				'max': 30000
 			},
 			tooltips: true,
 			format: wNumb({

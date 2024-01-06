@@ -175,6 +175,12 @@ def productPage(productId):
 def shop():
     db = Database()
     products = db.getAllProductsInfo()
+    unique_categories = set()  # Create a set to store unique categories
+    categoryCheckbox = request.args.get('categoryCheckbox')  # 获取传递的 categoryCheckbox
+
+    # Iterate through products and add unique categories to the set
+    for key, product in products.items():
+        unique_categories.add(product['category'])
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
@@ -185,14 +191,18 @@ def shop():
                                total_quantity=total_quantity,
                                total_price=total_price,
                                shopping_cart=shopping_cart,
-                               products=products)
+                               products=products,
+                               unique_categories=unique_categories,
+                               categoryCheckbox=categoryCheckbox)
     else:
         username = None
         return render_template('shop.html',
                                username=username,
                                total_quantity=0,
                                total_price=0,
-                               products=products)
+                               products=products,
+                               unique_categories=unique_categories,
+                               categoryCheckbox=categoryCheckbox)
 
 
 # TODO 非用戶無法加入購物車邏輯
@@ -207,7 +217,7 @@ def addToShoppingCart():
                 username = session.get('username')
                 added_to_cart = db.addToShoppingCart(username, productId, quantity)  # 调用向购物车添加商品的方法
                 if added_to_cart != 0:
-                    return redirect('/')  # 添加成功后重定向到首页或其他页面
+                    return redirect('/cart')  # 添加成功后重定向到首页或其他页面
                 else:
                     flash('Failed to add product to cart. Please try again.', 'error')
                     return 'Failed to add product to cart.'  # 添加失败的消息

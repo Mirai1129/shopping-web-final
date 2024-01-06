@@ -52,9 +52,9 @@
                                     <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
                                         <p>
                                             {% if username != None %}
-                                                {{ username }}
+                                            {{ username }}
                                             {% else %}
-                                                登入
+                                            登入
                                             {% endif %}
                                         </p>
                                     </a>
@@ -134,7 +134,8 @@
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
-                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length #}
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length
+                                #}
 
                                 {% for i in range(total_quantity) %}
                                 {% set item = shopping_cart[i] %}
@@ -176,7 +177,8 @@
 
                             <div class="dropdown-cart-action">
                                 <a href="{{ url_for('cart') }}" class="btn btn-primary">查看購物車</a>
-                                <a href="{{ url_for('checkout') }}" class="btn btn-outline-primary-2"><span>下單</span><i
+                                <a href="{{ url_for('checkout') }}"
+                                   class="btn btn-outline-primary-2"><span>下單</span><i
                                         class="icon-long-arrow-right"></i></a>
                             </div><!-- End .dropdown-cart-total -->
                         </div><!-- End .dropdown-menu -->
@@ -212,179 +214,121 @@
         <!-- End .breadcrumb-nav -->
 
         <div class="page-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <div class="toolbox">
-                            <div class="toolbox-left">
-                                <div class="toolbox-info">
-                                    顯示 <span>9 of 56</span> 的商品
-                                </div>
-                                <!-- End .toolbox-info -->
+            <div class="container" style="justify-content: center; display: flex">
+                <div class="col-lg-9">
+                    <div class="toolbox">
+                        <div class="toolbox-left">
+                            <div class="toolbox-info">
+                                顯示的商品
                             </div>
-                            <!-- End .toolbox-left -->
-
-                            <div class="toolbox-right">
-                                <div class="toolbox-sort">
-                                    <label for="sortby">排序方式 ：</label>
-                                    <div class="select-custom">
-                                        <select name="sortby" id="sortby" class="form-control">
-                                            <!--option value="popularity" selected="selected">最熱門</option>
-                                            <option value="date">日期</option--->
-                                            <option>近期推出</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <!-- End .toolbox-sort -->
-                                <div class="toolbox-layout">
-                                    <a href="{{url_for('shop')}}" class="btn-layout active">
-                                        <svg width="16" height="10">
-                                            <rect x="0" y="0" width="4" height="4"/>
-                                            <rect x="6" y="0" width="4" height="4"/>
-                                            <rect x="12" y="0" width="4" height="4"/>
-                                            <rect x="0" y="6" width="4" height="4"/>
-                                            <rect x="6" y="6" width="4" height="4"/>
-                                            <rect x="12" y="6" width="4" height="4"/>
-                                        </svg>
-                                    </a>
-                                </div>
-                                <!-- End .toolbox-layout -->
-                            </div>
-                            <!-- End .toolbox-right -->
+                            <!-- End .toolbox-info -->
                         </div>
-                        <!-- End .toolbox -->
+                        <!-- End .toolbox-left -->
 
-                        <div class="products mb-3">
-                            <div class="row justify-content-center">
-                                {% for key, product in products.items() %}
-                                <div class="col-6 col-md-4 col-lg-4">
-                                    <div class="product product-7 text-center">
-                                        <figure class="product-media">
-                                            <a href="/product/{{product.productId}}"><img
-                                                    src="../static/images/products/product-5.jpg"
-                                                    alt="Product image" class="product-image"/></a>
-
-                                            <div class="product-action-vertical">
-                                                <a href="#"
-                                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action-vertical -->
-
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
-                                            </div>
-                                            <!-- End .product-action -->
-                                        </figure>
-                                        <!-- End .product-media -->
-
-                                        <div class="product-body">
-                                            <div class="product-cat">
-                                                <a href="#">{{ product.category }}</a>
-                                            </div>
-                                            <!-- End .product-cat -->
-                                            <h3 class="product-title"><a href="{{url_for('product')}}">{{ product.productName }}</a></h3><!-- End .product-title -->
-                                            <div class="product-price">${{ product.price }}.00</div>
-                                            <!-- End .product-price -->
-                                            <div class="product-nav product-nav-thumbs">
-                                                <a href="#" class="active"><img
-                                                        src="../static/images/products/product-5-thumb.jpg"
-                                                        alt="product desc"/></a>
-                                                <a href="#"><img src="../static/images/products/product-5-2-thumb.jpg"
-                                                                 alt="product desc"/></a>
-                                            </div>
-                                            <!-- End .product-nav -->
-                                        </div>
-                                        <!-- End .product-body -->
-                                    </div>
-                                    <!-- End .product -->
+                        <div class="toolbox-right">
+                            <div class="toolbox-sort">
+                                <label for="sortby">排序方式 ：</label>
+                                <div class="select-custom">
+                                    <select name="sortby" id="sortby" class="form-control">
+                                        <!--option value="popularity" selected="selected">最熱門</option>
+                                        <option value="date">日期</option--->
+                                        <option>近期推出</option>
+                                    </select>
                                 </div>
-                                {% endfor %}
-                                <!-- End .col-sm-6 col-lg-4 -->
                             </div>
-                            <!-- End .row -->
+                            <!-- End .toolbox-sort -->
+                            <div class="toolbox-layout">
+                                <a href="{{url_for('shop')}}" class="btn-layout active">
+                                    <svg width="16" height="10">
+                                        <rect x="0" y="0" width="4" height="4"/>
+                                        <rect x="6" y="0" width="4" height="4"/>
+                                        <rect x="12" y="0" width="4" height="4"/>
+                                        <rect x="0" y="6" width="4" height="4"/>
+                                        <rect x="6" y="6" width="4" height="4"/>
+                                        <rect x="12" y="6" width="4" height="4"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <!-- End .toolbox-layout -->
                         </div>
-                        <!-- End .products -->
-
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
-                                       aria-disabled="true"><span aria-hidden="true"><i
-                                            class="icon-long-arrow-left"></i></span>Prev</a>
-                                </li>
-                                <li class="page-item active" aria-current="page">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item disabled">
-                                    <a class="page-link page-link-next" href="#" aria-label="Next">Next <span
-                                            aria-hidden="true"><i class="icon-long-arrow-right"></i></span></a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <!-- End .toolbox-right -->
                     </div>
-                    <!-- End .col-lg-9 -->
-                    <aside class="col-lg-3 order-lg-first">
-                        <div class="sidebar sidebar-shop">
-                            <div class="widget widget-clean">
-                                <label>篩選：</label>
-                                <a href="#" class="sidebar-filter-clear">清除全部</a>
-                            </div>
-                            <!-- End .widget widget-clean -->
+                    <!-- End .toolbox -->
 
-                            <div class="widget widget-collapsible">
-                                <h3 class="widget-title"><a data-toggle="collapse" href="#widget-1" role="button"
-                                                            aria-expanded="true" aria-controls="widget-1">類別</a></h3>
-                                <!-- End .widget-title -->
+                    <div class="products mb-3">
+                        <div class="row justify-content-center">
+                            {% for key, product in products.items() %}
+                            <div class="col-6 col-md-4 col-lg-4">
+                                <div class="product product-7 text-center">
+                                    <figure class="product-media">
+                                        <a href="/product/{{product.productId}}"><img
+                                                src="../static/images/products/product-5.jpg"
+                                                alt="Product image" class="product-image"/></a>
 
-                                <div class="collapse show" id="widget-1">
-                                    <div class="widget-body">
-                                        <div class="filter-items filter-items-count">
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1"/>
-                                                    <label class="custom-control-label" for="cat-1">棉被</label>
-                                                </div>
-                                                <!-- End .custom-checkbox -->
-                                                <span class="item-count">3</span>
-                                            </div>
-                                            <!-- End .filter-item -->
+                                        <div class="product-action">
+                                            <form action="/addToShoppingCart" method="post" style="width: 100%">
+                                                <input type="hidden" name="productId" value="{{ product.productId }}">
+                                                <label style="display: none">
+                                                    <input type="number" name="quantity" value="1" min="1">
+                                                </label> <!-- 添加数量字段 -->
+                                                <button type="submit" class="btn-product btn-cart"
+                                                        style="width: 100%; border: none;"><span>加入購物車</span>
+                                                </button>
+                                            </form>
+                                        </div><!-- End .product-action -->
+                                    </figure>
+                                    <!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{ product.category }}</a>
                                         </div>
-                                        <!-- End .filter-items -->
-                                    </div>
-                                    <!-- End .widget-body -->
-                                </div>
-                                <!-- End .collapse -->
-                            </div>
-                            <!-- End .widget -->
-
-                            <div class="widget widget-collapsible">
-                                <h3 class="widget-title"><a data-toggle="collapse" href="#widget-5" role="button"
-                                                            aria-expanded="true" aria-controls="widget-5">價錢</a></h3>
-                                <!-- End .widget-title -->
-
-                                <div class="collapse show" id="widget-5">
-                                    <div class="widget-body">
-                                        <div class="filter-price">
-                                            <div class="filter-price-text">
-                                                價錢區間：
-                                                <span id="filter-price-range"></span>
-                                            </div>
-                                            <!-- End .filter-price-text -->
-                                            <div id="price-slider"></div>
-                                            <!-- End #price-slider -->
+                                        <!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="{{url_for('product')}}">{{
+                                            product.productName }}</a></h3><!-- End .product-title -->
+                                        <div class="product-price">${{ product.price }}.00</div>
+                                        <!-- End .product-price -->
+                                        <div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active"><img
+                                                    src="../static/images/products/product-5-thumb.jpg"
+                                                    alt="product desc"/></a>
+                                            <a href="#"><img src="../static/images/products/product-5-2-thumb.jpg"
+                                                             alt="product desc"/></a>
                                         </div>
-                                        <!-- End .filter-price -->
+                                        <!-- End .product-nav -->
                                     </div>
-                                    <!-- End .widget-body -->
+                                    <!-- End .product-body -->
                                 </div>
-                                <!-- End .collapse -->
+                                <!-- End .product -->
                             </div>
-                            <!-- End .widget -->
+                            {% endfor %}
+                            <!-- End .col-sm-6 col-lg-4 -->
                         </div>
-                        <!-- End .sidebar sidebar-shop -->
-                    </aside>
-                    <!-- End .col-lg-3 -->
+                        <!-- End .row -->
+                    </div>
+                    <!-- End .products -->
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
+                                   aria-disabled="true"><span aria-hidden="true"><i
+                                        class="icon-long-arrow-left"></i></span>Prev</a>
+                            </li>
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link page-link-next" href="#" aria-label="Next">Next <span
+                                        aria-hidden="true"><i class="icon-long-arrow-right"></i></span></a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
+                <!-- End .col-lg-9 -->
+
+                <!-- End .col-lg-3 -->
+
                 <!-- End .row -->
             </div>
             <!-- End .container -->
@@ -525,18 +469,18 @@
                 <li>
                     <a href="{{ url_for('login') }}">
                         {% if username != None %}
-                            {{ username }}
+                        {{ username }}
                         {% else %}
-                            登入
+                        登入
                         {% endif %}
                     </a>
                     <ul>
                         <li>
                             <a href="{{ url_for('login') }}">
                                 {% if username != None %}
-                                    會員設定
+                                會員設定
                                 {% else %}
-                                    登入
+                                登入
                                 {% endif %}
                             </a>
                         </li>

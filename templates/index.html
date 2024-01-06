@@ -120,9 +120,13 @@
                                                 {% endif %}
                                             </a>
                                         </h4>
+                                        {% for key, product in products.items() %}
+                                        {% if item[4] == product.productId %}
                                         <span class="cart-product-info">
-                                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00<br>
+                                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ product.price }}.00<br>
                                         </span>
+                                        {% endif %}
+                                        {% endfor %}
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
                                         <a href="{{ url_for('product') }}" class="product-image">

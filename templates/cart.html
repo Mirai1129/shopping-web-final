@@ -75,8 +75,9 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo" width="105"
-                                                           height="25"/></a>
+                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo"
+                                                                     width="105"
+                                                                     height="25"/></a>
 
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
@@ -132,7 +133,6 @@
                             <div class="dropdown-cart-products">
                                 {% for item in shopping_cart %}
                                 <div class="product">
-
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
                                             <a href="{{ url_for('product') }}">
@@ -143,10 +143,13 @@
                                                 {% endif %}
                                             </a>
                                         </h4>
-                        <span class="cart-product-info">
-                            <span class="cart-product-qty">{{ item[2] }}
-                            </span> x ${{ item[1] }}.00
-                        </span>
+                                        {% for key, product in products.items() %}
+                                        {% if item[4] == product.productId %}
+                                        <span class="cart-product-info">
+                                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ product.price }}.00<br>
+                                        </span>
+                                        {% endif %}
+                                        {% endfor %}
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
                                         <a href="{{ url_for('product') }}" class="product-image">
@@ -166,7 +169,8 @@
 
                             <div class="dropdown-cart-action">
                                 <a href="{{ url_for('cart') }}" class="btn btn-primary">查看購物車</a>
-                                <a href="{{ url_for('checkout') }}" class="btn btn-outline-primary-2"><span>下單</span><i
+                                <a href="{{ url_for('checkout') }}"
+                                   class="btn btn-outline-primary-2"><span>下單</span><i
                                         class="icon-long-arrow-right"></i></a>
                             </div><!-- End .dropdown-cart-total -->
                         </div><!-- End .dropdown-menu -->
@@ -218,7 +222,6 @@
                                     {% for item in shopping_cart %}
                                     <!--商品圖片&名稱-->
                                     <td class="product-col">
-
                                         <div class="product">
                                             <figure class="product-media">
                                                 <a href="#">
@@ -239,11 +242,11 @@
 
                                             </h3><!-- End .product-title -->
                                         </div><!-- End .product -->
-
+                                        {% for key, product in products.items() %}
+                                        {% if item[4] == product.productId %}
                                     </td>
-
                                     <!--商品單價-->
-                                    <td class="price-col">${{ item[1] }}.00</td>
+                                    <td class="price-col">${{ product.price }}.00</td>
                                     <!--商品數量-->
                                     <td class="quantity-col">
                                         <div class="cart-product-quantity">
@@ -252,13 +255,14 @@
                                         <!-- End .cart-product-quantity -->
                                     </td>
 
-                                    <!--商品小計-->
+                                    <!--商品總價-->
                                     <td class="total-col">${{ item[1] * item[2] }}.00</td>
                                     <td class="remove-col">
                                         <button class="btn-remove"><i class="icon-close"></i></button>
                                     </td>
+                                    {% endif %}
+                                    {% endfor %}
                                 </tr>
-
                                 </tbody>
                                 {% endfor %}
                             </table><!-- End .table table-wishlist -->
@@ -284,17 +288,6 @@
                             <div class="summary summary-cart">
                                 <h3 class="summary-title">購物車總計</h3><!-- End .summary-title -->
 
-                                <!DOCTYPE html>
-                                <html lang="zh-TW">
-
-                                <head>
-                                    <meta charset="UTF-8">
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                    <title>計算總計</title>
-                                </head>
-
-                                <body>
-
                                 <table class="table table-summary">
                                     <tbody>
                                     <tr class="summary-subtotal">
@@ -310,7 +303,8 @@
                                     <tr class="summary-shipping-row">
                                         <td>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+                                                <input type="radio" id="free-shipping" name="shipping"
+                                                       class="custom-control-input">
                                                 <label class="custom-control-label" for="free-shipping">免運</label>
                                             </div><!-- End .custom-control -->
                                         </td>
@@ -320,8 +314,10 @@
                                     <tr class="summary-shipping-row">
                                         <td>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
-                                                <label class="custom-control-label" for="standart-shipping">標準：</label>
+                                                <input type="radio" id="standart-shipping" name="shipping"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label"
+                                                       for="standart-shipping">標準：</label>
                                             </div><!-- End .custom-control -->
                                         </td>
                                         <td>$60.00</td>
@@ -330,7 +326,8 @@
                                     <tr class="summary-shipping-row">
                                         <td>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+                                                <input type="radio" id="express-shipping" name="shipping"
+                                                       class="custom-control-input">
                                                 <label class="custom-control-label" for="express-shipping">急件：</label>
                                             </div><!-- End .custom-control -->
                                         </td>
@@ -338,13 +335,14 @@
                                     </tr><!-- End .summary-shipping-row -->
 
                                     <tr class="summary-shipping-estimate">
-                                        <td>針對您所在國家/地區的估算<br> <a href="{{url_for('dashboard')}}">更改地址</a></td>
+                                        <td>針對您所在國家/地區的估算<br> <a
+                                                href="{{url_for('dashboard')}}">更改地址</a></td>
                                         <td>&nbsp;</td>
                                     </tr><!-- End .summary-shipping-estimate -->
 
                                     <tr class="summary-total">
                                         <td>總計：</td>
-                                        <td>${{total_price}}.00</td>
+                                        <td>${{ total_price }}.00</td>
                                     </tr><!-- End .summary-total -->
                                     </tbody>
                                 </table><!-- End .table table-summary -->
@@ -352,16 +350,16 @@
                                 <script>
                                     document.addEventListener("DOMContentLoaded", function () {
                                         // 找到運費選擇的元素
-                                        var shippingOptions = document.querySelectorAll('input[name="shipping"]');
+                                        const shippingOptions = document.querySelectorAll('input[name="shipping"]');
 
                                         // 監聽運費選擇的變化
                                         shippingOptions.forEach(function (option) {
                                             option.addEventListener('change', function () {
                                                 // 取得總價格元素
-                                                var totalPriceElement = document.querySelector('.summary-total td:last-child');
+                                                const totalPriceElement = document.querySelector('.summary-total td:last-child');
 
                                                 // 取得原始總價格
-                                                var originalTotalPrice = parseFloat("{{total_price}}");
+                                                let originalTotalPrice = parseFloat("{{total_price}}");
 
                                                 // 根據選擇的運費方式更新總價格
                                                 if (option.id === 'free-shipping') {
@@ -380,12 +378,6 @@
                                         });
                                     });
                                 </script>
-
-                                </body>
-
-                                </html>
-
-
                                 <a href="{{url_for('checkout')}}"
                                    class="btn btn-outline-primary-2 btn-order btn-block">確認訂單</a>
                             </div><!-- End .summary -->
