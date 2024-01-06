@@ -77,14 +77,16 @@ class Database:
         try:
             cursor.execute("SELECT * FROM shoppingweb.product")
             products_info = cursor.fetchall()  # Fetch all rows from the result set
-            products_dict = {product[0]: {'productName': product[1],
+            products_dict = {product[0]: {'productId': product[0],
+                                          'productName': product[1],
                                           'quantity': product[2],
                                           'price': product[3],
                                           'summary': product[4],
                                           'category': product[5],
                                           'information': product[6],
                                           'introduction': product[7]}
-                             for product in products_info}  # Create a dictionary with productId as key and product details as values
+                             for product in
+                             products_info}  # Create a dictionary with productId as key and product details as values
             return products_dict  # Return dictionary containing productId and its corresponding product details
 
         except pymysql.Error as e:
@@ -93,8 +95,6 @@ class Database:
         finally:
             cursor.close()
             con.close()
-
-
 
     def login(self, email, password):
         con = self.connect()
@@ -148,3 +148,83 @@ class Database:
         finally:
             cursor.close()
             con.close()
+
+    def addToShoppingCart(self, username, productId, quantity):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute(
+                "SELECT * FROM shoppingweb.shoppingcart "
+                "WHERE memberId = (SELECT memberId FROM shoppingweb.member WHERE displayName = %s) "
+                "AND productId = %s;",
+                (username, productId)
+            )
+
+            result = cursor.fetchone()  # 获取单行结果
+            print("cursor.fetchone()", result)
+            if result:
+                print("存在相同的商品和用户")
+                # 这里执行更新购物车数量的操作
+                cursor.execute(
+                    "UPDATE shoppingweb.shoppingcart SET quantity = quantity + %s "
+                    "WHERE memberId = (SELECT memberId FROM shoppingweb.member WHERE displayName = %s) "
+                    "AND productId = %s;",
+                    (quantity, username, productId)
+                )
+                # 提交事务
+                con.commit()
+            else:
+                print("不存在相同的商品和用户")
+                # 这里执行插入新记录到购物车的操作
+                cursor.execute(
+                    "INSERT INTO shoppingweb.shoppingcart (price, quantity, memberId, productId) "
+                    "VALUES ("
+                    "(SELECT price FROM shoppingweb.product WHERE productId = %s), "
+                    "%s, "
+                    "(SELECT memberId FROM shoppingweb.member WHERE displayName = %s), "
+                    "%s)",
+                    (quantity, productId, username, productId)
+                )
+                # 提交事务
+                con.commit()
+
+            # 获取价格并返回
+            cursor.execute(
+                "SELECT price FROM shoppingweb.product WHERE productId = %s;",
+                (productId,)
+            )
+            price = cursor.fetchone()
+            print(price)
+            if price:
+                return price[0]  # Return the first column value (price)
+            else:
+                return 0  # Return 0 if no price found for the given productId
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return 0  # Return 0 if there's a database error
+        finally:
+            cursor.close()
+            con.close()
+
+    def getUserShoppingCart(self, username):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute(
+                "SELECT * FROM shoppingweb.shoppingcart "
+                "WHERE memberId = (SELECT memberId FROM shoppingweb.member WHERE displayName = %s);",
+                (username,)
+            )
+
+            shopping_cart = cursor.fetchall()
+            print(shopping_cart)
+            return shopping_cart
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return None  # Return None if there's a database error
+        finally:
+            cursor.close()
+            con.close()
+

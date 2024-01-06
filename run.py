@@ -15,12 +15,18 @@ def index():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        data = db.shoppingCartQuantity(username=username)
-        price = db.shoppingCartPrice(username=username)
-        return render_template('index.html', data=data, username=username, price=price, products=products)
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        return render_template('index.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
         username = None
-        return render_template('index.html', data=0, username=username, price=0, products=products)
+        return render_template('index.html', username=username, total_quantity=0, total_price=0, products=products)
 
 
 @app.route('/login')
@@ -119,6 +125,24 @@ def shop():
         return render_template('shop.html', username=username, products=products)
     else:
         return render_template('shop.html', products=products)
+
+
+@app.route('/addToShoppingCart', methods=['GET', 'POST'])
+def addToShoppingCart():
+    if request.method == 'POST':
+        db = Database()
+        productId = request.form['productId']
+        quantity = request.form['quantity']
+        if productId != 0:
+            username = session.get('username')
+            added_to_cart = db.addToShoppingCart(username, productId, quantity)  # 调用向购物车添加商品的方法
+            print("added_to_cart", added_to_cart)
+            if added_to_cart != 0:
+                return redirect('/')  # 添加成功后重定向到首页或其他页面
+            else:
+                return 'Failed to add product to cart.'  # 添加失败的消息
+        else:
+            return 'Product ID not provided.'  # 如果没有提供产品ID，则返回错误消息
 
 
 @app.route('/about')
