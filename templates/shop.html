@@ -129,7 +129,7 @@
                         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false" data-display="static">
                             <i class="icon-shopping-cart"></i>
-                            <span class="cart-count"> {{ total_quantity }}</span>
+                            <span class="cart-count">{{ total_quantity }}</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
@@ -169,8 +169,10 @@
 
                             <div class="dropdown-cart-total">
                                 <span>Total</span>
+
                                 <span class="cart-total-price">${{ total_price }}.00</span>
-                            </div><!-- End .dropdown-cart-total -->
+                            </div>
+                            <!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
                                 <a href="{{ url_for('cart') }}" class="btn btn-primary">查看購物車</a>
@@ -258,7 +260,7 @@
                                 <div class="col-6 col-md-4 col-lg-4">
                                     <div class="product product-7 text-center">
                                         <figure class="product-media">
-                                            <a href="{{url_for('product')}}"><img
+                                            <a href="/product/{{product.productId}}"><img
                                                     src="../static/images/products/product-5.jpg"
                                                     alt="Product image" class="product-image"/></a>
 

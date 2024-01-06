@@ -26,7 +26,11 @@ def index():
                                products=products)
     else:
         username = None
-        return render_template('index.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('index.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products)
 
 
 @app.route('/login')
@@ -114,8 +118,7 @@ def dashboard():
                                shopping_cart=shopping_cart,
                                products=products)
     else:
-        username = None
-        return render_template('dashboard.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('login.html')
 
 
 @app.route('/product')
@@ -124,18 +127,35 @@ def product():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
         return render_template('product.html',
                                username=username,
-                               total_quantity=total_quantity,
-                               total_price=total_price,
-                               shopping_cart=shopping_cart,
-                               products=products)
+                               products=products,
+                               productId=1)
     else:
         username = None
-        return render_template('product.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('product.html',
+                               username=username,
+                               products=products,
+                               productId=1)
+
+
+@app.route('/product/<int:productId>')
+def productPage(productId):
+    db = Database()
+    # 获取特定产品的信息
+    products = db.getAllProductsInfo()
+    if 'username' in session:
+        username = session['username']
+        return render_template('product.html',
+                               username=username,
+                               products=products,
+                               productId=productId)
+    else:
+        username = None
+        return render_template('product.html',
+                               username=username,
+                               products=products,
+                               productId=productId)
 
 
 @app.route('/shop')
@@ -155,25 +175,39 @@ def shop():
                                products=products)
     else:
         username = None
-        return render_template('shop.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('shop.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products)
 
 
+# TODO 非用戶無法加入購物車邏輯
 @app.route('/addToShoppingCart', methods=['GET', 'POST'])
 def addToShoppingCart():
-    if request.method == 'POST':
-        db = Database()
-        productId = request.form['productId']
-        quantity = request.form['quantity']
-        if productId != 0:
-            username = session.get('username')
-            added_to_cart = db.addToShoppingCart(username, productId, quantity)  # 调用向购物车添加商品的方法
-            print("added_to_cart", added_to_cart)
-            if added_to_cart != 0:
-                return redirect('/')  # 添加成功后重定向到首页或其他页面
+    if 'username' in session:
+        if request.method == 'POST':
+            db = Database()
+            productId = request.form['productId']
+            quantity = request.form['quantity']
+            if productId != 0:
+                username = session.get('username')
+                added_to_cart = db.addToShoppingCart(username, productId, quantity)  # 调用向购物车添加商品的方法
+                if added_to_cart != 0:
+                    return redirect('/')  # 添加成功后重定向到首页或其他页面
+                else:
+                    flash('Failed to add product to cart. Please try again.', 'error')
+                    return 'Failed to add product to cart.'  # 添加失败的消息
             else:
-                return 'Failed to add product to cart.'  # 添加失败的消息
-        else:
-            return 'Product ID not provided.'  # 如果没有提供产品ID，则返回错误消息
+                flash('Invalid product ID or quantity.', 'error')
+                return 'Product ID not provided.'  # 如果没有提供产品ID，则返回错误消息
+    else:
+        error = ''
+        if 'error' in session:
+            error = session['error']
+            session.pop('error')  # 从 session 中移除错误消息，避免再次显示
+
+        return render_template('login.html', error=error)
 
 
 @app.route('/about')
@@ -213,7 +247,11 @@ def contact():
                                products=products)
     else:
         username = None
-        return render_template('contact.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('contact.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products)
 
 
 @app.route('/faq')
@@ -233,7 +271,11 @@ def faq():
                                products=products)
     else:
         username = None
-        return render_template('faq.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('faq.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products)
 
 
 @app.route('/checkout')
@@ -253,7 +295,11 @@ def checkout():
                                products=products)
     else:
         username = None
-        return render_template('checkout.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('checkout.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products)
 
 
 @app.route('/cart')
@@ -273,7 +319,11 @@ def cart():
                                products=products)
     else:
         username = None
-        return render_template('cart.html', username=username, total_quantity=0, total_price=0, products=products)
+        return render_template('cart.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products)
 
 
 @app.errorhandler(404)

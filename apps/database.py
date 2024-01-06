@@ -227,4 +227,3 @@ class Database:
         finally:
             cursor.close()
             con.close()
-

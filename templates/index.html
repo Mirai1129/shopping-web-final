@@ -104,7 +104,8 @@
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
-                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length #}
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length
+                                #}
 
                                 {% for i in range(total_quantity) %}
                                 {% set item = shopping_cart[i] %}
@@ -113,15 +114,15 @@
                                         <h4 class="product-title">
                                             <a href="{{ url_for('product') }}">
                                                 {% if item[4] in products %}
-                                                    {{ products[item[4]].productName }}
+                                                {{ products[item[4]].productName }}
                                                 {% else %}
-                                                    Product Not Found
+                                                Product Not Found
                                                 {% endif %}
                                             </a>
                                         </h4>
                                         <span class="cart-product-info">
-                    <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00<br>
-                </span>
+                                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00<br>
+                                        </span>
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
                                         <a href="{{ url_for('product') }}" class="product-image">
@@ -166,7 +167,17 @@
                         <h3 class="intro-subtitle text-white">一個充滿幻想、美好的地方，徜徉在無憂的睡眠宇宙吧 !</h3>
                         <!-- End .h3 intro-subtitle -->
                         <h1 class="intro-title text-white">星際綿柔眠被</h1><!-- End .intro-title -->
-
+                        <div class="intro-content text-danger">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            {% for category, message in messages %}
+                            {% if category == 'error' %}
+                            {{ message }}
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                        </div>
                         <a href="{{ url_for('shop') }}" class="btn btn-outline-white">
                             <span>前往商店探索</span>
                             <i class="icon-long-arrow-right"></i>
@@ -270,18 +281,14 @@
                                      alt="Product image" class="product-image-hover">
                             </a>
 
-                            <div class="product-action-vertical">
-                                <a href="#"
-                                   class="btn-product-icon icon-shopping-cart btn-expandable"><span>加入購物車</span></a>
-                            </div><!-- End .product-action -->
-
                             <div class="product-action">
-                                <form action="/addToShoppingCart" method="post">
+                                <form action="/addToShoppingCart" method="post" style="width: 100%">
                                     <input type="hidden" name="productId" value="{{ product.productId }}">
                                     <label style="display: none">
                                         <input type="number" name="quantity" value="1" min="1">
                                     </label> <!-- 添加数量字段 -->
-                                    <button type="submit" class="btn-product btn-cart"><span>加入購物車</span></button>
+                                    <button type="submit" class="btn-product btn-cart"
+                                            style="width: 100%; border: none;"><span>加入購物車</span></button>
                                 </form>
                             </div><!-- End .product-action -->
 
@@ -294,7 +301,6 @@
                             <h3 class="product-title"><a href="{{ url_for('product') }}">{{ product.productName }}</a>
                             </h3>
                             <!-- End .product-title -->
-
                             <div class="product-price">
                                 ${{ product.price }}.00
                             </div><!-- End .product-price -->
