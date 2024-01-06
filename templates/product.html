@@ -133,7 +133,10 @@
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
-                                {% for item in shopping_cart %}
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length #}
+
+                                {% for i in range(total_quantity) %}
+                                {% set item = shopping_cart[i] %}
                                 <div class="product">
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
@@ -146,8 +149,8 @@
                                             </a>
                                         </h4>
                                         <span class="cart-product-info">
-                        <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00
-                    </span>
+                                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00
+                                        </span>
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
                                         <a href="{{ url_for('product') }}" class="product-image">

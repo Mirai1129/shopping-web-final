@@ -127,10 +127,15 @@ def product():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
         return render_template('product.html',
                                username=username,
-                               products=products,
-                               productId=1)
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
         username = None
         return render_template('product.html',
@@ -146,14 +151,22 @@ def productPage(productId):
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
         return render_template('product.html',
                                username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
                                products=products,
                                productId=productId)
     else:
         username = None
         return render_template('product.html',
                                username=username,
+                               total_quantity=0,
+                               total_price=0,
                                products=products,
                                productId=productId)
 
