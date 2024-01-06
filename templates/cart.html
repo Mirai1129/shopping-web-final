@@ -255,7 +255,7 @@
                                         <!-- End .cart-product-quantity -->
                                     </td>
 
-                                    <!--商品總價-->
+                                    <!--單個商品總價-->
                                     <td class="total-col">${{ item[1] * item[2] }}.00</td>
                                     <td class="remove-col">
                                         <form action="/deleteUserShoppingCart" method="POST">
@@ -309,8 +309,8 @@
                                     <tr class="summary-shipping-row">
                                         <td>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="free-shipping" name="shipping"
-                                                       class="custom-control-input">
+                                                <input type="radio" checked id="free-shipping" name="shipping"
+                                                       class="custom-control-input" value="0">
                                                 <label class="custom-control-label" for="free-shipping">免運</label>
                                             </div><!-- End .custom-control -->
                                         </td>
@@ -321,7 +321,7 @@
                                         <td>
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="standart-shipping" name="shipping"
-                                                       class="custom-control-input">
+                                                       class="custom-control-input" value="60">
                                                 <label class="custom-control-label"
                                                        for="standart-shipping">標準：</label>
                                             </div><!-- End .custom-control -->
@@ -333,12 +333,14 @@
                                         <td>
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="express-shipping" name="shipping"
-                                                       class="custom-control-input">
+                                                       class="custom-control-input" value="200">
                                                 <label class="custom-control-label" for="express-shipping">急件：</label>
                                             </div><!-- End .custom-control -->
                                         </td>
                                         <td>$200.00</td>
-                                    </tr><!-- End .summary-shipping-row -->
+                                    </tr>
+                                    <!--我做更改的地方-->
+                                    <!-- End .summary-shipping-row -->
 
                                     <tr class="summary-shipping-estimate">
                                         <td>針對您所在國家/地區的估算<br> <a
@@ -357,35 +359,68 @@
                                     document.addEventListener("DOMContentLoaded", function () {
                                         // 找到運費選擇的元素
                                         const shippingOptions = document.querySelectorAll('input[name="shipping"]');
+                                        // 取得總價格元素
+                                        const totalPriceElement = document.querySelector('.summary-total td:last-child');
+                                        // 取得運費元素
+                                        const shippingCostElement = document.querySelector('.summary-shipping-row td:last-child');
+
+                                        // 定義變數來存儲總金額和運費
+                                        let totalAmount = 0;
+                                        let shippingCost = 0;
+
+                                        function updateTotalPrice() {
+                                            // 取得原始總價格
+                                            totalAmount = parseFloat("{{total_price}}");
+
+                                            // 根據選擇的運費方式更新總價格和運費
+                                            shippingOptions.forEach(function (option) {
+                                                if (option.checked) {
+                                                    if (option.id === 'standart-shipping') {
+                                                        // 標準運費加上60
+                                                        totalAmount += 60;
+                                                        shippingCost = 60;
+                                                    } else if (option.id === 'express-shipping') {
+                                                        // 急件運費加上200
+                                                        totalAmount += 200;
+                                                        shippingCost = 200;
+                                                    } else {
+                                                        // 免運不加運費
+                                                        shippingCost = 0;
+                                                    }
+                                                }
+                                            });
+
+                                            // 更新總價格和運費顯示
+                                            totalPriceElement.textContent = '$' + totalAmount.toFixed(2);
+                                        }
 
                                         // 監聽運費選擇的變化
                                         shippingOptions.forEach(function (option) {
-                                            option.addEventListener('change', function () {
-                                                // 取得總價格元素
-                                                const totalPriceElement = document.querySelector('.summary-total td:last-child');
+                                            option.addEventListener('change', updateTotalPrice);
+                                        });
 
-                                                // 取得原始總價格
-                                                let originalTotalPrice = parseFloat("{{total_price}}");
+                                        // 在頁面載入時計算一次總價格
+                                        updateTotalPrice();
 
-                                                // 根據選擇的運費方式更新總價格
-                                                if (option.id === 'free-shipping') {
-                                                    // 免運不做任何操作
-                                                } else if (option.id === 'standart-shipping') {
-                                                    // 標準運費加上60
-                                                    originalTotalPrice += 60;
-                                                } else if (option.id === 'express-shipping') {
-                                                    // 急件運費加上200
-                                                    originalTotalPrice += 200;
-                                                }
+                                        // 監聽確認訂單按鈕點擊事件
+                                        var checkoutBtn = document.getElementById('checkout-btn');
+                                        checkoutBtn.addEventListener('click', function (event) {
+                                            // 在這裡可以存取總價格和運費的值
+                                            console.log('Total Amount:', totalAmount);
+                                            console.log('Shipping Cost:', shippingCost);
 
-                                                // 更新總價格顯示
-                                                totalPriceElement.textContent = '$' + originalTotalPrice.toFixed(2);
-                                            });
+                                            // 在這裡可以添加您希望觸發的其他相關操作
+                                            // 例如，檢查是否選擇了運費方式，檢查地址等等
+
+                                            // 最後，將這個按鈕的預設行為阻止，以防止直接跳轉
+                                            event.preventDefault();
                                         });
                                     });
                                 </script>
+                                <!--button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">確認訂單</button-->
                                 <a href="{{url_for('checkout')}}"
                                    class="btn btn-outline-primary-2 btn-order btn-block">確認訂單</a>
+                                <!--/form-->
                             </div><!-- End .summary -->
 
                             <a href="{{url_for('shop')}}"
