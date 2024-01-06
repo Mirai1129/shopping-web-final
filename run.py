@@ -233,6 +233,33 @@ def addToShoppingCart():
         return render_template('login.html', error=error)
 
 
+@app.route('/deleteUserShoppingCart', methods=['GET', 'POST'])
+def deleteUserShoppingCart():
+    if 'username' in session:
+        if request.method == 'POST':
+            db = Database()
+            productId = request.form['productId']
+            if productId != 0:
+                username = session.get('username')
+                deleted_from_cart = db.deleteUserShoppingCart(username, productId)
+                if deleted_from_cart != 0:
+                    return redirect('/cart')
+                else:
+                    flash('Failed to delete product from cart. Please try again.', 'error')
+                    return 'Failed to delete product from cart.'
+            else:
+                flash('Invalid product ID.', 'error')
+                return 'Invalid product ID.'
+        else:
+            # Handle GET request (if needed)
+            # For example, display a message or redirect to another page
+            pass
+    else:
+        error = session.get('error', '')
+        session.pop('error', None)
+        return render_template('login.html', error=error)
+
+
 @app.route('/about')
 def about():
     db = Database()

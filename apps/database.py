@@ -207,6 +207,39 @@ class Database:
             cursor.close()
             con.close()
 
+    def deleteUserShoppingCart(self, username, productId):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute(
+                "DELETE FROM shoppingweb.shoppingcart "
+                "WHERE memberId = (SELECT memberId FROM shoppingweb.member WHERE displayName = %s) "
+                "AND productId = %s;",
+                (username, productId)
+            )
+
+            # 提交事务
+            con.commit()
+
+            # 返回删除的产品价格
+            cursor.execute(
+                "SELECT price FROM shoppingweb.product WHERE productId = %s;",
+                (productId,)
+            )
+            price = cursor.fetchone()
+            print(price)
+            if price:
+                return price[0]  # 返回第一列的值（价格）
+            else:
+                return 0  # 如果给定productId找不到价格，则返回0
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return 0  # 如果发生数据库错误，则返回0
+        finally:
+            cursor.close()
+            con.close()
+
     def getUserShoppingCart(self, username):
         con = self.connect()
         cursor = con.cursor()

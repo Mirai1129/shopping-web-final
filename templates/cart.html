@@ -258,7 +258,13 @@
                                     <!--商品總價-->
                                     <td class="total-col">${{ item[1] * item[2] }}.00</td>
                                     <td class="remove-col">
-                                        <button class="btn-remove"><i class="icon-close"></i></button>
+                                        <form action="/deleteUserShoppingCart" method="POST">
+                                            <input type="hidden" name="productId" value={{ product.productId }}>
+                                            <label style="display: none">
+                                                <input type="number" name="quantity" value="1" min="1">
+                                            </label> <!-- 添加数量字段 -->
+                                            <button type="submit" class="btn-remove"><i class="icon-close"></i></button>
+                                        </form>
                                     </td>
                                     {% endif %}
                                     {% endfor %}
@@ -292,7 +298,7 @@
                                     <tbody>
                                     <tr class="summary-subtotal">
                                         <td>商品總計：</td>
-                                        <td>$ {{total_price}}.00</td>
+                                        <td>$ {{total_price}}.0</td>
                                     </tr><!-- End .summary-subtotal -->
 
                                     <tr class="summary-shipping">
