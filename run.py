@@ -123,31 +123,17 @@ def checkout():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        checkShoppingIsEmpty = db.checkUserShoppingIsEmpty(username=username)
-        if checkShoppingIsEmpty:
-            flash('Your shopping cart is empty.', 'error')
-            return redirect('/shop')
-        else:
-            error = ''
-            if 'Your shopping cart is empty.' in session:
-                error = session['error']
-                session.pop('error')
-            shopping_cart = db.getUserShoppingCartByUsername(username=username)
-            total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
-            total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
-            return render_template('checkout.html',
-                                       username=username,
-                                       total_quantity=total_quantity,
-                                       total_price=total_price,
-                                       shopping_cart=shopping_cart,
-                                       products=products)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
+        return render_template('checkout.html',
+                               username=username,
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
     else:
-        error = ''
-        if 'error' in session:
-            error = session['error']
-            session.pop('error')  # 从 session 中移除错误消息，避免再次显示
-
-        return render_template('login.html', error=error)
+        return redirect('login')
 
 
 @app.route('/checkoutOrder', methods=['POST'])
