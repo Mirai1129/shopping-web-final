@@ -15,9 +15,9 @@ def index():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('index.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -45,9 +45,9 @@ def shop():
         unique_categories.add(product['category'])
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('shop.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -73,9 +73,9 @@ def product():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('product.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -97,9 +97,9 @@ def productPage(productId):
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('product.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -123,9 +123,9 @@ def checkout():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('checkout.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -139,20 +139,29 @@ def checkout():
 @app.route('/checkoutOrder', methods=['POST'])
 def checkoutOrder():
     db = Database()
-    if request.method == 'POST':
-        orderFirstName = request.form['first-name']
-        orderLastName = request.form['last-Name']
-        orderAddress = request.form['address']
-        orderPhoneNumber = request.form['phone-number']
-        orderEmail = request.form['email']
-        orderNote = request.form['note']
+    if 'username' in session:
+        if request.method == 'POST':
+            username = session.get('username')
+            orderFirstName = request.form['first-name']
+            orderLastName = request.form['last-name']
+            orderAddress = request.form['address']
+            orderPhoneNumber = request.form['phone-number']
+            orderEmail = request.form['email']
+            orderNote = request.form['note']
 
-        addOrderResult = db.addOrderAndDeleteUserShoppingCart(firstName=orderFirstName,
-                                                              lastName=orderLastName,
-                                                              address=orderAddress,
-                                                              phoneNumber=orderPhoneNumber,
-                                                              email=orderEmail,
-                                                              note=orderNote)
+            addOrderResult = db.addOrderAndDeleteUserShoppingCart(firstName=orderFirstName,
+                                                                  lastName=orderLastName,
+                                                                  address=orderAddress,
+                                                                  phoneNumber=orderPhoneNumber,
+                                                                  email=orderEmail,
+                                                                  note=orderNote,
+                                                                  username=username)
+
+            if addOrderResult != None:
+                return redirect('/dashboard')
+            else:
+                flash(addOrderResult, 'error')  # 將錯誤訊息放入 flash 中，並標記為 'error'
+                return redirect('/checkout')
 
 
 @app.route('/cart')
@@ -161,9 +170,9 @@ def cart():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('cart.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -235,9 +244,9 @@ def about():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('about.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -255,9 +264,9 @@ def contact():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('contact.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -279,9 +288,9 @@ def faq():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPriceByUsername(username=username)
         return render_template('faq.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -322,7 +331,7 @@ def checkLogin():
     db = Database()
     loginEmail = request.form['singin-email']
     loginPassword = request.form['singin-password']
-    username = db.getUsername(loginEmail)
+    username = db.getUsernameByEmail(loginEmail)
     # 調用登入驗證方法
     loginResult = db.login(loginEmail, loginPassword)
     # 在 checkLogin 路由中
@@ -372,17 +381,85 @@ def dashboard():
     products = db.getAllProductsInfo()
     if 'username' in session:
         username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        orders = db.getUserOrdersByUsername(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
+        shoppingcartTotalQuantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        shoppingcartTotalPrice = db.getUserShoppingCartTotalPriceByUsername(username=username)
+        orderTotalPrice = db.getUserOrderTotalPriceByUsername(username=username)
+        productsName = db.getAllProductsName()
+        memberInformation = db.getUserInformationByUsername(username=username)
+
         return render_template('dashboard.html',
                                username=username,
-                               total_quantity=total_quantity,
-                               total_price=total_price,
+                               total_quantity=shoppingcartTotalQuantity,
+                               total_price=shoppingcartTotalPrice,
                                shopping_cart=shopping_cart,
-                               products=products)
+                               products=products,
+                               orders=orders,
+                               productsName=productsName,
+                               orderTotalPrice=orderTotalPrice,
+                               memberInformation=memberInformation)
     else:
         return render_template('login.html')
+
+
+@app.route('/editMemberInformation', methods=['GET', 'POST'])
+def editMemberInformation():
+    db = Database()
+    if 'username' in session:
+        username = session['username']
+
+        if request.method == 'POST':
+            firstName = request.form['first-name']
+            lastName = request.form['last-name']
+            displayName = request.form['display-name']
+            email = request.form['email']
+            oldPassword = request.form['old-password']
+            newPassword = request.form['new-password']
+            confirmNewPassword = request.form['confirm-new-password']
+
+            if newPassword is None and confirmNewPassword is None:
+                editUserInformationResult = db.editUserInformationByUsername(username=username,
+                                                                             firstName=firstName,
+                                                                             lastName=lastName,
+                                                                             displayName=displayName,
+                                                                             email=email,
+                                                                             oldPassword=oldPassword)
+                if editUserInformationResult is True:
+                    flash("Information updated successfully.", 'success')
+                    return redirect('/dashboard')
+                else:
+                    flash("Failed to update information.", 'error')
+                    return redirect('/dashboard')
+            else:
+                userPassword = db.getUserInformationByUsername(username=username)[5]
+                # Verify old password before making any changes
+                if oldPassword != userPassword:
+                    flash("Incorrect password.", 'error')
+                    return redirect('/dashboard')
+                else:
+                    # Ensure to handle new password securely, such as hashing before storing in the database
+                    # Add logic here to update the user's information, including handling the password change securely
+                    editUserInformationResult = db.editUserInformationByUsername(username=username,
+                                                                                 firstName=firstName,
+                                                                                 lastName=lastName,
+                                                                                 displayName=displayName,
+                                                                                 email=email,
+                                                                                 oldPassword=oldPassword,
+                                                                                 newPassword=newPassword,
+                                                                                 confirmNewPassword=confirmNewPassword)
+                    if editUserInformationResult is True:
+                        flash("Information updated successfully.", 'success')
+                        return redirect('/dashboard')
+                    else:
+                        flash("Failed to update information.", 'error')
+                        return redirect('/dashboard')
+
+        else:
+            # Handle GET request, render the form for editing member information
+            return redirect('/dashboard')
+    else:
+        return redirect('login.html')  # Redirect to login page if the user is not logged in
 
 
 @app.errorhandler(404)

@@ -215,7 +215,7 @@
                         </form>
                     </div>
                     <!-- End .checkout-discount -->
-                    <form action="#">
+                    <form action="/checkoutOrder" method="POST">
                         <div class="row">
                             <div class="col-lg-9">
                                 <h2 class="checkout-title">訂單資訊</h2><!-- End .checkout-title -->
@@ -308,41 +308,41 @@
                                     <!-- End .table table-summary -->
 
                                     <div class="accordion-summary" id="accordion-payment">
-                                        <div class="card">
-                                            <div class="card-header" id="heading-1">
-                                                <h2 class="card-title"><a role="button" data-toggle="collapse"
-                                                                          href="#collapse-1" aria-expanded="true"
-                                                                          aria-controls="collapse-1">銀行轉帳</a></h2>
-                                            </div>
-                                            <!-- End .card-header -->
-                                            <div id="collapse-1" class="collapse show" aria-labelledby="heading-1"
-                                                 data-parent="#accordion-payment">
-                                                <div class="card-body">將您的付款直接存入我們的銀行帳戶。請使用您的訂單 ID 作為付款參考。我們收到款項後，您的訂單才會發貨。
-                                                </div>
-                                                <!-- End .card-body -->
-                                            </div>
-                                            <!-- End .collapse -->
-                                        </div>
-                                        <!-- End .card -->
+<!--                                        <div class="card">-->
+<!--                                            <div class="card-header" id="heading-1">-->
+<!--                                                <h2 class="card-title"><a role="button" data-toggle="collapse"-->
+<!--                                                                          href="#collapse-1" aria-expanded="true"-->
+<!--                                                                          aria-controls="collapse-1">銀行轉帳</a></h2>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .card-header &ndash;&gt;-->
+<!--                                            <div id="collapse-1" class="collapse show" aria-labelledby="heading-1"-->
+<!--                                                 data-parent="#accordion-payment">-->
+<!--                                                <div class="card-body">將您的付款直接存入我們的銀行帳戶。請使用您的訂單 ID 作為付款參考。我們收到款項後，您的訂單才會發貨。-->
+<!--                                                </div>-->
+<!--                                                &lt;!&ndash; End .card-body &ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .collapse &ndash;&gt;-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .card &ndash;&gt;-->
 
-                                        <div class="card">
-                                            <div class="card-header" id="heading-2">
-                                                <h2 class="card-title"><a class="collapsed" role="button"
-                                                                          data-toggle="collapse" href="#collapse-2"
-                                                                          aria-expanded="false"
-                                                                          aria-controls="collapse-2">支票付款</a>
-                                                </h2>
-                                            </div>
-                                            <!-- End .card-header -->
-                                            <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
-                                                 data-parent="#accordion-payment">
-                                                <div class="card-body">我們收到支票將於確認後，馬上寄出您所購買的商品。請將支票寄送到我們的公司所在通訊地址，並且請您註明訂單編號。
-                                                </div>
-                                                <!-- End .card-body -->
-                                            </div>
-                                            <!-- End .collapse -->
-                                        </div>
-                                        <!-- End .card -->
+<!--                                        <div class="card">-->
+<!--                                            <div class="card-header" id="heading-2">-->
+<!--                                                <h2 class="card-title"><a class="collapsed" role="button"-->
+<!--                                                                          data-toggle="collapse" href="#collapse-2"-->
+<!--                                                                          aria-expanded="false"-->
+<!--                                                                          aria-controls="collapse-2">支票付款</a>-->
+<!--                                                </h2>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .card-header &ndash;&gt;-->
+<!--                                            <div id="collapse-2" class="collapse" aria-labelledby="heading-2"-->
+<!--                                                 data-parent="#accordion-payment">-->
+<!--                                                <div class="card-body">我們收到支票將於確認後，馬上寄出您所購買的商品。請將支票寄送到我們的公司所在通訊地址，並且請您註明訂單編號。-->
+<!--                                                </div>-->
+<!--                                                &lt;!&ndash; End .card-body &ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .collapse &ndash;&gt;-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .card &ndash;&gt;-->
 
                                         <div class="card">
                                             <div class="card-header" id="heading-3">
@@ -362,46 +362,46 @@
                                         </div>
                                         <!-- End .card -->
 
-                                        <div class="card">
-                                            <div class="card-header" id="heading-4">
-                                                <h2 class="card-title"><a class="collapsed" role="button"
-                                                                          data-toggle="collapse" href="https://www.paypal.com/us/digital-wallet/how-paypal-works"
-                                                                          aria-expanded="false"
-                                                                          aria-controls="collapse-4">PayPal <small
-                                                        class="float-right paypal-link">What is PayPal?</small></a></h2>
-                                            </div>
-                                            <!-- End .card-header -->
-                                            <div id="collapse-4" class="collapse" aria-labelledby="heading-4"
-                                                 data-parent="#accordion-payment">
-                                                <div class="card-body">透過電子郵件地址和密碼進行付款和收款，支援網上購物、全球轉帳。PayPal 提供的支付解決方案，包括在線發票。PayPal 的付款系統具有高度的安全性，並提供購物保障，保護您在交易中的權益。
-                                                </div>
-                                                <!-- End .card-body -->
-                                            </div>
-                                            <!-- End .collapse -->
-                                        </div>
-                                        <!-- End .card -->
+<!--                                        <div class="card">-->
+<!--                                            <div class="card-header" id="heading-4">-->
+<!--                                                <h2 class="card-title"><a class="collapsed" role="button"-->
+<!--                                                                          data-toggle="collapse" href="https://www.paypal.com/us/digital-wallet/how-paypal-works"-->
+<!--                                                                          aria-expanded="false"-->
+<!--                                                                          aria-controls="collapse-4">PayPal <small-->
+<!--                                                        class="float-right paypal-link">What is PayPal?</small></a></h2>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .card-header &ndash;&gt;-->
+<!--                                            <div id="collapse-4" class="collapse" aria-labelledby="heading-4"-->
+<!--                                                 data-parent="#accordion-payment">-->
+<!--                                                <div class="card-body">透過電子郵件地址和密碼進行付款和收款，支援網上購物、全球轉帳。PayPal 提供的支付解決方案，包括在線發票。PayPal 的付款系統具有高度的安全性，並提供購物保障，保護您在交易中的權益。-->
+<!--                                                </div>-->
+<!--                                                &lt;!&ndash; End .card-body &ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .collapse &ndash;&gt;-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .card &ndash;&gt;-->
 
-                                        <div class="card">
-                                            <div class="card-header" id="heading-5">
-                                                <h2 class="card-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse"
-                                                       href="#collapse-5" aria-expanded="false"
-                                                       aria-controls="collapse-5">
-                                                        Credit Card (Stripe)
-                                                        <img src="../static/images/payments-summary.png"
-                                                             alt="payments cards"/>
-                                                    </a>
-                                                </h2>
-                                            </div>
-                                            <!-- End .card-header -->
-                                            <div id="collapse-5" class="collapse" aria-labelledby="heading-5"
-                                                 data-parent="#accordion-payment">
-                                                <div class="card-body">使用信用卡付款，如Visa、Mastercard、JCB、American Express(AE) 美國運通、UnionPay 中國銀聯以及Discover 發現卡。
-                                                </div>
-                                                <!-- End .card-body -->
-                                            </div>
-                                            <!-- End .collapse -->
-                                        </div>
+<!--                                        <div class="card">-->
+<!--                                            <div class="card-header" id="heading-5">-->
+<!--                                                <h2 class="card-title">-->
+<!--                                                    <a class="collapsed" role="button" data-toggle="collapse"-->
+<!--                                                       href="#collapse-5" aria-expanded="false"-->
+<!--                                                       aria-controls="collapse-5">-->
+<!--                                                        Credit Card (Stripe)-->
+<!--                                                        <img src="../static/images/payments-summary.png"-->
+<!--                                                             alt="payments cards"/>-->
+<!--                                                    </a>-->
+<!--                                                </h2>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .card-header &ndash;&gt;-->
+<!--                                            <div id="collapse-5" class="collapse" aria-labelledby="heading-5"-->
+<!--                                                 data-parent="#accordion-payment">-->
+<!--                                                <div class="card-body">使用信用卡付款，如Visa、Mastercard、JCB、American Express(AE) 美國運通、UnionPay 中國銀聯以及Discover 發現卡。-->
+<!--                                                </div>-->
+<!--                                                &lt;!&ndash; End .card-body &ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; End .collapse &ndash;&gt;-->
+<!--                                        </div>-->
                                         <!-- End .card -->
                                     </div>
                                     <!-- End .accordion -->
