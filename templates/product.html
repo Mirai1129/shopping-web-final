@@ -52,9 +52,9 @@
                                     <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
                                         <p>
                                             {% if username != None %}
-                                                {{ username }}
+                                            {{ username }}
                                             {% else %}
-                                                登入
+                                            登入
                                             {% endif %}
                                         </p>
                                     </a>
@@ -78,8 +78,9 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo" width="105"
-                                                           height="25"/></a>
+                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo"
+                                                                     width="105"
+                                                                     height="25"/></a>
 
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
@@ -133,7 +134,8 @@
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
-                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length #}
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length
+                                #}
 
                                 {% for i in range(total_quantity) %}
                                 {% set item = shopping_cart[i] %}
@@ -200,14 +202,16 @@
 
                 <nav class="product-pager ml-auto" aria-label="Product">
                     {% if index > 0 %}
-                    <a class="product-pager-link product-pager-prev" href="/product/{{ product_ids[index - 1] }}" aria-label="Previous" tabindex="-1">
+                    <a class="product-pager-link product-pager-prev" href="/product/{{ product_ids[index - 1] }}"
+                       aria-label="Previous" tabindex="-1">
                         <i class="icon-angle-left"></i>
                         <span>前一個商品</span>
                     </a>
                     {% endif %}
 
                     {% if index < (product_ids | length - 1) %}
-                    <a class="product-pager-link product-pager-next" href="/product/{{ product_ids[index + 1] }}" aria-label="Next" tabindex="-1">
+                    <a class="product-pager-link product-pager-next" href="/product/{{ product_ids[index + 1] }}"
+                       aria-label="Next" tabindex="-1">
                         <span>下一個商品</span>
                         <i class="icon-angle-right"></i>
                     </a>
@@ -268,7 +272,7 @@
                         <div class="col-md-6">
                             <div class="product-details">
                                 <h1 class="product-title">
-                                        {{ product.productName }}
+                                    {{ product.productName }}
                                 </h1>
                                 <!-- End .product-title -->
 
@@ -282,90 +286,92 @@
                                     </p>
                                 </div><!-- End .product-content -->
 
-
-                                <div class="details-filter-row details-row-size">
-                                    <label for="qty">數量：</label>
-                                    <div class="product-details-quantity">
-                                        <input type="number" id="qty" class="form-control" value="1" min="1" max="10"
-                                               step="1" data-decimals="0" required>
-                                    </div><!-- End .product-details-quantity -->
-                                </div><!-- End .details-filter-row -->
-
-                                <div class="product-details-action">
-                                    <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
+                                <div>
+                                    <form action="/addToShoppingCart" method="post" style="width: 100%">
+                                        <div class="product-details-action">
+                                            <input type="hidden" name="productId" value="{{ product.productId }}">
+                                            <label style="display: none">
+                                                <input type="number" name="quantity" value="1" min="1">
+                                            </label> <!-- 添加数量字段 -->
+                                            <button type="submit" class="btn-product btn-cart">
+                                                <span>加入購物車</span>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div><!-- End .product-details-action -->
+                            </div>
 
-                                <div class="product-details-footer">
-                                    <div class="product-cat">
-                                        <span>類別：</span>
-                                        <a>{{ product.category }}</a>
-                                    </div><!-- End .product-cat -->
+                            <div class="product-details-footer">
+                                <div class="product-cat">
+                                    <span>類別：</span>
+                                    <a>{{ product.category }}</a>
+                                </div><!-- End .product-cat -->
 
-                                    <div class="social-icons social-icons-sm">
-                                        <span class="social-label">分享：</span>
-                                        <a href="#" class="social-icon" title="Facebook" target="_blank"><i
-                                                class="icon-facebook-f"></i></a>
-                                        <a href="#" class="social-icon" title="Twitter" target="_blank"><i
-                                                class="icon-twitter"></i></a>
-                                        <a href="#" class="social-icon" title="Instagram" target="_blank"><i
-                                                class="icon-instagram"></i></a>
-                                        <a href="#" class="social-icon" title="Pinterest" target="_blank"><i
-                                                class="icon-pinterest"></i></a>
-                                    </div>
-                                </div><!-- End .product-details-footer -->
-                            </div><!-- End .product-details -->
+                                <div class="social-icons social-icons-sm">
+                                    <span class="social-label">分享：</span>
+                                    <a href="#" class="social-icon" title="Facebook" target="_blank"><i
+                                            class="icon-facebook-f"></i></a>
+                                    <a href="#" class="social-icon" title="Twitter" target="_blank"><i
+                                            class="icon-twitter"></i></a>
+                                    <a href="#" class="social-icon" title="Instagram" target="_blank"><i
+                                            class="icon-instagram"></i></a>
+                                    <a href="#" class="social-icon" title="Pinterest" target="_blank"><i
+                                            class="icon-pinterest"></i></a>
+                                </div>
+                            </div><!-- End .product-details-footer -->
+                        </div><!-- End .product-details -->
 
-                        </div><!-- End .col-md-6 -->
-                    </div><!-- End .row -->
-                </div><!-- End .product-details-top -->
+                    </div><!-- End .col-md-6 -->
+                </div><!-- End .row -->
+            </div><!-- End .product-details-top -->
 
-                <div class="product-details-tab">
-                    <ul class="nav nav-pills justify-content-center" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
-                               role="tab" aria-controls="product-desc-tab" aria-selected="true">商品介紹</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab"
-                               role="tab" aria-controls="product-info-tab" aria-selected="false">商品資訊</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="product-shipping-link" data-toggle="tab"
-                               href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab"
-                               aria-selected="false">送貨 / 退貨</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
-                             aria-labelledby="product-desc-link">
-                            <div class="product-desc-content">
-                                <h3>商品介紹</h3>
-                                <p>
-                                    {{ product.introduction }}
-                                </p>
-                            </div><!-- End .product-desc-content -->
-                        </div><!-- .End .tab-pane -->
-                        <div class="tab-pane fade" id="product-info-tab" role="tabpanel"
-                             aria-labelledby="product-info-link">
-                            <div class="product-desc-content">
-                                <h3>商品資訊</h3>
-                                <p>
-                                    {{ product.summary }}
-                                </p>
-                            </div><!-- End .product-desc-content -->
-                        </div><!-- .End .tab-pane -->
-                        <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel"
-                             aria-labelledby="product-shipping-link">
-                            <div class="product-desc-content">
-                                <h3>送貨 / 退貨</h3>
-                                <p>請參照本網站導覽列 > 相關資訊 > <a href="/faq"> 相關問題 </a>。</p>
-                            </div><!-- End .product-desc-content -->
-                        </div><!-- .End .tab-pane -->
-                    </div><!-- End .tab-content -->
-                </div><!-- End .product-details-tab -->
-            </div><!-- End .page-content -->
-            {% endif %}
-            {% endfor %}
+            <div class="product-details-tab">
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
+                           role="tab" aria-controls="product-desc-tab" aria-selected="true">商品介紹</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab"
+                           role="tab" aria-controls="product-info-tab" aria-selected="false">商品資訊</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-shipping-link" data-toggle="tab"
+                           href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab"
+                           aria-selected="false">送貨 / 退貨</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
+                         aria-labelledby="product-desc-link">
+                        <div class="product-desc-content">
+                            <h3>商品介紹</h3>
+                            <p>
+                                {{ product.introduction }}
+                            </p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-info-tab" role="tabpanel"
+                         aria-labelledby="product-info-link">
+                        <div class="product-desc-content">
+                            <h3>商品資訊</h3>
+                            <p>
+                                {{ product.summary }}
+                            </p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel"
+                         aria-labelledby="product-shipping-link">
+                        <div class="product-desc-content">
+                            <h3>送貨 / 退貨</h3>
+                            <p>請參照本網站導覽列 > 相關資訊 > <a href="/faq"> 相關問題 </a>。</p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-details-tab -->
+        </div><!-- End .page-content -->
+        {% endif %}
+        {% endfor %}
     </main><!-- End .main -->
 
     <footer class="footer">
@@ -478,13 +484,18 @@
                 <div class="product-price">
                     ${{ product.price }}.00
                 </div><!-- End .product-price -->
-                <div class="product-details-quantity">
-                    <input type="number" id="sticky-cart-qty" class="form-control" value="1" min="1" max="10" step="1"
-                           data-decimals="0" required>
-                </div><!-- End .product-details-quantity -->
-
                 <div class="product-details-action">
-                    <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
+                    <form action="/addToShoppingCart" method="post" style="width: 100%">
+                        <div class="product-details-action">
+                            <input type="hidden" name="productId" value="{{ product.productId }}">
+                            <label style="display: none">
+                                <input type="number" name="quantity" value="1" min="1">
+                            </label> <!-- 添加数量字段 -->
+                            <button type="submit" class="btn-product btn-cart">
+                                <span>加入購物車</span>
+                            </button>
+                        </div>
+                    </form>
                 </div><!-- End .product-details-action -->
             </div><!-- End .col-6 -->
         </div><!-- End .row -->
