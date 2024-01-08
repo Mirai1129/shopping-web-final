@@ -262,8 +262,9 @@
                                 <div class="product product-7 text-center">
                                     <figure class="product-media">
                                         <a href="/product/{{product.productId}}"><img
-                                                src="../static/images/products/product-5.jpg"
+                                                src="{{ url_for('static', filename='images/products/product-' ~ key ~ '.jpg') }}"
                                                 alt="Product image" class="product-image"/></a>
+
 
                                         <div class="product-action">
                                             <form action="/addToShoppingCart" method="post" style="width: 100%">
@@ -288,13 +289,13 @@
                                             product.productName }}</a></h3><!-- End .product-title -->
                                         <div class="product-price">${{ product.price }}.00</div>
                                         <!-- End .product-price -->
-                                        <div class="product-nav product-nav-thumbs">
+                                        <!--div class="product-nav product-nav-thumbs">
                                             <a href="#" class="active"><img
                                                     src="../static/images/products/product-5-thumb.jpg"
                                                     alt="product desc"/></a>
                                             <a href="#"><img src="../static/images/products/product-5-2-thumb.jpg"
                                                              alt="product desc"/></a>
-                                        </div>
+                                        </div-->
                                         <!-- End .product-nav -->
                                     </div>
                                     <!-- End .product-body -->
