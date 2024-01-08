@@ -151,7 +151,6 @@
                                                  alt="product">
                                         </a>
                                     </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                 </div><!-- End .product -->
                                 {% endfor %}
                             </div><!-- End .cart-product -->
@@ -181,6 +180,19 @@
         <div class="page-header text-center" style="background-image: url('../static/images/page-header-bg.jpg')">
             <div class="container">
                 <h1 class="page-title">會員管理<span>Member management</span></h1>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <span style="color: red;">{{ message }}</span>
+                {% endif %}
+                {% if category == 'success' %}
+                <span style="color: green;">{{ message }}</span>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
             </div><!-- End .container -->
         </div><!-- End .page-header -->
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
@@ -240,12 +252,56 @@
                                             </a>.</p>
                                 </div><!-- .End .tab-pane -->
 
-                                <div class="tab-pane fade" id="tab-orders" role="tabpanel"
-                                     aria-labelledby="tab-orders-link">
-                                    <p>您目前還沒有任何訂單。</p>
-                                    <a href="{{url_for('shop')}}" class="btn btn-outline-primary-2"><span>前往購物</span><i
-                                            class="icon-long-arrow-right"></i></a>
+                                <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                                    <div class="col-md-12">
+                                        <ul class="nav nav-pills" id="tabs-5" role="tablist">
+                                            {% set displayed_orders = [] %}
+                                            {% for order in orders %}
+                                            {% if order[0] not in displayed_orders %}
+                                            {% set _ = displayed_orders.append(order[0]) %}
+                                            <li class="nav-item">
+                                                <a class="nav-link {% if loop.first %}active{% endif %}" id="{{ order[0] }}-tab" data-toggle="tab" href="#tab-{{ order[0] }}" role="tab" aria-controls="tab-{{ order[0] }}" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">{{ order[0] }} 號訂單</a>
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                        <div class="tab-content" id="tab-content-5">
+                                            {% for order_id in displayed_orders %}
+                                            <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="tab-{{ order_id }}" role="tabpanel" aria-labelledby="{{ order_id }}-tab">
+                                                <table>
+                                                    <tr style="font-weight: bold">
+                                                        <td>商品</td>
+                                                        <td style="text-align: right; padding: 0 10px;">價格</td>
+                                                        <td style="text-align: right; padding: 0 10px;">數量</td>
+                                                        <td style="text-align: right; padding: 0 10px;">小計</td>
+                                                    </tr>
+                                                    {% for order in orders %}
+                                                    {% if order[0] == order_id %}
+                                                    <tr>
+                                                        <td><a href="/product/{{order[1]}}">{{ productsName[order[1]-1][0] }}</a></td>
+                                                        <td style="text-align: right; padding: 0 10px;">{{ "{:,}".format(order[3]) }}</td>
+                                                        <td style="text-align: right; padding: 0 10px;">{{ "{:,}".format(order[2]) }}</td>
+                                                        <td style="text-align: right; padding: 0 10px;">{{ "{:,}".format(order[2] * order[3]) }}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    <tr>
+                                                        <td colspan="4" style="padding: 10px 0;">
+                                                            <span style="font-weight: bold">總計：</span>{{ "{:,}".format(orderTotalPrice) }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </div><!-- .End .tab-pane -->
+                                            {% endfor %}
+                                        </div><!-- End .tab-content -->
+                                    </div><!-- End .col-md-6 -->
+
+
+                                    <a href="{{ url_for('shop') }}" class="btn btn-outline-primary-2"><span>前往購物</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- .End .tab-pane -->
+
+
 
                                 <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
                                      aria-labelledby="tab-downloads-link">
@@ -256,7 +312,7 @@
 
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                      aria-labelledby="tab-address-link">
-                                    <p>預設您結帳頁面中的帳單地址及運送地址。</p>
+                                    <p>預設您結帳頁面中的帳單地址。</p>
 
                                     <div class="row">
                                         <div class="col-lg-6">
@@ -264,22 +320,10 @@
                                                 <div class="card-body">
                                                     <h3 class="card-title">帳單地址</h3><!-- End .card-title -->
 
-                                                    <p>姓名：馬昱家<br>
-                                                        帳單地址：賽馬娘馬社<br>
-                                                        連絡電話：0952-920-521<br>
-                                                        電子信箱：yourmail@mail.com<br>
-                                                        <a href="#">Edit <i class="icon-edit"></i></a></p>
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .card-dashboard -->
-                                        </div><!-- End .col-lg-6 -->
-
-                                        <div class="col-lg-6">
-                                            <div class="card card-dashboard">
-                                                <div class="card-body">
-                                                    <h3 class="card-title">運送地址</h3><!-- End .card-title -->
-
-                                                    <p>您尚未填寫預設的貨運地址。<br>
-                                                        <a href="#">Edit <i class="icon-edit"></i></a></p>
+                                                    <p>姓名：{{ memberInformation[1] }} {{ memberInformation[2] }}<br>
+                                                        帳單地址：{{ memberInformation[6] }}<br>
+                                                        連絡電話：{{ memberInformation[7] }}<br>
+                                                        電子信箱：{{ memberInformation[4] }}<br>
                                                 </div><!-- End .card-body -->
                                             </div><!-- End .card-dashboard -->
                                         </div><!-- End .col-lg-6 -->
@@ -288,34 +332,38 @@
 
                                 <div class="tab-pane fade" id="tab-account" role="tabpanel"
                                      aria-labelledby="tab-account-link">
-                                    <form action="#">
+                                    <form action="/editMemberInformation" method="POST">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <label>姓 *</label>
-                                                <input type="text" class="form-control" required>
+                                                <label for="first-name">姓 *</label>
+                                                <input type="text" class="form-control"
+                                                       id="first-name" name="first-name" required>
                                             </div><!-- End .col-sm-6 -->
 
                                             <div class="col-sm-6">
-                                                <label>名 *</label>
-                                                <input type="text" class="form-control" required>
+                                                <label for="last-name">名 *</label>
+                                                <input type="text" class="form-control"
+                                                       id="last-name" name="last-name" required>
                                             </div><!-- End .col-sm-6 -->
                                         </div><!-- End .row -->
 
-                                        <label>顯示名稱 *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label for="display-name">顯示名稱 *</label>
+                                        <input type="text" class="form-control"
+                                               id="display-name" name="display-name" required>
                                         <small class="form-text">這將是您顯示在帳戶及評論的名稱。</small>
 
-                                        <label>電子信箱 *</label>
-                                        <input type="email" class="form-control" required>
+                                        <label for="email">電子信箱 *</label>
+                                        <input type="email" class="form-control"
+                                               id="email" name="email" required>
 
-                                        <label>目前密碼（留空表示維持不變）</label>
-                                        <input type="password" class="form-control">
+                                        <label for="old-password">目前密碼 *</label>
+                                        <input type="password" class="form-control" id="old-password" name="old-password" required>
 
-                                        <label>新密碼（留空則維持不變）</label>
-                                        <input type="password" class="form-control">
+                                        <label for="new-password">新密碼（留空則維持不變）</label>
+                                        <input type="password" class="form-control" id="new-password" name="new-password">
 
-                                        <label>確認新密碼</label>
-                                        <input type="password" class="form-control mb-2">
+                                        <label for="confirm-new-password">確認新密碼</label>
+                                        <input type="password" class="form-control mb-2" id="confirm-new-password" name="confirm-new-password">
 
                                         <button type="submit" class="btn btn-outline-primary-2">
                                             <span>儲存變更</span>

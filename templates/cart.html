@@ -157,7 +157,6 @@
                                                  alt="product">
                                         </a>
                                     </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                 </div><!-- End .product -->
                                 {% endfor %}
                             </div><!-- End .cart-product -->
@@ -286,7 +285,7 @@
                                     </form>
                                 </div><!-- End .cart-discount -->
 
-                                <a href="#" class="btn btn-outline-dark-2"><span>更新購物車</span><i
+                                <a href="/cart" class="btn btn-outline-dark-2"><span>更新購物車</span><i
                                         class="icon-refresh"></i></a>
                             </div><!-- End .cart-bottom -->
                         </div><!-- End .col-lg-9 -->
@@ -302,8 +301,8 @@
                                     </tr><!-- End .summary-subtotal -->
 
                                     <tr class="summary-shipping">
-                                        <td>運費：</td>
-                                        <td>&nbsp;</td>
+                                        <td colspan="2">剛開幕全館免運費!</td>
+                                        <td></td>
                                     </tr>
 
                                     <tr class="summary-shipping-row">
@@ -326,7 +325,7 @@
                                                        for="standart-shipping">標準：</label>
                                             </div><!-- End .custom-control -->
                                         </td>
-                                        <td>$60.00</td>
+                                        <td>$0.00</td>
                                     </tr><!-- End .summary-shipping-row -->
 
                                     <tr class="summary-shipping-row">
@@ -337,7 +336,7 @@
                                                 <label class="custom-control-label" for="express-shipping">急件：</label>
                                             </div><!-- End .custom-control -->
                                         </td>
-                                        <td>$200.00</td>
+                                        <td>$0.00</td>
                                     </tr>
                                     <!--我做更改的地方-->
                                     <!-- End .summary-shipping-row -->
@@ -354,69 +353,6 @@
                                     </tr><!-- End .summary-total -->
                                     </tbody>
                                 </table><!-- End .table table-summary -->
-
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function () {
-                                        // 找到運費選擇的元素
-                                        const shippingOptions = document.querySelectorAll('input[name="shipping"]');
-                                        // 取得總價格元素
-                                        const totalPriceElement = document.querySelector('.summary-total td:last-child');
-                                        // 取得運費元素
-                                        const shippingCostElement = document.querySelector('.summary-shipping-row td:last-child');
-
-                                        // 定義變數來存儲總金額和運費
-                                        let totalAmount = 0;
-                                        let shippingCost = 0;
-
-                                        function updateTotalPrice() {
-                                            // 取得原始總價格
-                                            totalAmount = parseFloat("{{total_price}}");
-
-                                            // 根據選擇的運費方式更新總價格和運費
-                                            shippingOptions.forEach(function (option) {
-                                                if (option.checked) {
-                                                    if (option.id === 'standart-shipping') {
-                                                        // 標準運費加上60
-                                                        totalAmount += 60;
-                                                        shippingCost = 60;
-                                                    } else if (option.id === 'express-shipping') {
-                                                        // 急件運費加上200
-                                                        totalAmount += 200;
-                                                        shippingCost = 200;
-                                                    } else {
-                                                        // 免運不加運費
-                                                        shippingCost = 0;
-                                                    }
-                                                }
-                                            });
-
-                                            // 更新總價格和運費顯示
-                                            totalPriceElement.textContent = '$' + totalAmount.toFixed(2);
-                                        }
-
-                                        // 監聽運費選擇的變化
-                                        shippingOptions.forEach(function (option) {
-                                            option.addEventListener('change', updateTotalPrice);
-                                        });
-
-                                        // 在頁面載入時計算一次總價格
-                                        updateTotalPrice();
-
-                                        // 監聽確認訂單按鈕點擊事件
-                                        var checkoutBtn = document.getElementById('checkout-btn');
-                                        checkoutBtn.addEventListener('click', function (event) {
-                                            // 在這裡可以存取總價格和運費的值
-                                            console.log('Total Amount:', totalAmount);
-                                            console.log('Shipping Cost:', shippingCost);
-
-                                            // 在這裡可以添加您希望觸發的其他相關操作
-                                            // 例如，檢查是否選擇了運費方式，檢查地址等等
-
-                                            // 最後，將這個按鈕的預設行為阻止，以防止直接跳轉
-                                            event.preventDefault();
-                                        });
-                                    });
-                                </script>
                                 <!--button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">確認訂單</button-->
                                 <a href="{{url_for('checkout')}}"
                                    class="btn btn-outline-primary-2 btn-order btn-block">確認訂單</a>

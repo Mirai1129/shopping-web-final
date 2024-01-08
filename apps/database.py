@@ -17,7 +17,7 @@ class Database:
             charset=os.getenv("CHARSET")
         )
 
-    def getUsername(self, email):
+    def getUsernameByEmail(self, email):
         connection = self.connect()
         cursor = connection.cursor()
         cursor.execute("SELECT displayName FROM shoppingweb.member WHERE email = %s", (email,))
@@ -28,7 +28,18 @@ class Database:
         else:
             return None
 
-    def shoppingCartQuantity(self, username):
+    def getUserIdByUsername(self, username):
+        connection = self.connect()
+        cursor = connection.cursor()
+        cursor.execute("SELECT memberId FROM shoppingweb.member WHERE displayName = %s", (username))
+        result = cursor.fetchone()
+
+        if result:
+            return result[0]
+        else:
+            return None
+
+    def shoppingCartQuantityByUsername(self, username):
         con = self.connect()
         cursor = con.cursor()
         try:
@@ -49,7 +60,7 @@ class Database:
             cursor.close()
             con.close()
 
-    def shoppingCartPrice(self, username):
+    def shoppingCartPriceByUsername(self, username):
         con = self.connect()
         cursor = con.cursor()
         try:
@@ -161,7 +172,6 @@ class Database:
             )
 
             result = cursor.fetchone()  # 获取单行结果
-            print("cursor.fetchone()", result)
             if result:
                 print("存在相同的商品和用户")
                 # 这里执行更新购物车数量的操作
@@ -240,7 +250,7 @@ class Database:
             cursor.close()
             con.close()
 
-    def getUserShoppingCart(self, username):
+    def getUserShoppingCartByUsername(self, username):
         con = self.connect()
         cursor = con.cursor()
         try:
@@ -251,7 +261,6 @@ class Database:
             )
 
             shopping_cart = cursor.fetchall()
-            print(shopping_cart)
             return shopping_cart
 
         except pymysql.Error as e:
@@ -261,16 +270,168 @@ class Database:
             cursor.close()
             con.close()
 
-    def getUserShoppingCartTotalPrice(self, username):
+    def getUserShoppingCartTotalPriceByUsername(self, username):
         con = self.connect()
         db = Database()
-        shopping_cart = db.getUserShoppingCart(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
         total_price = sum(item[1] * item[2] for item in shopping_cart)
         return total_price
 
-    def getUserShoppingCartTotalQuantity(self, username):
+    def getUserShoppingCartTotalQuantityByUsername(self, username):
         con = self.connect()
         db = Database()
-        shopping_cart = db.getUserShoppingCart(username=username)
+        shopping_cart = db.getUserShoppingCartByUsername(username=username)
         total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
         return total_quantity
+
+    def addOrderAndDeleteUserShoppingCart(self, firstName, lastName, address, phoneNumber, email, note, username):
+        con = self.connect()
+        cursor = con.cursor()
+        db = Database()
+        memberId = db.getUserIdByUsername(username=username)
+        try:
+            # 插入訂單信息到 ordersheet 表中
+            cursor.execute(
+                "INSERT INTO ordersheet (firstName, lastName, address, phone, email, note, memberId) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (firstName, lastName, address, phoneNumber, email, note, memberId)
+            )
+            # 獲取剛插入的 orderId
+            orderId = cursor.lastrowid
+
+            # 獲取用戶購物車
+            shopping_cart = self.getUserShoppingCartByUsername(username=username)  # 假設 email 就是用戶名稱
+
+            # 將購物車產品信息添加到 ordersheet_has_product 表中
+            for item in shopping_cart:
+                print(item)
+                productId, price, quantity = item[4], item[1], item[2]
+                cursor.execute(
+                    "INSERT INTO shoppingweb.ordersheet_has_product (orderId, productId, price, quantity) "
+                    "VALUES (%s, %s, %s, %s)",
+                    (orderId, productId, price, quantity)
+                )
+            cursor.execute("DELETE FROM shoppingcart WHERE memberId = %s;", memberId)
+
+            con.commit()
+            return orderId  # 返回新增訂單的 orderId
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            con.rollback()
+            return None
+        finally:
+            cursor.close()
+            con.close()
+
+    def getUserOrdersByUsername(self, username):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute("SELECT ordersheet_has_product.orderId, ordersheet_has_product.productId, "
+                           "ordersheet_has_product.quantity, ordersheet_has_product.price "
+                           "FROM ordersheet_has_product "
+                           "INNER JOIN ordersheet ON ordersheet_has_product.orderId = ordersheet.orderId "
+                           "INNER JOIN member ON ordersheet.memberId = member.memberId "
+                           "WHERE member.displayName = %s;",
+                           (username,)
+                           )
+
+            orders = cursor.fetchall()
+            for order in orders:
+                # 在這裡處理每一個找到的訂單
+                orderId, productId, quantity, price = order[0], order[1], order[2], order[3]
+                # 執行您想要的操作，例如將這些訂單資訊傳遞給模板或進行其他處理
+            return orders
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return None
+        finally:
+            cursor.close()
+            con.close()
+
+    def getAllProductsName(self):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute("SELECT productName FROM shoppingweb.product")
+            products = cursor.fetchall()
+            return products
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return None
+        finally:
+            cursor.close()
+            con.close()
+
+    def getUserOrderTotalPriceByUsername(self, username):
+        con = self.connect()
+        db = Database()
+        shopping_cart = db.getUserOrdersByUsername(username=username)
+        totalPrice = sum(item[2] * item[3] for item in shopping_cart)
+        return totalPrice
+
+    def getUserInformationByUsername(self, username):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute("SELECT * FROM shoppingweb.member WHERE displayName = %s", username)
+            memberInformation = cursor.fetchone()
+            return memberInformation
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return None
+        finally:
+            cursor.close()
+            con.close()
+
+    def editUserInformationByUsername(
+            self,
+            firstName,
+            lastName,
+            username,
+            displayName,
+            email,
+            oldPassword,
+            newPassword=None,
+            confirmNewPassword=None
+    ):
+        con = self.connect()
+        cursor = con.cursor()
+        memberId = Database().getUserIdByUsername(username=username)
+        try:
+            # Check if username exists
+            cursor.execute("SELECT * FROM shoppingweb.member WHERE displayName = %s", username)
+            memberInformation = cursor.fetchone()
+            print(memberInformation)
+            if memberInformation:
+                # Check if the old password matches
+                if oldPassword != memberInformation[5]:
+                    return False  # Return False if the old password does not match
+
+                if newPassword is not None and confirmNewPassword is not None and newPassword != '' and confirmNewPassword != '':
+                    # Update member information (including password change if applicable)
+                    if newPassword == confirmNewPassword:
+                        cursor.execute("UPDATE shoppingweb.member SET firstName = %s, lastName = %s, displayName = %s, email = %s, password = %s "
+                                       "WHERE displayName = %s AND memberId = %s",
+                                       (firstName, lastName, displayName, email, newPassword, username, memberId))
+                        con.commit()
+                        return True  # Return True if information is updated successfully
+                    else:
+                        return False  # Return False if new password and confirm password do not match
+                else:
+                    # Update member information excluding password change
+                    cursor.execute("UPDATE shoppingweb.member SET firstName = %s, lastName = %s, displayName = %s, email = %s, password = %s "
+                                   "WHERE displayName = %s AND memberId = %s",
+                                   (firstName, lastName, displayName, email, oldPassword, username, memberId))
+                    con.commit()
+                    return True  # Return True if information is updated successfully (without password change)
+            return False  # Return False if member with given username does not exist
+
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return None
+        finally:
+            cursor.close()
+            con.close()
