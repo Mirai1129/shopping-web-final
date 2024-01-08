@@ -277,7 +277,7 @@
                     {% for key, product in products.items() %}
                     <div class="product product-4">
                         <figure class="product-media">
-                            <a href="{{ url_for('product') }}">
+                            <a href="/product/{{ product.productId }}">
                                 <img src="{{ url_for('static', filename='images/demos/demo-12/products/product-2.jpg') }}"
                                      alt="Product image"
                                      class="product-image">

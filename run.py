@@ -33,92 +33,38 @@ def index():
                                products=products)
 
 
-@app.route('/login')
-def login():
-    if 'username' in session:
-        return redirect('/dashboard')
-    else:
-        error = ''
-        if 'error' in session:
-            error = session['error']
-            session.pop('error')  # 从 session 中移除错误消息，避免再次显示
-
-        return render_template('login.html', error=error)
-
-
-@app.route('/logout', methods=['POST'])
-def logout():
-    # 用户注销，清除会话中的登录信息
-    session.pop('username', None)
-    return redirect('/login')  # 注销后重定向到登录页面
-
-
-@app.route('/checkLogin', methods=['POST'])
-def checkLogin():
-    db = Database()
-    loginEmail = request.form['singin-email']
-    loginPassword = request.form['singin-password']
-    username = db.getUsername(loginEmail)
-    # 調用登入驗證方法
-    loginResult = db.login(loginEmail, loginPassword)
-    # 在 checkLogin 路由中
-    if loginResult == 'Login successful':
-        session['username'] = username
-        session.pop('error', None)
-        return redirect('/dashboard')  # 重導向回登入頁面
-    else:
-        flash(loginResult, 'error')  # 將錯誤訊息放入 flash 中，並標記為 'error'
-        return redirect('/login')
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    db = Database()
-    con = db.connect()
-
-    if request.method == 'POST':
-        registerUserName = request.form['register-userName']
-        registerPassword = request.form['register-password']
-        registerFirstName = request.form['register-firstName']
-        registerLastName = request.form['register-lastName']
-        registerAddress = request.form['register-address']
-        registerPhone = request.form['register-phone']
-        registerEmail = request.form['register-email']
-
-        registerResult = db.register(firstName=registerFirstName,
-                                     lastName=registerLastName,
-                                     displayName=registerUserName,
-                                     email=registerEmail,
-                                     password=registerPassword,
-                                     address=registerAddress,
-                                     phone=registerPhone)
-
-        if registerResult == 'Registration successful':
-            session['username'] = registerUserName
-            return redirect('/dashboard')
-        else:
-            return render_template('login.html', error=registerResult)
-    else:
-        return render_template('login.html')
-
-
-@app.route('/dashboard')
-def dashboard():
+@app.route('/shop')
+def shop():
     db = Database()
     products = db.getAllProductsInfo()
+    unique_categories = set()  # Create a set to store unique categories
+    categoryCheckbox = request.args.get('categoryCheckbox')  # 获取传递的 categoryCheckbox
+
+    # Iterate through products and add unique categories to the set
+    for key, product in products.items():
+        unique_categories.add(product['category'])
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
         total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
         total_price = db.getUserShoppingCartTotalPrice(username=username)
-        return render_template('dashboard.html',
+        return render_template('shop.html',
                                username=username,
                                total_quantity=total_quantity,
                                total_price=total_price,
                                shopping_cart=shopping_cart,
-                               products=products)
+                               products=products,
+                               unique_categories=unique_categories,
+                               categoryCheckbox=categoryCheckbox)
     else:
-        return render_template('login.html')
+        username = None
+        return render_template('shop.html',
+                               username=username,
+                               total_quantity=0,
+                               total_price=0,
+                               products=products,
+                               unique_categories=unique_categories,
+                               categoryCheckbox=categoryCheckbox)
 
 
 @app.route('/product')
@@ -171,38 +117,61 @@ def productPage(productId):
                                productId=productId)
 
 
-@app.route('/shop')
-def shop():
+@app.route('/checkout')
+def checkout():
     db = Database()
     products = db.getAllProductsInfo()
-    unique_categories = set()  # Create a set to store unique categories
-    categoryCheckbox = request.args.get('categoryCheckbox')  # 获取传递的 categoryCheckbox
-
-    # Iterate through products and add unique categories to the set
-    for key, product in products.items():
-        unique_categories.add(product['category'])
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
         total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
         total_price = db.getUserShoppingCartTotalPrice(username=username)
-        return render_template('shop.html',
+        return render_template('checkout.html',
                                username=username,
                                total_quantity=total_quantity,
                                total_price=total_price,
                                shopping_cart=shopping_cart,
-                               products=products,
-                               unique_categories=unique_categories,
-                               categoryCheckbox=categoryCheckbox)
+                               products=products)
     else:
-        username = None
-        return render_template('shop.html',
+        return redirect('login')
+
+
+@app.route('/checkoutOrder', methods=['POST'])
+def checkoutOrder():
+    db = Database()
+    if request.method == 'POST':
+        orderFirstName = request.form['first-name']
+        orderLastName = request.form['last-Name']
+        orderAddress = request.form['address']
+        orderPhoneNumber = request.form['phone-number']
+        orderEmail = request.form['email']
+        orderNote = request.form['note']
+
+        addOrderResult = db.addOrderAndDeleteUserShoppingCart(firstName=orderFirstName,
+                                                              lastName=orderLastName,
+                                                              address=orderAddress,
+                                                              phoneNumber=orderPhoneNumber,
+                                                              email=orderEmail,
+                                                              note=orderNote)
+
+
+@app.route('/cart')
+def cart():
+    db = Database()
+    products = db.getAllProductsInfo()
+    if 'username' in session:
+        username = session['username']
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
+        return render_template('cart.html',
                                username=username,
-                               total_quantity=0,
-                               total_price=0,
-                               products=products,
-                               unique_categories=unique_categories,
-                               categoryCheckbox=categoryCheckbox)
+                               total_quantity=total_quantity,
+                               total_price=total_price,
+                               shopping_cart=shopping_cart,
+                               products=products)
+    else:
+        return redirect('/login')
 
 
 # TODO 非用戶無法加入購物車邏輯
@@ -328,8 +297,77 @@ def faq():
                                products=products)
 
 
-@app.route('/checkout')
-def checkout():
+@app.route('/login')
+def login():
+    if 'username' in session:
+        return redirect('/dashboard')
+    else:
+        error = ''
+        if 'error' in session:
+            error = session['error']
+            session.pop('error')  # 从 session 中移除错误消息，避免再次显示
+
+        return render_template('login.html', error=error)
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    # 用户注销，清除会话中的登录信息
+    session.pop('username', None)
+    return redirect('/login')  # 注销后重定向到登录页面
+
+
+@app.route('/checkLogin', methods=['POST'])
+def checkLogin():
+    db = Database()
+    loginEmail = request.form['singin-email']
+    loginPassword = request.form['singin-password']
+    username = db.getUsername(loginEmail)
+    # 調用登入驗證方法
+    loginResult = db.login(loginEmail, loginPassword)
+    # 在 checkLogin 路由中
+    if loginResult == 'Login successful':
+        session['username'] = username
+        session.pop('error', None)
+        return redirect('/dashboard')  # 重導向回登入頁面
+    else:
+        flash(loginResult, 'error')  # 將錯誤訊息放入 flash 中，並標記為 'error'
+        return redirect('/login')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    db = Database()
+    con = db.connect()
+
+    if request.method == 'POST':
+        registerUserName = request.form['register-userName']
+        registerPassword = request.form['register-password']
+        registerFirstName = request.form['register-firstName']
+        registerLastName = request.form['register-lastName']
+        registerAddress = request.form['register-address']
+        registerPhone = request.form['register-phone']
+        registerEmail = request.form['register-email']
+
+        registerResult = db.register(firstName=registerFirstName,
+                                     lastName=registerLastName,
+                                     displayName=registerUserName,
+                                     email=registerEmail,
+                                     password=registerPassword,
+                                     address=registerAddress,
+                                     phone=registerPhone)
+
+        if registerResult == 'Registration successful':
+            session['username'] = registerUserName
+            return redirect('/dashboard')
+        else:
+            return render_template('login.html', error=registerResult)
+    else:
+        return render_template('login.html')
+
+
+@app.route('/dashboard')
+def dashboard():
     db = Database()
     products = db.getAllProductsInfo()
     if 'username' in session:
@@ -337,43 +375,14 @@ def checkout():
         shopping_cart = db.getUserShoppingCart(username=username)
         total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
         total_price = db.getUserShoppingCartTotalPrice(username=username)
-        return render_template('checkout.html',
+        return render_template('dashboard.html',
                                username=username,
                                total_quantity=total_quantity,
                                total_price=total_price,
                                shopping_cart=shopping_cart,
                                products=products)
     else:
-        username = None
-        return render_template('checkout.html',
-                               username=username,
-                               total_quantity=0,
-                               total_price=0,
-                               products=products)
-
-
-@app.route('/cart')
-def cart():
-    db = Database()
-    products = db.getAllProductsInfo()
-    if 'username' in session:
-        username = session['username']
-        shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
-        total_price = db.getUserShoppingCartTotalPrice(username=username)
-        return render_template('cart.html',
-                               username=username,
-                               total_quantity=total_quantity,
-                               total_price=total_price,
-                               shopping_cart=shopping_cart,
-                               products=products)
-    else:
-        username = None
-        return render_template('cart.html',
-                               username=username,
-                               total_quantity=0,
-                               total_price=0,
-                               products=products)
+        return render_template('login.html')
 
 
 @app.errorhandler(404)

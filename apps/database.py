@@ -274,3 +274,14 @@ class Database:
         shopping_cart = db.getUserShoppingCart(username=username)
         total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
         return total_quantity
+
+    def addOrderAndDeleteUserShoppingCart(self, firstName, lastName, address, phoneNumber, email, note):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute()
+        except:
+            print("Database")
+        finally:
+            cursor.close()
+            con.close()

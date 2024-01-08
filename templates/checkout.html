@@ -134,23 +134,25 @@
                                 <div class="product">
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
-                                            <a href="{{ url_for('product') }}">
-                                                {% if item[4] in products %}
+                                            {% if item[4] in products %}
+                                            <a href="/product/{{ item[4] }}">
                                                 {{ products[item[4]].productName }}
                                                 {% else %}
                                                 Product Not Found
-                                                {% endif %}
                                             </a>
+                                            {% endif %}
                                         </h4>
                                         <span class="cart-product-info">
                             <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00
                         </span>
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
-                                        <a href="{{ url_for('product') }}" class="product-image">
+                                        {% if item[4] in products %}
+                                        <a href="/product/{{ item[4] }}" class="product-image">
                                             <img src="{{ url_for('static', filename='images/products/cart/product-2.jpg') }}"
                                                  alt="product">
                                         </a>
+                                        {% endif %}
                                     </figure>
                                     <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                 </div><!-- End .product -->
@@ -219,14 +221,14 @@
                                 <h2 class="checkout-title">訂單資訊</h2><!-- End .checkout-title -->
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label>姓氏 *</label>
-                                        <input type="text" class="form-control" required/>
+                                        <label for="first-name">姓氏 *</label>
+                                        <input type="text" class="form-control" id="first-name" name="first-name" required/>
                                     </div>
                                     <!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
-                                        <label>名 *</label>
-                                        <input type="text" class="form-control" required/>
+                                        <label for="last-name">名 *</label>
+                                        <input type="text" class="form-control" id="last-name" name="last-name" required/>
                                     </div>
                                     <!-- End .col-sm-6 -->
                                 </div>
@@ -234,32 +236,31 @@
 
 
 
-                                <label>運送地址 *</label>
+                                <label for="address">運送地址 *</label>
                                 <input type="text" class="form-control" placeholder="請完整填寫您的運送地址"
-                                       required/>
-                                <label>電話號碼 *</label>
-                                <input type="tel" class="form-control" required/>
+                                       id="address" name="address" required/>
+                                <label for="phone-number">電話號碼 *</label>
+                                <input type="tel" class="form-control" id="phone-number" name="phone-number" required/>
 
                                 <!-- End .row -->
 
-                                <label>電子郵件 *</label>
-                                <input type="email" class="form-control" required/>
+                                <label for="email">電子郵件 *</label>
+                                <input type="email" class="form-control" id="email" name="email" required/>
 
 
-                                <label>訂單備註 (選填)</label>
-                                <textarea class="form-control" cols="30" rows="4"
+                                <label for="note">訂單備註 (選填)</label>
+                                <textarea class="form-control" cols="30" rows="4" id="note" name="note"
                                           placeholder="填寫訂單備註，舉例：對訂單的特殊要求。"></textarea>
                             </div>
                             <!-- End .col-lg-9 -->
                             <aside class="col-lg-3">
                                 <div class="summary">
                                     <h3 class="summary-title">您的訂單</h3><!-- End .summary-title -->
-
                                     <table class="table table-summary">
                                         <thead>
                                         <tr>
                                             <th >商品</th>
-                                            <th style="text-align: center;" >數</th>
+                                            <th style="text-align: center;" >數量</th>
                                             <th>小計</th>
                                         </tr>
                                         </thead>
@@ -268,7 +269,7 @@
                                         <tr>
                                             {% for item in shopping_cart %}
                                             <td style="width: 200px;" >
-                                                <a href="{{ url_for('product') }}">
+                                                <a href="/product/{{ item[4] }}">
                                                     {% if item[4] in products %}
                                                     {{ products[item[4]].productName }}
                                                     {% else %}
@@ -285,7 +286,7 @@
                                         {% endfor %}
                                         <tr class="summary-subtotal">
                                             <td>商品總計：</td>
-                                            <td style="text-align: center;">{{ total_quantity }}</td>
+                                            <td></td>
                                             <td>$ {{ total_price }}.00</td>
                                         </tr>
 
@@ -299,7 +300,7 @@
                                         <tr class="summary-total">
                                             <td>總計:</td>
                                             <td></td>
-                                            <td>${{ total_amount }}</td>
+                                            <td>${{ total_price }}</td>
                                         </tr>
                                         <!-- End .summary-total -->
                                         </tbody>
@@ -364,7 +365,7 @@
                                         <div class="card">
                                             <div class="card-header" id="heading-4">
                                                 <h2 class="card-title"><a class="collapsed" role="button"
-                                                                          data-toggle="collapse" href="#collapse-4"
+                                                                          data-toggle="collapse" href="https://www.paypal.com/us/digital-wallet/how-paypal-works"
                                                                           aria-expanded="false"
                                                                           aria-controls="collapse-4">PayPal <small
                                                         class="float-right paypal-link">What is PayPal?</small></a></h2>
