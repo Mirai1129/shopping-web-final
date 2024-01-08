@@ -156,7 +156,7 @@
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
                                         <a href="{{ url_for('product') }}" class="product-image">
-                                            <img src="{{ url_for('static', filename='images/products/cart/product-2.jpg') }}"
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ item[4] ~ '/product-' ~ item[4] ~ '-1.jpg')}}"
                                                  alt="product">
                                         </a>
                                     </figure>
@@ -230,8 +230,9 @@
                             <div class="product-gallery product-gallery-vertical">
                                 <div class="row">
                                     <figure class="product-main-image">
-                                        <img id="product-zoom" src="../static/images/products/single/1.jpg"
-                                             data-zoom-image="../assets/images/products/single/1-big.jpg"
+                                        <img id="product-zoom"
+                                             src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                             data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1-thumb.jpg')}}"
                                              alt="product image">
 
                                         <a href="#" id="btn-product-gallery" class="btn-product-gallery">
@@ -241,28 +242,31 @@
 
                                     <div id="product-zoom-gallery" class="product-image-gallery">
                                         <a class="product-gallery-item active" href="#"
-                                           data-image="../assets/images/products/single/1.jpg"
-                                           data-zoom-image="../assets/images/products/single/1-big.jpg">
-                                            <img src="../static/images/products/single/1-small.jpg" alt="product side">
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                                 alt="product side">
                                         </a>
 
                                         <a class="product-gallery-item" href="#"
-                                           data-image="../assets/images/products/single/2.jpg"
-                                           data-zoom-image="../assets/images/products/single/2-big.jpg">
-                                            <img src="../static/images/products/single/2-small.jpg" alt="product cross">
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-2.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-2.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-2.jpg')}}"
+                                                 alt="product cross">
                                         </a>
 
                                         <a class="product-gallery-item" href="#"
-                                           data-image="../assets/images/products/single/3.jpg"
-                                           data-zoom-image="../assets/images/products/single/3-big.jpg">
-                                            <img src="../static/images/products/single/3-small.jpg"
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-3.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-3.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-3.jpg')}}"
                                                  alt="product with model">
                                         </a>
 
-                                        <a class="product-gallery-item" href="#"
-                                           data-image="../assets/images/products/single/4.jpg"
-                                           data-zoom-image="../assets/images/products/single/4-big.jpg">
-                                            <img src="../static/images/products/single/4-small.jpg" alt="product back">
+                                        <a class="product-gallery-item active" href="#"
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                                 alt="product side">
                                         </a>
                                     </div><!-- End .product-image-gallery -->
                                 </div><!-- End .row -->
@@ -473,7 +477,7 @@
             <div class="col-6">
                 <figure class="product-media">
                     <a href="{{url_for('product')}}">
-                        <img src="../static/images/products/sticky/product-1.jpg" alt="Product image">
+                        <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1-thumb.jpg')}}" alt="Product image">
                     </a>
                 </figure><!-- End .product-media -->
                 <h4 class="product-title"><a href="{{url_for('product')}}">{{ product.productName }}</a></h4>

@@ -147,12 +147,10 @@
                                         </span>
                                     </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
-                                        {% if item[4] in products %}
-                                        <a href="/product/{{ item[4] }}" class="product-image">
-                                            <img src="{{ url_for('static', filename='images/products/cart/product-2.jpg') }}"
+                                        <a href="{{ url_for('product') }}" class="product-image">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ item[4] ~ '/product-' ~ item[4] ~ '-1.jpg')}}"
                                                  alt="product">
                                         </a>
-                                        {% endif %}
                                     </figure>
                                 </div><!-- End .product -->
                                 {% endfor %}
