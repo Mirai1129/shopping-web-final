@@ -16,8 +16,8 @@ def index():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('index.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -109,8 +109,8 @@ def dashboard():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('dashboard.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -128,8 +128,8 @@ def product():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('product.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -152,8 +152,8 @@ def productPage(productId):
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('product.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -184,8 +184,8 @@ def shop():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('shop.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -267,8 +267,8 @@ def about():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('about.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -287,8 +287,8 @@ def contact():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('contact.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -311,8 +311,8 @@ def faq():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('faq.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -335,8 +335,8 @@ def checkout():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('checkout.html',
                                username=username,
                                total_quantity=total_quantity,
@@ -359,8 +359,8 @@ def cart():
     if 'username' in session:
         username = session['username']
         shopping_cart = db.getUserShoppingCart(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
-        total_price = sum(item[1] * item[2] for item in shopping_cart)  # Calculate total price
+        total_quantity = db.getUserShoppingCartTotalQuantity(username=username)  # Calculate total quantity
+        total_price = db.getUserShoppingCartTotalPrice(username=username)
         return render_template('cart.html',
                                username=username,
                                total_quantity=total_quantity,

@@ -183,7 +183,7 @@ class Database:
                     "%s, "
                     "(SELECT memberId FROM shoppingweb.member WHERE displayName = %s), "
                     "%s)",
-                    (quantity, productId, username, productId)
+                    (productId, quantity, username, productId)
                 )
                 # 提交事务
                 con.commit()
@@ -260,3 +260,17 @@ class Database:
         finally:
             cursor.close()
             con.close()
+
+    def getUserShoppingCartTotalPrice(self, username):
+        con = self.connect()
+        db = Database()
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_price = sum(item[1] * item[2] for item in shopping_cart)
+        return total_price
+
+    def getUserShoppingCartTotalQuantity(self, username):
+        con = self.connect()
+        db = Database()
+        shopping_cart = db.getUserShoppingCart(username=username)
+        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+        return total_quantity
