@@ -383,25 +383,34 @@ def register():
         if registerResult == 'Registration successful':
             session['username'] = registerUserName
             return redirect('/dashboard')
-        else:
-            return render_template('login.html', error=registerResult)
+        elif registerResult == 'User with this email already exists':
+            flash('This email is already registered.', 'error')
+            return redirect('/login')
+        elif registerResult == 'This username already exists':
+            flash('This username already exists.', 'error')
+            return redirect('/login')
     else:
-        return render_template('login.html')
+        return redirect('/login')
 
 
 @app.route('/dashboard')
 def dashboard():
     db = Database()
+
+    # 对于返回类型为 () 的参数
     products = db.getAllProductsInfo()
-    if 'username' in session:
-        username = session['username']
+
+    # 对于返回类型为 None 的参数
+    username = session.get('username')
+    if username:
         orders = db.getUserOrdersByUsername(username=username)
         shopping_cart = db.getUserShoppingCartByUsername(username=username)
-        shoppingcartTotalQuantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)  # Calculate total quantity
+        shoppingcartTotalQuantity = db.getUserShoppingCartTotalQuantityByUsername(username=username)
         shoppingcartTotalPrice = db.getUserShoppingCartTotalPriceByUsername(username=username)
         orderTotalPrice = db.getUserOrderTotalPriceByUsername(username=username)
         productsName = db.getAllProductsName()
         memberInformation = db.getUserInformationByUsername(username=username)
+        print(orders, shopping_cart, shoppingcartTotalQuantity, shoppingcartTotalPrice, orderTotalPrice)
 
         return render_template('dashboard.html',
                                username=username,

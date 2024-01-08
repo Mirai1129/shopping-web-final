@@ -134,14 +134,20 @@ class Database:
     def register(self, firstName, lastName, displayName, email, password, address, phone):
         con = self.connect()
         cursor = con.cursor()
+        db = Database()
 
         try:
             # Check if the email already exists in the database
             cursor.execute("SELECT * FROM `member` WHERE `email` = %s", (email,))
             existing_user = cursor.fetchone()
 
+            cursor.execute("SELECT * FROM `member` WHERE `displayName` = %s", (displayName,))
+            existing_username = cursor.fetchone()
+
             if existing_user:
                 return 'User with this email already exists'
+            if existing_username:
+                return 'This username already exists'
             elif firstName and lastName and displayName and email and password and address and phone:
                 cursor.execute(
                     "INSERT INTO `member`(`firstName`, `lastName`, `displayName`, `email`, `password`, `address`, `phone`) "
@@ -149,6 +155,18 @@ class Database:
                     (firstName, lastName, displayName, email, password, address, phone)
                 )
                 con.commit()  # Commit the changes to the database
+
+                # Get the newly created user's memberId
+                user_id = db.getUserIdByUsername(username=displayName)
+
+                # Create an initial shopping cart record for the user
+                cursor.execute(
+                    "INSERT INTO shoppingweb.shoppingcart(price, quantity, memberId, productId) "
+                    "VALUES (%s, %s, %s, %s)",
+                    (0, 0, user_id, 1)
+                )
+                con.commit()
+
                 return 'Registration successful'
             else:
                 return 'Please provide all necessary information for registration'
@@ -159,6 +177,7 @@ class Database:
         finally:
             cursor.close()
             con.close()
+
 
     def addToShoppingCart(self, username, productId, quantity):
         con = self.connect()
@@ -274,6 +293,11 @@ class Database:
         con = self.connect()
         db = Database()
         shopping_cart = db.getUserShoppingCartByUsername(username=username)
+
+        # 检查 shopping_cart 是否为可迭代对象（列表或元组）
+        if shopping_cart is None:
+            return 0  # 如果 shopping_cart 不可迭代，返回默认值（例如，0）
+
         total_price = sum(item[1] * item[2] for item in shopping_cart)
         return total_price
 
@@ -281,7 +305,11 @@ class Database:
         con = self.connect()
         db = Database()
         shopping_cart = db.getUserShoppingCartByUsername(username=username)
-        total_quantity = sum(item[2] for item in shopping_cart)  # Calculate total quantity
+
+        if shopping_cart is None:
+            return 0  # 如果 shopping_cart 是 None，返回一个默认值（例如，0）
+
+        total_quantity = sum(item[2] for item in shopping_cart)  # 计算总数量
         return total_quantity
 
     def addOrderAndDeleteUserShoppingCart(self, firstName, lastName, address, phoneNumber, email, note, username):
