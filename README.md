@@ -14,7 +14,7 @@
   - flask
   - pymysql
   - dotenv
-- [MySQL database](./database/shoppingwebfinal.sql)
+- [MySQL database](./database/shoppingweb.sql)
 
 ## How to run the project
 
