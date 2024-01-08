@@ -435,3 +435,21 @@ class Database:
         finally:
             cursor.close()
             con.close()
+
+    def checkUserShoppingIsEmpty(self, username):
+        con = self.connect()
+        cursor = con.cursor()
+        try:
+            cursor.execute("SELECT * FROM shoppingweb.shoppingcart "
+                           "WHERE memberId = (SELECT memberId FROM shoppingweb.member WHERE displayName = %s)", "test")
+            result = cursor.fetchone()
+            if result is None:
+                return True
+            else:
+                return False
+        except pymysql.Error as e:
+            print(f"Database error: {e}")
+            return None
+        finally:
+            cursor.close()
+            con.close()
