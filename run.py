@@ -440,8 +440,9 @@ def editMemberInformation():
                                                                              email=email,
                                                                              oldPassword=oldPassword)
                 if editUserInformationResult is True:
-                    flash("Information updated successfully.", 'success')
-                    return redirect('/dashboard')
+                    flash("Information updated successfully, please login again.", 'success')
+                    session.pop('username')
+                    return redirect('/login')
                 else:
                     flash("Failed to update information.", 'error')
                     return redirect('/dashboard')
@@ -463,8 +464,9 @@ def editMemberInformation():
                                                                                  newPassword=newPassword,
                                                                                  confirmNewPassword=confirmNewPassword)
                     if editUserInformationResult is True:
-                        flash("Information updated successfully.", 'success')
-                        return redirect('/dashboard')
+                        flash("Information updated successfully, please login again.", 'success')
+                        session.pop('username')
+                        return redirect('/login')
                     else:
                         flash("Failed to update information.", 'error')
                         return redirect('/dashboard')

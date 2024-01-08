@@ -104,6 +104,9 @@
                                 {% if category == 'error' %}
                                     <div class="error">{{ message }}</div>
                                 {% endif %}
+                                {% if category == 'success' %}
+                                    <div class="text-success">{{ message }}</div>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
