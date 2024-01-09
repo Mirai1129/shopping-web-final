@@ -10,24 +10,24 @@
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="../assets/images/icons/site.html">
-    <link rel="mask-icon" href="../assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="../assets/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="../static/images/icons/site.html">
+    <link rel="mask-icon" href="../static/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="../static/images/icons/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="Molla">
     <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="../assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="../assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="../static/css/plugins/magnific-popup/magnific-popup.css">
     <!-- Main CSS File -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/plugins/nouislider/nouislider.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/plugins/nouislider/nouislider.css">
 </head>
 
 <body>
@@ -43,13 +43,21 @@
                             <a href="#">連結</a>
                             <ul>
                                 <li>
-                                    <a href="about.html">關於我們</a>
+                                    <a href="{{url_for('about')}}">關於我們</a>
                                 </li>
                                 <li>
-                                    <a href="contact.html">聯絡我們</a>
+                                    <a href="{{url_for('contact')}}">聯絡我們</a>
                                 </li>
                                 <li>
-                                    <a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>登入</a>
+                                    <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
+                                        <p>
+                                            {% if username != None %}
+                                            {{ username }}
+                                            {% else %}
+                                            登入
+                                            {% endif %}
+                                        </p>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -70,31 +78,32 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="index.html" class="logo"><img src="../assets/images/logo.png" alt="Molla Logo" width="105"
-                                                           height="25"/></a>
+                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo"
+                                                                     width="105"
+                                                                     height="25"/></a>
 
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
                             <li>
-                                <a href="index.html" class="sf-with-ul">主頁</a>
+                                <a href="{{url_for('index')}}" class="sf-with-ul">主頁</a>
                                 <!--TODO(edit nav li css without >)-->
                                 <ul>
-                                    <li><a href="index.html">前往主頁</a></li>
+                                    <li><a href="{{url_for('index')}}">前往主頁</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="category.html" class="sf-with-ul">商店</a>
+                                <a href="{{url_for('shop')}}" class="sf-with-ul">商店</a>
                                 <ul>
-                                    <li><a href="category.html">前往商店</a></li>
+                                    <li><a href="{{url_for('shop')}}">前往商店</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="#" class="sf-with-ul">相關資訊</a>
 
                                 <ul>
-                                    <li><a href="about.html">關於我們</a></li>
-                                    <li><a href="contact.html">聯絡我們</a></li>
-                                    <li><a href="faq.html">常見問題</a></li>
+                                    <li><a href="{{url_for('about')}}">關於我們</a></li>
+                                    <li><a href="{{url_for('contact')}}">聯絡我們</a></li>
+                                    <li><a href="{{url_for('faq')}}">常見問題</a></li>
                                 </ul>
                             </li>
                         </ul><!-- End .menu -->
@@ -117,53 +126,59 @@
                     <!-- End .header-search -->
 
                     <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                           aria-expanded="false" data-display="static">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" data-display="static">
                             <i class="icon-shopping-cart"></i>
-                            <span class="cart-count">2</span>
+                            <span class="cart-count">{{ total_quantity }}</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length
+                                #}
+
+                                {% for i in range(total_quantity) %}
+                                {% set item = shopping_cart[i] %}
                                 <div class="product">
                                     <div class="product-cart-details">
-                                        <h4 class="product-title"><a href="product.html">Blue utility pinafore denim
-                                            dress</a></h4>
-
+                                        <h4 class="product-title">
+                                            <a href="{{ url_for('product') }}">
+                                                {% if item[4] in products %}
+                                                {{ products[item[4]].productName }}
+                                                {% else %}
+                                                Product Not Found
+                                                {% endif %}
+                                            </a>
+                                        </h4>
                                         <span class="cart-product-info">
-                          <span class="cart-product-qty">1</span>
-                          x $76.00
-                        </span>
-                                    </div>
-                                    <!-- End .product-cart-details -->
-
+                                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00
+                                        </span>
+                                    </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
-                                        <a href="product.html" class="product-image"><img
-                                                src="../assets/images/products/cart/product-2.jpg" alt="product"/></a>
+                                        <a href="{{ url_for('product') }}" class="product-image">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ item[4] ~ '/product-' ~ item[4] ~ '-1.jpg')}}"
+                                                 alt="product">
+                                        </a>
                                     </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                </div>
-                                <!-- End .product -->
-                            </div>
-                            <!-- End .cart-product -->
+                                </div><!-- End .product -->
+                                {% endfor %}
+                            </div><!-- End .cart-product -->
 
                             <div class="dropdown-cart-total">
                                 <span>Total</span>
-
-                                <span class="cart-total-price">$160.00</span>
-                            </div>
-                            <!-- End .dropdown-cart-total -->
+                                <span class="cart-total-price">${{ total_price }}.00</span>
+                            </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                <a href="cart.html" class="btn btn-primary">查看購物車</a>
-                                <a href="checkout.html" class="btn btn-outline-primary-2"><span>下單</span><i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div>
-                            <!-- End .dropdown-cart-total -->
-                        </div>
-                        <!-- End .dropdown-menu -->
-                    </div>
-                    <!-- End .cart-dropdown -->
+                                <a href="{{ url_for('cart') }}" class="btn btn-primary">查看購物車</a>
+                                <a href="{{ url_for('checkout') }}" class="btn btn-outline-primary-2">
+                                    <span>下單</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </a>
+                            </div><!-- End .dropdown-cart-total -->
+                        </div><!-- End .dropdown-menu -->
+                    </div><!-- End .cart-dropdown -->
+
                 </div>
                 <!-- End .header-right -->
             </div>
@@ -177,26 +192,37 @@
         <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
             <div class="container d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">主頁</a></li>
-                    <li class="breadcrumb-item"><a href="category.html">商店</a></li>
+                    <li class="breadcrumb-item"><a href="{{url_for('index')}}">主頁</a></li>
+                    <li class="breadcrumb-item"><a href="{{url_for('shop')}}">商店</a></li>
                     <li class="breadcrumb-item active" aria-current="page">商品介紹</li>
                 </ol>
 
+                {% set product_ids = products.keys() | list %}
+                {% set index = product_ids.index(productId) %}
+
                 <nav class="product-pager ml-auto" aria-label="Product">
-                    <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
+                    {% if index > 0 %}
+                    <a class="product-pager-link product-pager-prev" href="/product/{{ product_ids[index - 1] }}"
+                       aria-label="Previous" tabindex="-1">
                         <i class="icon-angle-left"></i>
                         <span>前一個商品</span>
                     </a>
+                    {% endif %}
 
-                    <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
+                    {% if index < (product_ids | length - 1) %}
+                    <a class="product-pager-link product-pager-next" href="/product/{{ product_ids[index + 1] }}"
+                       aria-label="Next" tabindex="-1">
                         <span>下一個商品</span>
                         <i class="icon-angle-right"></i>
                     </a>
+                    {% endif %}
                 </nav><!-- End .pager-nav -->
             </div><!-- End .container -->
         </nav><!-- End .breadcrumb-nav -->
 
         <div class="page-content">
+            {% for key, product in products.items() %}
+            {% if productId == product.productId %}
             <div class="container">
                 <div class="product-details-top">
                     <div class="row">
@@ -204,8 +230,9 @@
                             <div class="product-gallery product-gallery-vertical">
                                 <div class="row">
                                     <figure class="product-main-image">
-                                        <img id="product-zoom" src="../assets/images/products/single/1.jpg"
-                                             data-zoom-image="../assets/images/products/single/1-big.jpg"
+                                        <img id="product-zoom"
+                                             src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                             data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1-thumb.jpg')}}"
                                              alt="product image">
 
                                         <a href="#" id="btn-product-gallery" class="btn-product-gallery">
@@ -215,28 +242,31 @@
 
                                     <div id="product-zoom-gallery" class="product-image-gallery">
                                         <a class="product-gallery-item active" href="#"
-                                           data-image="../assets/images/products/single/1.jpg"
-                                           data-zoom-image="../assets/images/products/single/1-big.jpg">
-                                            <img src="../assets/images/products/single/1-small.jpg" alt="product side">
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                                 alt="product side">
                                         </a>
 
                                         <a class="product-gallery-item" href="#"
-                                           data-image="../assets/images/products/single/2.jpg"
-                                           data-zoom-image="../assets/images/products/single/2-big.jpg">
-                                            <img src="../assets/images/products/single/2-small.jpg" alt="product cross">
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-2.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-2.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-2.jpg')}}"
+                                                 alt="product cross">
                                         </a>
 
                                         <a class="product-gallery-item" href="#"
-                                           data-image="../assets/images/products/single/3.jpg"
-                                           data-zoom-image="../assets/images/products/single/3-big.jpg">
-                                            <img src="../assets/images/products/single/3-small.jpg"
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-3.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-3.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-3.jpg')}}"
                                                  alt="product with model">
                                         </a>
 
-                                        <a class="product-gallery-item" href="#"
-                                           data-image="../assets/images/products/single/4.jpg"
-                                           data-zoom-image="../assets/images/products/single/4-big.jpg">
-                                            <img src="../assets/images/products/single/4-small.jpg" alt="product back">
+                                        <a class="product-gallery-item active" href="#"
+                                           data-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                           data-zoom-image="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1.jpg')}}"
+                                                 alt="product side">
                                         </a>
                                     </div><!-- End .product-image-gallery -->
                                 </div><!-- End .row -->
@@ -245,140 +275,107 @@
 
                         <div class="col-md-6">
                             <div class="product-details">
-                                <h1 class="product-title">Dark yellow lace cut out swing dress</h1>
+                                <h1 class="product-title">
+                                    {{ product.productName }}
+                                </h1>
                                 <!-- End .product-title -->
 
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                    </div><!-- End .ratings -->
-                                    <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews
-                                        )</a>
-                                </div><!-- End .rating-container -->
-
                                 <div class="product-price">
-                                    $84.00
+                                    ${{ product.price }}.00
                                 </div><!-- End .product-price -->
 
                                 <div class="product-content">
-                                    <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus
-                                        libero eu augue. Morbi purus libero, faucibus adipiscing. Sed lectus. </p>
+                                    <p>
+                                        {{ product.information }}
+                                    </p>
                                 </div><!-- End .product-content -->
 
-
-                                <div class="details-filter-row details-row-size">
-                                    <label for="qty">數量：</label>
-                                    <div class="product-details-quantity">
-                                        <input type="number" id="qty" class="form-control" value="1" min="1" max="10"
-                                               step="1" data-decimals="0" required>
-                                    </div><!-- End .product-details-quantity -->
-                                </div><!-- End .details-filter-row -->
-
-                                <div class="product-details-action">
-                                    <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
+                                <div>
+                                    <form action="/addToShoppingCart" method="post" style="width: 100%">
+                                        <div class="product-details-action">
+                                            <input type="hidden" name="productId" value="{{ product.productId }}">
+                                            <label style="display: none">
+                                                <input type="number" name="quantity" value="1" min="1">
+                                            </label> <!-- 添加数量字段 -->
+                                            <button type="submit" class="btn-product btn-cart">
+                                                <span>加入購物車</span>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div><!-- End .product-details-action -->
+                            </div>
 
-                                <div class="product-details-footer">
-                                    <div class="product-cat">
-                                        <span>類別：</span>
-                                        <a>棉被</a>
-                                    </div><!-- End .product-cat -->
+                            <div class="product-details-footer">
+                                <div class="product-cat">
+                                    <span>類別：</span>
+                                    <a>{{ product.category }}</a>
+                                </div><!-- End .product-cat -->
 
-                                    <div class="social-icons social-icons-sm">
-                                        <span class="social-label">分享：</span>
-                                        <a href="#" class="social-icon" title="Facebook" target="_blank"><i
-                                                class="icon-facebook-f"></i></a>
-                                        <a href="#" class="social-icon" title="Twitter" target="_blank"><i
-                                                class="icon-twitter"></i></a>
-                                        <a href="#" class="social-icon" title="Instagram" target="_blank"><i
-                                                class="icon-instagram"></i></a>
-                                        <a href="#" class="social-icon" title="Pinterest" target="_blank"><i
-                                                class="icon-pinterest"></i></a>
-                                    </div>
-                                </div><!-- End .product-details-footer -->
-                            </div><!-- End .product-details -->
-                        </div><!-- End .col-md-6 -->
-                    </div><!-- End .row -->
-                </div><!-- End .product-details-top -->
+                                <div class="social-icons social-icons-sm">
+                                    <span class="social-label">分享：</span>
+                                    <a href="#" class="social-icon" title="Facebook" target="_blank"><i
+                                            class="icon-facebook-f"></i></a>
+                                    <a href="#" class="social-icon" title="Twitter" target="_blank"><i
+                                            class="icon-twitter"></i></a>
+                                    <a href="#" class="social-icon" title="Instagram" target="_blank"><i
+                                            class="icon-instagram"></i></a>
+                                    <a href="#" class="social-icon" title="Pinterest" target="_blank"><i
+                                            class="icon-pinterest"></i></a>
+                                </div>
+                            </div><!-- End .product-details-footer -->
+                        </div><!-- End .product-details -->
 
-                <div class="product-details-tab">
-                    <ul class="nav nav-pills justify-content-center" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
-                               role="tab" aria-controls="product-desc-tab" aria-selected="true">商品介紹</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab"
-                               role="tab" aria-controls="product-info-tab" aria-selected="false">商品資訊</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="product-shipping-link" data-toggle="tab"
-                               href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab"
-                               aria-selected="false">送貨 / 退貨</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
-                             aria-labelledby="product-desc-link">
-                            <div class="product-desc-content">
-                                <h3>Product Information</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
-                                    volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non,
-                                    semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-                                    Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
-                                    Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula
-                                    vulputate sem tristique cursus. </p>
-                                <ul>
-                                    <li>Nunc nec porttitor turpis. In eu risus enim. In vitae mollis elit.</li>
-                                    <li>Vivamus finibus vel mauris ut vehicula.</li>
-                                    <li>Nullam a magna porttitor, dictum risus nec, faucibus sapien.</li>
-                                </ul>
+                    </div><!-- End .col-md-6 -->
+                </div><!-- End .row -->
+            </div><!-- End .product-details-top -->
 
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
-                                    volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non,
-                                    semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-                                    Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
-                                    Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula
-                                    vulputate sem tristique cursus. </p>
-                            </div><!-- End .product-desc-content -->
-                        </div><!-- .End .tab-pane -->
-                        <div class="tab-pane fade" id="product-info-tab" role="tabpanel"
-                             aria-labelledby="product-info-link">
-                            <div class="product-desc-content">
-                                <h3>Information</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque
-                                    volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non,
-                                    semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-                                    Aliquam porttitor mauris sit amet orci. </p>
-
-                                <h3>Fabric & care</h3>
-                                <ul>
-                                    <li>Faux suede fabric</li>
-                                    <li>Gold tone metal hoop handles.</li>
-                                    <li>RI branding</li>
-                                    <li>Snake print trim interior</li>
-                                    <li>Adjustable cross body strap</li>
-                                    <li> Height: 31cm; Width: 32cm; Depth: 12cm; Handle Drop: 61cm</li>
-                                </ul>
-
-                                <h3>Size</h3>
-                                <p>one size</p>
-                            </div><!-- End .product-desc-content -->
-                        </div><!-- .End .tab-pane -->
-                        <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel"
-                             aria-labelledby="product-shipping-link">
-                            <div class="product-desc-content">
-                                <h3>Delivery & returns</h3>
-                                <p>We deliver to over 100 countries around the world. For full details of the delivery
-                                    options we offer, please view our <a href="#">Delivery information</a><br>
-                                    We hope you’ll love every purchase, but if you ever need to return an item you can
-                                    do so within a month of receipt. For full details of how to make a return, please
-                                    view our <a href="#">Returns information</a></p>
-                            </div><!-- End .product-desc-content -->
-                        </div><!-- .End .tab-pane -->
-                    </div><!-- End .tab-content -->
-                </div><!-- End .product-details-tab -->
-            </div><!-- End .page-content -->
+            <div class="product-details-tab">
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
+                           role="tab" aria-controls="product-desc-tab" aria-selected="true">商品介紹</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab"
+                           role="tab" aria-controls="product-info-tab" aria-selected="false">商品資訊</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-shipping-link" data-toggle="tab"
+                           href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab"
+                           aria-selected="false">送貨 / 退貨</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel"
+                         aria-labelledby="product-desc-link">
+                        <div class="product-desc-content">
+                            <h3>商品介紹</h3>
+                            <p>
+                                {{ product.introduction }}
+                            </p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-info-tab" role="tabpanel"
+                         aria-labelledby="product-info-link">
+                        <div class="product-desc-content">
+                            <h3>商品資訊</h3>
+                            <p>
+                                {{ product.summary }}
+                            </p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel"
+                         aria-labelledby="product-shipping-link">
+                        <div class="product-desc-content">
+                            <h3>送貨 / 退貨</h3>
+                            <p>請參照本網站導覽列 > 相關資訊 > <a href="/faq"> 相關問題 </a>。</p>
+                        </div><!-- End .product-desc-content -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .product-details-tab -->
+        </div><!-- End .page-content -->
+        {% endif %}
+        {% endfor %}
     </main><!-- End .main -->
 
     <footer class="footer">
@@ -387,7 +384,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-lg-3">
                         <div class="widget widget-about">
-                            <img src="../assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
+                            <img src="../static/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
                                  height="25"/>
                             <p>頂級棉被經銷商</p>
 
@@ -415,13 +412,13 @@
 
                             <ul class="widget-list">
                                 <li>
-                                    <a href="about.html">關於我們</a>
+                                    <a href="{{url_for('about')}}">關於我們</a>
                                 </li>
                                 <li>
-                                    <a href="faq.html">常見問題</a>
+                                    <a href="{{url_for('faq')}}">常見問題</a>
                                 </li>
                                 <li>
-                                    <a href="contact.html">聯絡我們</a>
+                                    <a href="{{url_for('contact')}}">聯絡我們</a>
                                 </li>
                             </ul>
                             <!-- End .widget-list -->
@@ -436,10 +433,10 @@
 
                             <ul class="widget-list">
                                 <li>
-                                    <a href="login.html">登入</a>
+                                    <a href="{{url_for('login')}}">會員管理</a>
                                 </li>
                                 <li>
-                                    <a href="cart.html">查看購物車</a>
+                                    <a href="{{url_for('cart')}}">查看購物車</a>
                                 </li>
                             </ul>
                             <!-- End .widget-list -->
@@ -459,7 +456,7 @@
                 <p class="footer-copyright">Copyright © 2024 Mirai. All Rights Reserved.</p>
                 <!-- End .footer-copyright -->
                 <figure class="footer-payments">
-                    <img src="../assets/images/payments.png" alt="Payment methods" width="272" height="20"/>
+                    <img src="../static/images/payments.png" alt="Payment methods" width="272" height="20"/>
                 </figure>
                 <!-- End .footer-payments -->
             </div>
@@ -473,33 +470,42 @@
 
 <!-- Sticky Bar -->
 <div class="sticky-bar">
+    {% for key, product in products.items() %}
+    {% if productId == product.productId %}
     <div class="container">
         <div class="row">
             <div class="col-6">
                 <figure class="product-media">
-                    <a href="product.html">
-                        <img src="../assets/images/products/sticky/product-1.jpg" alt="Product image">
+                    <a href="{{url_for('product')}}">
+                        <img src="{{url_for('static', filename='images/products/single/pd' ~ product.productId ~ '/product-' ~ product.productId ~ '-1-thumb.jpg')}}" alt="Product image">
                     </a>
                 </figure><!-- End .product-media -->
-                <h4 class="product-title"><a href="product.html">Dark yellow lace cut out swing dress</a></h4>
+                <h4 class="product-title"><a href="{{url_for('product')}}">{{ product.productName }}</a></h4>
                 <!-- End .product-title -->
             </div><!-- End .col-6 -->
 
             <div class="col-6 justify-content-end">
                 <div class="product-price">
-                    $84.00
+                    ${{ product.price }}.00
                 </div><!-- End .product-price -->
-                <div class="product-details-quantity">
-                    <input type="number" id="sticky-cart-qty" class="form-control" value="1" min="1" max="10" step="1"
-                           data-decimals="0" required>
-                </div><!-- End .product-details-quantity -->
-
                 <div class="product-details-action">
-                    <a href="#" class="btn-product btn-cart"><span>加入購物車</span></a>
+                    <form action="/addToShoppingCart" method="post" style="width: 100%">
+                        <div class="product-details-action">
+                            <input type="hidden" name="productId" value="{{ product.productId }}">
+                            <label style="display: none">
+                                <input type="number" name="quantity" value="1" min="1">
+                            </label> <!-- 添加数量字段 -->
+                            <button type="submit" class="btn-product btn-cart">
+                                <span>加入購物車</span>
+                            </button>
+                        </div>
+                    </form>
                 </div><!-- End .product-details-action -->
             </div><!-- End .col-6 -->
         </div><!-- End .row -->
     </div><!-- End .container -->
+    {% endif %}
+    {% endfor %}
 </div><!-- End .sticky-bar -->
 
 <!-- Mobile Menu -->
@@ -519,30 +525,42 @@
         <nav class="mobile-nav">
             <ul class="mobile-menu">
                 <li class="active">
-                    <a href="index.html">主頁</a>
+                    <a href="{{url_for('index')}}">首頁</a>
 
                     <ul>
-                        <li><a href="index.html">Home page</a></li>
+                        <li><a href="{{url_for('index')}}">回到首頁</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="category.html">商店</a>
+                    <a href="{{url_for('shop')}}">商店</a>
                     <ul>
-                        <li><a href="category.html">Shopping page</a></li>
+                        <li><a href="{{url_for('shop')}}">前往商店</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#">相關資訊</a>
                     <ul>
-                        <li><a href="about.html">關於我們</a></li>
-                        <li><a href="contact.html">聯絡我們</a></li>
-                        <li><a href="faq.html">常見問題</a></li>
+                        <li><a href="{{url_for('about')}}">關於我們</a></li>
+                        <li><a href="{{url_for('contact')}}">聯絡我們</a></li>
+                        <li><a href="{{url_for('faq')}}">常見問題</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="login.html">登入</a>
+                    <a href="{{ url_for('login') }}">
+                        {% if username != None %}
+                        {{ username }}
+                        {% else %}
+                        登入
+                        {% endif %}
+                    </a>
                     <ul>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="{{ url_for('login') }}">
+                            {% if username != None %}
+                            會員設定
+                            {% else %}
+                            登入
+                            {% endif %}
+                        </a></li>
                     </ul>
                 </li>
             </ul>
@@ -705,18 +723,18 @@
 <!-- End .modal -->
 
 <!-- Plugins JS File -->
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/jquery.hoverIntent.min.js"></script>
-<script src="../assets/js/jquery.waypoints.min.js"></script>
-<script src="../assets/js/superfish.min.js"></script>
-<script src="../assets/js/owl.carousel.min.js"></script>
-<script src="../assets/js/bootstrap-input-spinner.js"></script>
-<script src="../assets/js/jquery.elevateZoom.min.js"></script>
-<script src="../assets/js/bootstrap-input-spinner.js"></script>
-<script src="../assets/js/jquery.magnific-popup.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/bootstrap.bundle.min.js"></script>
+<script src="../static/js/jquery.hoverIntent.min.js"></script>
+<script src="../static/js/jquery.waypoints.min.js"></script>
+<script src="../static/js/superfish.min.js"></script>
+<script src="../static/js/owl.carousel.min.js"></script>
+<script src="../static/js/bootstrap-input-spinner.js"></script>
+<script src="../static/js/jquery.elevateZoom.min.js"></script>
+<script src="../static/js/bootstrap-input-spinner.js"></script>
+<script src="../static/js/jquery.magnific-popup.min.js"></script>
 <!-- Main JS File -->
-<script src="../assets/js/main.js"></script>
+<script src="../static/js/main.js"></script>
 </body>
 
 

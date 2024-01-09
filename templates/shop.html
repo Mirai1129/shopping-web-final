@@ -5,7 +5,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Error 404</title>
+    <title>星際綿柔眠被 - 商店</title>
     <meta name="keywords" content="HTML5 Template"/>
     <meta name="description" content="Molla - Bootstrap eCommerce Template"/>
     <meta name="author" content="p-themes"/>
@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="../static/css/bootstrap.min.css"/>
     <!-- Main CSS File -->
     <link rel="stylesheet" href="../static/css/style.css"/>
+    <link rel="stylesheet" href="../static/css/plugins/owl-carousel/owl.carousel.css"/>
+    <link rel="stylesheet" href="../static/css/plugins/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="../static/css/plugins/nouislider/nouislider.css"/>
 </head>
 
 <body>
@@ -40,10 +43,10 @@
                             <a href="#">連結</a>
                             <ul>
                                 <li>
-                                    <a href="{{url_for('about')}}">關於我們</a>
+                                    <a href="{{ url_for('about') }}">關於我們</a>
                                 </li>
                                 <li>
-                                    <a href="{{url_for('contact')}}">聯絡我們</a>
+                                    <a href="{{ url_for('contact') }}">聯絡我們</a>
                                 </li>
                                 <li>
                                     <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
@@ -75,8 +78,9 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo" width="105"
-                                                           height="25"/></a>
+                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo"
+                                                                     width="105"
+                                                                     height="25"/></a>
 
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
@@ -119,6 +123,67 @@
                             <!-- End .header-search-wrapper -->
                         </form>
                     </div>
+                    <!-- End .header-search -->
+
+                    <div class="dropdown cart-dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <i class="icon-shopping-cart"></i>
+                            <span class="cart-count">{{ total_quantity }}</span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="dropdown-cart-products">
+                                {% set total_quantity = shopping_cart|length %} {# Replace this with the actual length
+                                #}
+
+                                {% for i in range(total_quantity) %}
+                                {% set item = shopping_cart[i] %}
+                                <div class="product">
+                                    <div class="product-cart-details">
+                                        <h4 class="product-title">
+                                            <a href="{{url_for('product')}}">
+                                                {% if item[4] in products %}
+                                                {{ products[item[4]].productName }}
+                                                {% else %}
+                                                Product Not Found
+                                                {% endif %}
+                                            </a>
+                                        </h4>
+
+                                        <span class="cart-product-info">
+                                          <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00<br>
+                                        </span>
+                                    </div>
+                                    <!-- End .product-cart-details -->
+
+                                    <figure class="product-image-container">
+                                        <a href="{{ url_for('product') }}" class="product-image">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ item[4] ~ '/product-' ~ item[4] ~ '-1.jpg')}}"
+                                                 alt="product">
+                                        </a>
+                                    </figure>
+                                </div>
+                                {% endfor %}
+                                <!-- End .product -->
+                            </div>
+                            <!-- End .cart-product -->
+
+                            <div class="dropdown-cart-total">
+                                <span>Total</span>
+
+                                <span class="cart-total-price">${{ total_price }}.00</span>
+                            </div>
+                            <!-- End .dropdown-cart-total -->
+
+                            <div class="dropdown-cart-action">
+                                <a href="{{ url_for('cart') }}" class="btn btn-primary">查看購物車</a>
+                                <a href="{{ url_for('checkout') }}"
+                                   class="btn btn-outline-primary-2"><span>下單</span><i
+                                        class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .dropdown-cart-total -->
+                        </div><!-- End .dropdown-menu -->
+                    </div><!-- End .cart-dropdown -->
                 </div>
                 <!-- End .header-right -->
             </div>
@@ -129,31 +194,157 @@
     <!-- End .header -->
 
     <main class="main">
-        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="page-header text-center" style="background-image: url('../static/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">星際綿柔眠被<span>Shop</span></h1>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <span style="color: red;">{{ message }}</span>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+            <!-- End .container -->
+        </div>
+        <!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
             <div class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="{{url_for('index')}}">主頁</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">404</li>
+                    <li class="breadcrumb-item active" aria-current="page">商店</li>
                 </ol>
             </div>
             <!-- End .container -->
         </nav>
         <!-- End .breadcrumb-nav -->
 
-        <div class="error-content text-center" style="background-image: url(../static/images/backgrounds/error-bg.jpg)">
-            <div class="container">
-                <h1 class="error-title">錯誤 ! 太難過了 . . . . . . </h1><!-- End .error-title -->
-                <p>很抱歉，您要求的頁面不可用。</p>
-                <a href="{{url_for('index')}}" class="btn btn-outline-primary-2 btn-minwidth-lg">
-                    <span>回到主頁</span>
-                    <i class="icon-long-arrow-right"></i>
-                </a>
+        <div class="page-content">
+            <div class="container" style="justify-content: center; display: flex">
+                <div class="col-lg-9">
+                    <div class="toolbox">
+                        <div class="toolbox-left">
+                            <div class="toolbox-info">
+                                顯示的商品
+                            </div>
+                            <!-- End .toolbox-info -->
+                        </div>
+                        <!-- End .toolbox-left -->
+
+                        <div class="toolbox-right">
+                            <div class="toolbox-sort">
+                                <label for="sortby">排序方式 ：</label>
+                                <div class="select-custom">
+                                    <select name="sortby" id="sortby" class="form-control">
+                                        <!--option value="popularity" selected="selected">最熱門</option>
+                                        <option value="date">日期</option--->
+                                        <option>近期推出</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- End .toolbox-sort -->
+                            <div class="toolbox-layout">
+                                <a href="{{url_for('shop')}}" class="btn-layout active">
+                                    <svg width="16" height="10">
+                                        <rect x="0" y="0" width="4" height="4"/>
+                                        <rect x="6" y="0" width="4" height="4"/>
+                                        <rect x="12" y="0" width="4" height="4"/>
+                                        <rect x="0" y="6" width="4" height="4"/>
+                                        <rect x="6" y="6" width="4" height="4"/>
+                                        <rect x="12" y="6" width="4" height="4"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <!-- End .toolbox-layout -->
+                        </div>
+                        <!-- End .toolbox-right -->
+                    </div>
+                    <!-- End .toolbox -->
+
+                    <div class="products mb-3">
+                        <div class="row justify-content-center">
+                            {% for key, product in products.items() %}
+                            <div class="col-6 col-md-4 col-lg-4">
+                                <div class="product product-7 text-center">
+                                    <figure class="product-media">
+                                        <a href="/product/{{product.productId}}"><img
+                                                src="{{ url_for('static', filename='images/products/product-' ~ key ~ '.jpg') }}"
+                                                alt="Product image" class="product-image"/></a>
+
+
+                                        <div class="product-action">
+                                            <form action="/addToShoppingCart" method="post" style="width: 100%">
+                                                <input type="hidden" name="productId" value="{{ product.productId }}">
+                                                <label style="display: none">
+                                                    <input type="number" name="quantity" value="1" min="1">
+                                                </label> <!-- 添加数量字段 -->
+                                                <button type="submit" class="btn-product btn-cart"
+                                                        style="width: 100%; border: none;"><span>加入購物車</span>
+                                                </button>
+                                            </form>
+                                        </div><!-- End .product-action -->
+                                    </figure>
+                                    <!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{ product.category }}</a>
+                                        </div>
+                                        <!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="{{url_for('product')}}">{{
+                                            product.productName }}</a></h3><!-- End .product-title -->
+                                        <div class="product-price">${{ product.price }}.00</div>
+                                        <!-- End .product-price -->
+                                        <!--div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active"><img
+                                                    src="../static/images/products/product-5-thumb.jpg"
+                                                    alt="product desc"/></a>
+                                            <a href="#"><img src="../static/images/products/product-5-2-thumb.jpg"
+                                                             alt="product desc"/></a>
+                                        </div-->
+                                        <!-- End .product-nav -->
+                                    </div>
+                                    <!-- End .product-body -->
+                                </div>
+                                <!-- End .product -->
+                            </div>
+                            {% endfor %}
+                            <!-- End .col-sm-6 col-lg-4 -->
+                        </div>
+                        <!-- End .row -->
+                    </div>
+                    <!-- End .products -->
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
+                                   aria-disabled="true"><span aria-hidden="true"><i
+                                        class="icon-long-arrow-left"></i></span>Prev</a>
+                            </li>
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link page-link-next" href="#" aria-label="Next">Next <span
+                                        aria-hidden="true"><i class="icon-long-arrow-right"></i></span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- End .col-lg-9 -->
+
+                <!-- End .col-lg-3 -->
+
+                <!-- End .row -->
             </div>
             <!-- End .container -->
         </div>
-        <!-- End .error-content text-center -->
+        <!-- End .page-content -->
     </main>
     <!-- End .main -->
 
@@ -295,13 +486,15 @@
                         {% endif %}
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('login') }}">
-                            {% if username != None %}
-                            會員設定
-                            {% else %}
-                            登入
-                            {% endif %}
-                        </a></li>
+                        <li>
+                            <a href="{{ url_for('login') }}">
+                                {% if username != None %}
+                                會員設定
+                                {% else %}
+                                登入
+                                {% endif %}
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -473,9 +666,13 @@
 <script src="../static/js/jquery.waypoints.min.js"></script>
 <script src="../static/js/superfish.min.js"></script>
 <script src="../static/js/owl.carousel.min.js"></script>
+<script src="../static/js/wNumb.js"></script>
+<script src="../static/js/bootstrap-input-spinner.js"></script>
+<script src="../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../static/js/nouislider.min.js"></script>
 <!-- Main JS File -->
 <script src="../static/js/main.js"></script>
 </body>
 
-<!-- molla/404.html 22 Nov 2019 10:04:04 GMT -->
+<!-- molla/shop.html 22 Nov 2019 10:02:52 GMT -->
 </html>

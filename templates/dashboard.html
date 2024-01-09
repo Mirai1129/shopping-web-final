@@ -10,21 +10,21 @@
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="../assets/images/icons/site.html">
-    <link rel="mask-icon" href="../assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="../assets/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="../static/images/icons/site.html">
+    <link rel="mask-icon" href="../static/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="../static/images/icons/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="Molla">
     <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="../assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <!-- Main CSS File -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
@@ -40,13 +40,21 @@
                             <a href="#">連結</a>
                             <ul>
                                 <li>
-                                    <a href="about.html">關於我們</a>
+                                    <a href="{{url_for('about')}}">關於我們</a>
                                 </li>
                                 <li>
-                                    <a href="contact.html">聯絡我們</a>
+                                    <a href="{{url_for('contact')}}">聯絡我們</a>
                                 </li>
                                 <li>
-                                    <a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>登入</a>
+                                    <a href="{{ url_for('dashboard') }}"><i class="icon-user"></i>
+                                        <p>
+                                            {% if username != None %}
+                                                {{ username }}
+                                            {% else %}
+                                                登入
+                                            {% endif %}
+                                        </p>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -67,31 +75,30 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="index.html" class="logo"><img src="../assets/images/logo.png" alt="Molla Logo" width="105"
+                    <a href="{{url_for('index')}}" class="logo"><img src="../static/images/logo.png" alt="Molla Logo" width="105"
                                                            height="25"/></a>
 
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
                             <li>
-                                <a href="index.html" class="sf-with-ul">主頁</a>
+                                <a href="{{url_for('index')}}" class="sf-with-ul">主頁</a>
                                 <!--TODO(edit nav li css without >)-->
                                 <ul>
-                                    <li><a href="index.html">前往主頁</a></li>
+                                    <li><a href="{{url_for('index')}}">前往主頁</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="category.html" class="sf-with-ul">商店</a>
+                                <a href="{{url_for('shop')}}" class="sf-with-ul">商店</a>
                                 <ul>
-                                    <li><a href="category.html">前往商店</a></li>
+                                    <li><a href="{{url_for('shop')}}">前往商店</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="#" class="sf-with-ul">相關資訊</a>
-
                                 <ul>
-                                    <li><a href="about.html">關於我們</a></li>
-                                    <li><a href="contact.html">聯絡我們</a></li>
-                                    <li><a href="faq.html">常見問題</a></li>
+                                    <li><a href="{{url_for('about')}}">關於我們</a></li>
+                                    <li><a href="{{url_for('contact')}}">聯絡我們</a></li>
+                                    <li><a href="{{url_for('faq')}}">常見問題</a></li>
                                 </ul>
                             </li>
                         </ul><!-- End .menu -->
@@ -114,53 +121,52 @@
                     <!-- End .header-search -->
 
                     <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                           aria-expanded="false" data-display="static">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" data-display="static">
                             <i class="icon-shopping-cart"></i>
-                            <span class="cart-count">2</span>
+                            <span class="cart-count"> {{ total_quantity }}</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
+                                {% for item in shopping_cart %}
                                 <div class="product">
                                     <div class="product-cart-details">
-                                        <h4 class="product-title"><a href="product.html">Blue utility pinafore denim
-                                            dress</a></h4>
-
+                                        <h4 class="product-title">
+                                            <a href="{{ url_for('product') }}">
+                                                {% if item[4] in products %}
+                                                {{ products[item[4]].productName }}
+                                                {% else %}
+                                                Product Not Found
+                                                {% endif %}
+                                            </a>
+                                        </h4>
                                         <span class="cart-product-info">
-                          <span class="cart-product-qty">1</span>
-                          x $76.00
+                            <span class="cart-product-qty">{{ item[2] }}</span> x ${{ item[1] }}.00
                         </span>
-                                    </div>
-                                    <!-- End .product-cart-details -->
-
+                                    </div><!-- End .product-cart-details -->
                                     <figure class="product-image-container">
-                                        <a href="product.html" class="product-image"><img
-                                                src="../assets/images/products/cart/product-2.jpg" alt="product"/></a>
+                                        <a href="{{ url_for('product') }}" class="product-image">
+                                            <img src="{{url_for('static', filename='images/products/single/pd' ~ item[4] ~ '/product-' ~ item[4] ~ '-1.jpg')}}"
+                                                 alt="product">
+                                        </a>
                                     </figure>
-                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                </div>
-                                <!-- End .product -->
-                            </div>
-                            <!-- End .cart-product -->
+                                </div><!-- End .product -->
+                                {% endfor %}
+                            </div><!-- End .cart-product -->
 
                             <div class="dropdown-cart-total">
                                 <span>Total</span>
-
-                                <span class="cart-total-price">$160.00</span>
-                            </div>
-                            <!-- End .dropdown-cart-total -->
+                                <span class="cart-total-price">${{ total_price }}.00</span>
+                            </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                <a href="cart.html" class="btn btn-primary">查看購物車</a>
-                                <a href="checkout.html" class="btn btn-outline-primary-2"><span>下單</span><i
+                                <a href="{{ url_for('cart') }}" class="btn btn-primary">查看購物車</a>
+                                <a href="{{ url_for('checkout') }}" class="btn btn-outline-primary-2"><span>下單</span><i
                                         class="icon-long-arrow-right"></i></a>
-                            </div>
-                            <!-- End .dropdown-cart-total -->
-                        </div>
-                        <!-- End .dropdown-menu -->
-                    </div>
-                    <!-- End .cart-dropdown -->
+                            </div><!-- End .dropdown-cart-total -->
+                        </div><!-- End .dropdown-menu -->
+                    </div><!-- End .cart-dropdown -->
                 </div>
                 <!-- End .header-right -->
             </div>
@@ -171,16 +177,29 @@
     <!-- End .header -->
 
     <main class="main">
-        <div class="page-header text-center" style="background-image: url('../assets/images/page-header-bg.jpg')">
+        <div class="page-header text-center" style="background-image: url('../static/images/page-header-bg.jpg')">
             <div class="container">
                 <h1 class="page-title">會員管理<span>Member management</span></h1>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'error' %}
+                <span style="color: red;">{{ message }}</span>
+                {% endif %}
+                {% if category == 'success' %}
+                <span style="color: green;">{{ message }}</span>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
             </div><!-- End .container -->
         </div><!-- End .page-header -->
         <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
             <div class="container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">主頁</a></li>
-                    <li class="breadcrumb-item"><a href="category.html">商店</a></li>
+                    <li class="breadcrumb-item"><a href="{{url_for('index')}}">主頁</a></li>
+                    <li class="breadcrumb-item"><a href="{{url_for('shop')}}">商店</a></li>
                     <li class="breadcrumb-item active" aria-current="page">會員管理</li>
                 </ol>
             </div><!-- End .container -->
@@ -210,8 +229,11 @@
                                        role="tab" aria-controls="tab-account" aria-selected="false">帳號細節</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">登出</a>
+                                    <form id="logoutForm" action="/logout" method="POST">
+                                        <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">登出</a>
+                                    </form>
                                 </li>
+
                             </ul>
                         </aside><!-- End .col-lg-3 -->
 
@@ -219,8 +241,8 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                      aria-labelledby="tab-dashboard-link">
-                                    <p>您好 <span class="font-weight-normal text-dark">會員</span> (不是 <span
-                                            class="font-weight-normal text-dark">會員</span>? <a href="#">登出</a>)
+                                    <p>您好 <span class="font-weight-normal text-dark">{{username}}</span> (不是 <span
+                                            class="font-weight-normal text-dark">{{username}}</span>? <a href="/logout">登出</a>)
                                         <br>
                                         從您的帳戶儀表板中，您可以查看 <a href="#tab-orders"
                                                                                          class="tab-trigger-link link-underline">訂單
@@ -230,23 +252,67 @@
                                             </a>.</p>
                                 </div><!-- .End .tab-pane -->
 
-                                <div class="tab-pane fade" id="tab-orders" role="tabpanel"
-                                     aria-labelledby="tab-orders-link">
-                                    <p>您目前還沒有任何訂單。</p>
-                                    <a href="category.html" class="btn btn-outline-primary-2"><span>前往購物</span><i
-                                            class="icon-long-arrow-right"></i></a>
+                                <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                                    <div class="col-md-12">
+                                        <ul class="nav nav-pills" id="tabs-5" role="tablist">
+                                            {% set displayed_orders = [] %}
+                                            {% for order in orders %}
+                                            {% if order[0] not in displayed_orders %}
+                                            {% set _ = displayed_orders.append(order[0]) %}
+                                            <li class="nav-item">
+                                                <a class="nav-link {% if loop.first %}active{% endif %}" id="{{ order[0] }}-tab" data-toggle="tab" href="#tab-{{ order[0] }}" role="tab" aria-controls="tab-{{ order[0] }}" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">{{ order[0] }} 號訂單</a>
+                                            </li>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                        <div class="tab-content" id="tab-content-5">
+                                            {% for order_id in displayed_orders %}
+                                            <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="tab-{{ order_id }}" role="tabpanel" aria-labelledby="{{ order_id }}-tab">
+                                                <table>
+                                                    <tr style="font-weight: bold">
+                                                        <td>商品</td>
+                                                        <td style="text-align: right; padding: 0 10px;">價格</td>
+                                                        <td style="text-align: right; padding: 0 10px;">數量</td>
+                                                        <td style="text-align: right; padding: 0 10px;">小計</td>
+                                                    </tr>
+                                                    {% for order in orders %}
+                                                    {% if order[0] == order_id %}
+                                                    <tr>
+                                                        <td><a href="/product/{{order[1]}}">{{ productsName[order[1]-1][0] }}</a></td>
+                                                        <td style="text-align: right; padding: 0 10px;">{{ "{:,}".format(order[3]) }}</td>
+                                                        <td style="text-align: right; padding: 0 10px;">{{ "{:,}".format(order[2]) }}</td>
+                                                        <td style="text-align: right; padding: 0 10px;">{{ "{:,}".format(order[2] * order[3]) }}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    <tr>
+                                                        <td colspan="4" style="padding: 10px 0;">
+                                                            <span style="font-weight: bold">總計：</span>{{ "{:,}".format(orderTotalPrice) }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </div><!-- .End .tab-pane -->
+                                            {% endfor %}
+                                        </div><!-- End .tab-content -->
+                                    </div><!-- End .col-md-6 -->
+
+
+                                    <a href="{{ url_for('shop') }}" class="btn btn-outline-primary-2"><span>前往購物</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- .End .tab-pane -->
+
+
 
                                 <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
                                      aria-labelledby="tab-downloads-link">
                                     <p>目前無可用。</p>
-                                    <a href="category.html" class="btn btn-outline-primary-2"><span>前往購物</span><i
+                                    <a href="{{url_for('shop')}}" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
                                             class="icon-long-arrow-right"></i></a>
                                 </div><!-- .End .tab-pane -->
 
                                 <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                      aria-labelledby="tab-address-link">
-                                    <p>預設您結帳頁面中的帳單地址及運送地址。</p>
+                                    <p>預設您結帳頁面中的帳單地址。</p>
 
                                     <div class="row">
                                         <div class="col-lg-6">
@@ -254,24 +320,10 @@
                                                 <div class="card-body">
                                                     <h3 class="card-title">帳單地址</h3><!-- End .card-title -->
 
-                                                    <p>User Name<br>
-                                                        User Company<br>
-                                                        John str<br>
-                                                        New York, NY 10001<br>
-                                                        1-234-987-6543<br>
-                                                        yourmail@mail.com<br>
-                                                        <a href="#">Edit <i class="icon-edit"></i></a></p>
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .card-dashboard -->
-                                        </div><!-- End .col-lg-6 -->
-
-                                        <div class="col-lg-6">
-                                            <div class="card card-dashboard">
-                                                <div class="card-body">
-                                                    <h3 class="card-title">運送地址</h3><!-- End .card-title -->
-
-                                                    <p>您尚未填寫預設的貨運地址。<br>
-                                                        <a href="#">Edit <i class="icon-edit"></i></a></p>
+                                                    <p>姓名：{{ memberInformation[1] }} {{ memberInformation[2] }}<br>
+                                                        帳單地址：{{ memberInformation[6] }}<br>
+                                                        連絡電話：{{ memberInformation[7] }}<br>
+                                                        電子信箱：{{ memberInformation[4] }}<br>
                                                 </div><!-- End .card-body -->
                                             </div><!-- End .card-dashboard -->
                                         </div><!-- End .col-lg-6 -->
@@ -280,34 +332,38 @@
 
                                 <div class="tab-pane fade" id="tab-account" role="tabpanel"
                                      aria-labelledby="tab-account-link">
-                                    <form action="#">
+                                    <form action="/editMemberInformation" method="POST">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <label>姓 *</label>
-                                                <input type="text" class="form-control" required>
+                                                <label for="first-name">姓 *</label>
+                                                <input type="text" class="form-control"
+                                                       id="first-name" name="first-name" required>
                                             </div><!-- End .col-sm-6 -->
 
                                             <div class="col-sm-6">
-                                                <label>名 *</label>
-                                                <input type="text" class="form-control" required>
+                                                <label for="last-name">名 *</label>
+                                                <input type="text" class="form-control"
+                                                       id="last-name" name="last-name" required>
                                             </div><!-- End .col-sm-6 -->
                                         </div><!-- End .row -->
 
-                                        <label>顯示名稱 *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label for="display-name">顯示名稱 *</label>
+                                        <input type="text" class="form-control"
+                                               id="display-name" name="display-name" required>
                                         <small class="form-text">這將是您顯示在帳戶及評論的名稱。</small>
 
-                                        <label>電子信箱 *</label>
-                                        <input type="email" class="form-control" required>
+                                        <label for="email">電子信箱 *</label>
+                                        <input type="email" class="form-control"
+                                               id="email" name="email" required>
 
-                                        <label>目前密碼（留空表示維持不變）</label>
-                                        <input type="password" class="form-control">
+                                        <label for="old-password">目前密碼 *</label>
+                                        <input type="password" class="form-control" id="old-password" name="old-password" required>
 
-                                        <label>新密碼（留空則維持不變）</label>
-                                        <input type="password" class="form-control">
+                                        <label for="new-password">新密碼（留空則維持不變）</label>
+                                        <input type="password" class="form-control" id="new-password" name="new-password">
 
-                                        <label>確認新密碼</label>
-                                        <input type="password" class="form-control mb-2">
+                                        <label for="confirm-new-password">確認新密碼</label>
+                                        <input type="password" class="form-control mb-2" id="confirm-new-password" name="confirm-new-password">
 
                                         <button type="submit" class="btn btn-outline-primary-2">
                                             <span>儲存變更</span>
@@ -329,7 +385,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-lg-3">
                         <div class="widget widget-about">
-                            <img src="../assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
+                            <img src="../static/images/logo.png" class="footer-logo" alt="Footer Logo" width="105"
                                  height="25"/>
                             <p>頂級棉被經銷商</p>
 
@@ -357,13 +413,13 @@
 
                             <ul class="widget-list">
                                 <li>
-                                    <a href="about.html">關於我們</a>
+                                    <a href="{{url_for('about')}}">關於我們</a>
                                 </li>
                                 <li>
-                                    <a href="faq.html">常見問題</a>
+                                    <a href="{{url_for('faq')}}">常見問題</a>
                                 </li>
                                 <li>
-                                    <a href="contact.html">聯絡我們</a>
+                                    <a href="{{url_for('contact')}}">聯絡我們</a>
                                 </li>
                             </ul>
                             <!-- End .widget-list -->
@@ -378,10 +434,10 @@
 
                             <ul class="widget-list">
                                 <li>
-                                    <a href="login.html">登入</a>
+                                    <a href="{{url_for('login')}}">會員管理</a>
                                 </li>
                                 <li>
-                                    <a href="cart.html">查看購物車</a>
+                                    <a href="{{url_for('cart')}}">查看購物車</a>
                                 </li>
                             </ul>
                             <!-- End .widget-list -->
@@ -401,7 +457,7 @@
                 <p class="footer-copyright">Copyright © 2024 Mirai. All Rights Reserved.</p>
                 <!-- End .footer-copyright -->
                 <figure class="footer-payments">
-                    <img src="../assets/images/payments.png" alt="Payment methods" width="272" height="20"/>
+                    <img src="../static/images/payments.png" alt="Payment methods" width="272" height="20"/>
                 </figure>
                 <!-- End .footer-payments -->
             </div>
@@ -430,30 +486,42 @@
         <nav class="mobile-nav">
             <ul class="mobile-menu">
                 <li class="active">
-                    <a href="index.html">主頁</a>
+                    <a href="{{url_for('index')}}">首頁</a>
 
                     <ul>
-                        <li><a href="index.html">Home page</a></li>
+                        <li><a href="{{url_for('index')}}">回到首頁</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="category.html">商店</a>
+                    <a href="{{url_for('shop')}}">商店</a>
                     <ul>
-                        <li><a href="category.html">Shopping page</a></li>
+                        <li><a href="{{url_for('shop')}}">前往商店</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#">一些頁面</a>
+                    <a href="#">相關資訊</a>
                     <ul>
-                        <li><a href="about.html">關於我們</a></li>
-                        <li><a href="contact.html">聯絡我們</a></li>
-                        <li><a href="faq.html">常見問題</a></li>
+                        <li><a href="{{url_for('about')}}">關於我們</a></li>
+                        <li><a href="{{url_for('contact')}}">聯絡我們</a></li>
+                        <li><a href="{{url_for('faq')}}">常見問題</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="login.html">登入</a>
+                    <a href="{{ url_for('login') }}">
+                        {% if username != None %}
+                            {{ username }}
+                        {% else %}
+                            登入
+                        {% endif %}
+                    </a>
                     <ul>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="{{ url_for('login') }}">
+                            {% if username != None %}
+                                會員設定
+                            {% else %}
+                                登入
+                            {% endif %}
+                        </a></li>
                     </ul>
                 </li>
             </ul>
@@ -479,135 +547,135 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i
                         class="icon-close"></i></span></button>
 
-                <div class="form-box">
-                    <div class="form-tab">
-                        <ul class="nav nav-pills nav-fill" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab"
-                                   aria-controls="signin" aria-selected="true">登入</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
-                                   aria-controls="register" aria-selected="false">註冊</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="tab-content-5">
-                            <div class="tab-pane fade show active" id="signin" role="tabpanel"
-                                 aria-labelledby="signin-tab">
-                                <form action="#">
-                                    <div class="form-group">
-                                        <label for="singin-email">電子郵件 *</label>
-                                        <input type="text" class="form-control" id="singin-email" name="singin-email"
-                                               required/>
-                                    </div>
-                                    <!-- End .form-group -->
+<!--                <div class="form-box">-->
+<!--                    <div class="form-tab">-->
+<!--                        <ul class="nav nav-pills nav-fill" role="tablist">-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab"-->
+<!--                                   aria-controls="signin" aria-selected="true">登入</a>-->
+<!--                            </li>-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"-->
+<!--                                   aria-controls="register" aria-selected="false">註冊</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                        <div class="tab-content" id="tab-content-5">-->
+<!--                            <div class="tab-pane fade show active" id="signin" role="tabpanel"-->
+<!--                                 aria-labelledby="signin-tab">-->
+<!--                                <form action="#">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="singin-email">電子郵件 *</label>-->
+<!--                                        <input type="text" class="form-control" id="singin-email" name="singin-email"-->
+<!--                                               required/>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .form-group &ndash;&gt;-->
 
-                                    <div class="form-group">
-                                        <label for="singin-password">密碼 *</label>
-                                        <input type="password" class="form-control" id="singin-password"
-                                               name="singin-password" required/>
-                                    </div>
-                                    <!-- End .form-group -->
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="singin-password">密碼 *</label>-->
+<!--                                        <input type="password" class="form-control" id="singin-password"-->
+<!--                                               name="singin-password" required/>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .form-group &ndash;&gt;-->
 
-                                    <div class="form-footer">
-                                        <button type="submit" class="btn btn-outline-primary-2">
-                                            <span>登入</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
+<!--                                    <div class="form-footer">-->
+<!--                                        <button type="submit" class="btn btn-outline-primary-2">-->
+<!--                                            <span>登入</span>-->
+<!--                                            <i class="icon-long-arrow-right"></i>-->
+<!--                                        </button>-->
 
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="signin-remember"/>
-                                            <label class="custom-control-label" for="signin-remember">記住我</label>
-                                        </div>
-                                        <!-- End .custom-checkbox -->
+<!--                                        <div class="custom-control custom-checkbox">-->
+<!--                                            <input type="checkbox" class="custom-control-input" id="signin-remember"/>-->
+<!--                                            <label class="custom-control-label" for="signin-remember">記住我</label>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .custom-checkbox &ndash;&gt;-->
 
-                                        <a href="#" class="forgot-link">忘記密碼？</a>
-                                    </div>
-                                    <!-- End .form-footer -->
-                                </form>
-                                <div class="form-choice">
-                                    <p class="text-center">或是換個登入方式</p>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-g">
-                                                <i class="icon-google"></i>
-                                                Google 登入
-                                            </a>
-                                        </div>
-                                        <!-- End .col-6 -->
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-f">
-                                                <i class="icon-facebook-f"></i>
-                                                Facebook 登入
-                                            </a>
-                                        </div>
-                                        <!-- End .col-6 -->
-                                    </div>
-                                    <!-- End .row -->
-                                </div>
-                                <!-- End .form-choice -->
-                            </div>
-                            <!-- .End .tab-pane -->
-                            <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                <form action="#">
-                                    <div class="form-group">
-                                        <label for="register-email">你的電子郵件 *</label>
-                                        <input type="email" class="form-control" id="register-email"
-                                               name="register-email" required/>
-                                    </div>
-                                    <!-- End .form-group -->
+<!--                                        <a href="#" class="forgot-link">忘記密碼？</a>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .form-footer &ndash;&gt;-->
+<!--                                </form>-->
+<!--                                <div class="form-choice">-->
+<!--                                    <p class="text-center">或是換個登入方式</p>-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-sm-6">-->
+<!--                                            <a href="#" class="btn btn-login btn-g">-->
+<!--                                                <i class="icon-google"></i>-->
+<!--                                                Google 登入-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .col-6 &ndash;&gt;-->
+<!--                                        <div class="col-sm-6">-->
+<!--                                            <a href="#" class="btn btn-login btn-f">-->
+<!--                                                <i class="icon-facebook-f"></i>-->
+<!--                                                Facebook 登入-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .col-6 &ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .row &ndash;&gt;-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; End .form-choice &ndash;&gt;-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; .End .tab-pane &ndash;&gt;-->
+<!--                            <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">-->
+<!--                                <form action="#">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="register-email">你的電子郵件 *</label>-->
+<!--                                        <input type="email" class="form-control" id="register-email"-->
+<!--                                               name="register-email" required/>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .form-group &ndash;&gt;-->
 
-                                    <div class="form-group">
-                                        <label for="register-password">密碼 *</label>
-                                        <input type="password" class="form-control" id="register-password"
-                                               name="register-password" required/>
-                                    </div>
-                                    <!-- End .form-group -->
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="register-password">密碼 *</label>-->
+<!--                                        <input type="password" class="form-control" id="register-password"-->
+<!--                                               name="register-password" required/>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .form-group &ndash;&gt;-->
 
-                                    <div class="form-footer">
-                                        <button type="submit" class="btn btn-outline-primary-2">
-                                            <span>註冊</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </button>
+<!--                                    <div class="form-footer">-->
+<!--                                        <button type="submit" class="btn btn-outline-primary-2">-->
+<!--                                            <span>註冊</span>-->
+<!--                                            <i class="icon-long-arrow-right"></i>-->
+<!--                                        </button>-->
 
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="register-policy"
-                                                   required/>
-                                            <label class="custom-control-label" for="register-policy">我同意 <a
-                                                    href="#">隱私權政策</a> *</label>
-                                        </div>
-                                        <!-- End .custom-checkbox -->
-                                    </div>
-                                    <!-- End .form-footer -->
-                                </form>
-                                <div class="form-choice">
-                                    <p class="text-center">或是用別的方式註冊</p>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-g">
-                                                <i class="icon-google"></i>
-                                                Google 登入
-                                            </a>
-                                        </div>
-                                        <!-- End .col-6 -->
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-f">
-                                                <i class="icon-facebook-f"></i>
-                                                Facebook 登入
-                                            </a>
-                                        </div>
-                                        <!-- End .col-6 -->
-                                    </div>
-                                    <!-- End .row -->
-                                </div>
-                                <!-- End .form-choice -->
-                            </div>
-                            <!-- .End .tab-pane -->
-                        </div>
-                        <!-- End .tab-content -->
-                    </div>
-                    <!-- End .form-tab -->
-                </div>
+<!--                                        <div class="custom-control custom-checkbox">-->
+<!--                                            <input type="checkbox" class="custom-control-input" id="register-policy"-->
+<!--                                                   required/>-->
+<!--                                            <label class="custom-control-label" for="register-policy">我同意 <a-->
+<!--                                                    href="#">隱私權政策</a> *</label>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .custom-checkbox &ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .form-footer &ndash;&gt;-->
+<!--                                </form>-->
+<!--                                <div class="form-choice">-->
+<!--                                    <p class="text-center">或是用別的方式註冊</p>-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-sm-6">-->
+<!--                                            <a href="#" class="btn btn-login btn-g">-->
+<!--                                                <i class="icon-google"></i>-->
+<!--                                                Google 登入-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .col-6 &ndash;&gt;-->
+<!--                                        <div class="col-sm-6">-->
+<!--                                            <a href="#" class="btn btn-login btn-f">-->
+<!--                                                <i class="icon-facebook-f"></i>-->
+<!--                                                Facebook 登入-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; End .col-6 &ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash; End .row &ndash;&gt;-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; End .form-choice &ndash;&gt;-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; .End .tab-pane &ndash;&gt;-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; End .tab-content &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; End .form-tab &ndash;&gt;-->
+<!--                </div>-->
                 <!-- End .form-box -->
             </div>
             <!-- End .modal-body -->
@@ -619,14 +687,14 @@
 <!-- End .modal -->
 
 <!-- Plugins JS File -->
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/jquery.hoverIntent.min.js"></script>
-<script src="../assets/js/jquery.waypoints.min.js"></script>
-<script src="../assets/js/superfish.min.js"></script>
-<script src="../assets/js/owl.carousel.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/bootstrap.bundle.min.js"></script>
+<script src="../static/js/jquery.hoverIntent.min.js"></script>
+<script src="../static/js/jquery.waypoints.min.js"></script>
+<script src="../static/js/superfish.min.js"></script>
+<script src="../static/js/owl.carousel.min.js"></script>
 <!-- Main JS File -->
-<script src="../assets/js/main.js"></script>
+<script src="../static/js/main.js"></script>
 </body>
 
 
