@@ -163,7 +163,7 @@ class Database:
                 cursor.execute(
                     "INSERT INTO shoppingweb.shoppingcart(price, quantity, memberId, productId) "
                     "VALUES (%s, %s, %s, %s)",
-                    (0, 0, user_id, 1)
+                    (857, 0, user_id, 1)
                 )
                 con.commit()
 
@@ -177,7 +177,6 @@ class Database:
         finally:
             cursor.close()
             con.close()
-
 
     def addToShoppingCart(self, username, productId, quantity):
         con = self.connect()

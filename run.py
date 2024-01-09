@@ -1,6 +1,5 @@
 import secrets
 from urllib import request
-from random import randint
 
 from flask import render_template, Flask, request, redirect, flash, session
 from apps.database import Database
